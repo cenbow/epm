@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="woodstock.net.br/epmprocess">
+  <process id="epmprocess" name="EPM Test Process">
+    <startEvent id="StartEvent" name="Start"></startEvent>
+    <endEvent id="EndEvent" name="End"></endEvent>
+    <scriptTask id="ConsoleTask" name="Console Task" scriptFormat="groovy">
+      <script><![CDATA[print "Console Task\n"]]></script>
+    </scriptTask>
+    <userTask id="FormTask" name="Form Task" activiti:formKey="form">
+      <extensionElements>
+        <activiti:formProperty id="id" name="id" type="long" required="true" readable="true" writable="true"></activiti:formProperty>
+        <activiti:formProperty id="name" name="name" type="string" required="true" readable="true" writable="true"></activiti:formProperty>
+        <activiti:formProperty id="password" name="password" type="string" required="true" readable="true" writable="true"></activiti:formProperty>
+        <activiti:formProperty id="birthday" name="birthday" type="date" datePattern="dd/MM/yyyy" required="true" readable="true" writable="true"></activiti:formProperty>
+        <activiti:formProperty id="status" name="status" type="enum" required="true" readable="true" writable="true">
+          <activiti:value id="active" name="active"></activiti:value>
+          <activiti:value id="inactive" name="inactive"></activiti:value>
+        </activiti:formProperty>
+      </extensionElements>
+    </userTask>
+    <manualTask id="ManualTask" name="Manual Task"></manualTask>
+    <sequenceFlow id="flow1" name="" sourceRef="StartEvent" targetRef="ConsoleTask"></sequenceFlow>
+    <sequenceFlow id="flow2" name="" sourceRef="ConsoleTask" targetRef="FormTask"></sequenceFlow>
+    <sequenceFlow id="flow3" name="" sourceRef="FormTask" targetRef="ManualTask"></sequenceFlow>
+    <sequenceFlow id="flow4" name="" sourceRef="ManualTask" targetRef="EndEvent"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_epmprocess">
+    <bpmndi:BPMNPlane bpmnElement="epmprocess" id="BPMNPlane_epmprocess">
+      <bpmndi:BPMNShape bpmnElement="StartEvent" id="BPMNShape_StartEvent">
+        <omgdc:Bounds height="35" width="35" x="150" y="36"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="EndEvent" id="BPMNShape_EndEvent">
+        <omgdc:Bounds height="35" width="35" x="150" y="450"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="ConsoleTask" id="BPMNShape_ConsoleTask">
+        <omgdc:Bounds height="55" width="105" x="115" y="130"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="FormTask" id="BPMNShape_FormTask">
+        <omgdc:Bounds height="55" width="105" x="115" y="240"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="ManualTask" id="BPMNShape_ManualTask">
+        <omgdc:Bounds height="55" width="105" x="115" y="350"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
+        <omgdi:waypoint x="167" y="71"></omgdi:waypoint>
+        <omgdi:waypoint x="167" y="130"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
+        <omgdi:waypoint x="167" y="185"></omgdi:waypoint>
+        <omgdi:waypoint x="167" y="240"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
+        <omgdi:waypoint x="167" y="295"></omgdi:waypoint>
+        <omgdi:waypoint x="167" y="350"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
+        <omgdi:waypoint x="167" y="405"></omgdi:waypoint>
+        <omgdi:waypoint x="167" y="450"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

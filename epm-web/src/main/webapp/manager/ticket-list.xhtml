@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich">
+	<h:form id="formList">
+		<div>
+			<rich:panel header="#{messages['label.ticket']}" style="width: 400px; margin: auto;" rendered="#{not ticketBean.listing}">
+				<table style="width: 100%;">
+					<tr>
+						<td style="width: 25%;"><h:outputText value="#{messages['label.from']}" /> : </td>
+						<td style="width: 75%;">
+							<rich:select value="#{ticketBean.fromApplicationId}" selectFirst="false" enableManualInput="true" style="width: 250px;">
+								<f:selectItems value="#{ticketBean.applications}" var="app" itemValue="#{app.id}" itemLabel="#{app.name}(#{app.alias})" />
+								<a4j:ajax render="formList:btnSelect" />
+							</rich:select>
+						</td>
+					</tr>
+					<tr>
+						<td style="width: 25%;"><h:outputText value="#{messages['label.to']}" /> : </td>
+						<td style="width: 75%;">
+							<rich:select value="#{ticketBean.toApplicationId}" selectFirst="false" enableManualInput="true" style="width: 250px;">
+								<f:selectItems value="#{ticketBean.applications}" var="app" itemValue="#{app.id}" itemLabel="#{app.name}(#{app.alias})" />
+								<a4j:ajax render="formList:btnSelect" />
+							</rich:select>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2" style="text-align: center;">
+							<h:commandButton id="btnSearch" value="#{messages['label.search']}" action="#{ticketBean.list}" />
+							<h:commandButton value="#{messages['label.cancel']}" action="#{ticketBean.end}"/>
+						</td>
+					</tr>
+				</table>				
+			</rich:panel>
+			<rich:panel header="Certificate" style="width: 400px; margin: auto;" rendered="#{ticketBean.listing}">
+				<table style="width: 100%;">
+					<tr>
+						<td style="width: 25%;"><h:outputText value="#{messages['label.from']}" /> : </td>
+						<td style="width: 75%;">
+							<h:outputText value="#{ticketBean.fromApplication.alias}"/>
+							-
+							<h:outputText value="#{ticketBean.fromApplication.name}"/>
+						</td>
+					</tr>
+					<tr>
+						<td style="width: 25%;"><h:outputText value="#{messages['label.to']}" /> : </td>
+						<td style="width: 75%;">
+							<h:outputText value="#{ticketBean.toApplication.alias}"/>
+							-
+							<h:outputText value="#{ticketBean.toApplication.name}"/>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2" style="text-align: center;">
+							<h:commandButton value="#{messages['label.cancel']}" action="#{ticketBean.cancel}"/>
+						</td>
+					</tr>
+				</table>
+			</rich:panel>
+			<br />
+			<rich:dataTable rows="5" value="#{ticketBean.tickets}" var="ticket" style="width: 500px; margin: auto;" rendered="#{not empty ticketBean.tickets}">
+				<rich:column>
+					<f:facet name="header">
+						<h:outputText value="#{messages['label.date']}" />
+					</f:facet>
+					<h:outputText value="#{ticket.creation}" />
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">
+						<h:outputText value="#{messages['label.from']}" />
+					</f:facet>
+					<h:outputText value="#{ticket.session.certificate.application.alias}" />						
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">
+						<h:outputText value="#{messages['label.to']}" />
+					</f:facet>						
+					<h:outputText value="#{ticket.application.alias}" />
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">
+						<h:outputText value="#{messages['label.status']}" />
+					</f:facet>						
+					<h:outputText value="#{ticket.status}" />
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">
+						<h:outputText value="#{messages['label.action']}" />
+					</f:facet>
+					<h:commandLink alt="#{messages['label.view']}" title="#{messages['label.view']}" action="#{ticketBean.show}">
+						<h:graphicImage name="edit-paste.png" library="images/nouveGnome/16x16/actions" />
+						<f:setPropertyActionListener target="#{ticketBean.id}" value="#{ticket.id}" />
+					</h:commandLink>
+				</rich:column>
+			</rich:dataTable>
+		</div>
+	</h:form>
+</html>

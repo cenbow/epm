@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich">
+	<h:form id="formEdit" prependId="false">
+		<div>
+			<rich:panel header="#{messages['label.application']}" style="width: 400px; margin: auto;">
+				<table style="width: 100%;">
+					<tr>
+						<td style="width: 25%;"><h:outputText value="#{messages['label.alias']}" /> : </td>
+						<td style="width: 75%;">
+							<h:inputHidden value="#{applicationBean.id}" />
+							<h:inputText id="alias" value="#{applicationBean.alias}" size="15" maxlength="45">
+								<f:validateLength minimum="3" maximum="45" />
+								<rich:validator />
+							</h:inputText>
+						</td>
+					</tr>
+					<tr>
+						<td><h:outputText value="#{messages['label.name']}" />  : </td>
+						<td>
+							<h:inputText id="name" value="#{applicationBean.name}" size="30" maxlength="100">
+								<f:validateLength minimum="3" maximum="100" />
+								<rich:validator />
+							</h:inputText>
+						</td>
+					</tr>
+					<tr>
+						<td><h:outputText value="#{messages['label.description']}" />  : </td>
+						<td>
+							<h:inputText id="description" value="#{applicationBean.description}" size="30" maxlength="100">
+								<f:validateLength minimum="3" maximum="100" />
+								<rich:validator />
+							</h:inputText>
+						</td>
+					</tr>
+					<tr>
+						<td><h:outputText value="#{messages['label.path']}" />  : </td>
+						<td>
+							<h:inputText id="path" value="#{applicationBean.path}" size="30" maxlength="100">
+								<f:validateLength minimum="3" maximum="100" />
+								<rich:validator />
+							</h:inputText>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2" style="text-align: center;">
+							<h:commandButton value="#{messages['label.save']}" action="#{applicationBean.save}" />
+							<h:commandButton value="#{messages['label.cancel']}" action="#{applicationBean.cancel}" immediate="true"/>			
+						</td>
+					</tr>
+				</table>					
+			</rich:panel>
+		</div>
+	</h:form>
+</html>

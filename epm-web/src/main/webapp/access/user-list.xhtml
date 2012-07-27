@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich">
+	<h:form id="formList" prependId="false">
+		<div>
+			<rich:panel header="#{messages['label.user']}" style="width: 400px; margin: auto;">
+				<table style="width: 100%;">
+					<tr>
+						<td style="width: 25%;"><h:outputText value="#{messages['label.filter']}" /> : </td>
+						<td style="width: 75%;">
+							<h:inputText value="#{userBean.filter}" size="30" maxlength="100" />
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2" style="text-align: center;">
+							<h:commandButton value="#{messages['label.search']}" action="#{userBean.list}" />
+							<h:commandButton value="#{messages['label.new']}" action="#{userBean.newUser}"/>
+							<h:commandButton value="#{messages['label.cancel']}" action="#{userBean.end}"/>			
+						</td>
+					</tr>
+				</table>					
+			</rich:panel>
+			<br />
+			<rich:dataTable rows="5" value="#{userBean.users}" var="user"  style="width: 500px; margin: auto;" rendered="#{not empty userBean.users}">
+				<rich:column>
+					<f:facet name="header">
+						<h:outputText value="#{messages['label.login']}" />
+					</f:facet>
+					<h:outputText value="#{user.login}" />
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">
+						<h:outputText value="#{messages['label.name']}" />
+					</f:facet>
+					<h:outputText value="#{user.name}" />						
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">
+						<h:outputText value="#{messages['label.email']}" />
+					</f:facet>						
+					<h:outputText value="#{user.email}" />
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">
+						<h:outputText value="#{messages['label.action']}" />
+					</f:facet>
+					<h:commandLink alt="#{messages['label.edit']}" title="#{messages['label.edit']}" action="#{userBean.edit}">
+						<h:graphicImage name="edit-paste.png" library="images/nouveGnome/16x16/actions" />
+						<f:setPropertyActionListener target="#{userBean.id}" value="#{user.id}" />
+					</h:commandLink>
+				</rich:column>
+				<f:facet name="footer">
+					<rich:dataScroller maxPages="5" />
+				</f:facet>
+			</rich:dataTable>
+		</div>
+	</h:form>
+</html>
