@@ -36,6 +36,7 @@ abstract class ConverterHelper {
 		//
 	}
 
+	@SuppressWarnings("unchecked")
 	public static Form toForm(final TaskFormData formData) {
 		if (formData == null) {
 			return null;

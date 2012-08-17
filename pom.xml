@@ -13,7 +13,7 @@
 		<!-- Test -->
 		<test />
 		<!-- Libs -->
-		<activiti.version>5.9</activiti.version>
+		<activiti.version>5.10</activiti.version>
 		<cssparser.version>0.9.6</cssparser.version>
 		<google.guava.version>r09</google.guava.version>
 		<groovy.version>1.8.6</groovy.version>

@@ -15,6 +15,9 @@ public interface ProcessService extends Serializable {
 	void completeTask(final String taskId);
 
 	void delegateTask(final String taskId, final String userId);
+	
+	// Execution
+	void signalExecution(final String executionId);
 
 	// Form
 	Form getForm(final String taskId);
@@ -34,13 +37,21 @@ public interface ProcessService extends Serializable {
 
 	// Process
 	Process getProcessById(final String id);
+	
+	Process getProcessByKey(final String key);
 
 	// Query
 	Collection<String> listDeploymentByName(final String name);
 
 	Collection<Process> listProcessByName(final String name);
+	
+	Collection<Process> listProcessByStartableUser(final String user);
 
 	Collection<Task> listTasksByUser(final String user);
+
+	Collection<Task> listTasksByCandidateUser(final String user);
+
+	Collection<Task> listTasksByCandidateGroup(final String group);
 
 	Collection<Task> listTasksByProcessInstanceId(final String id);
 
