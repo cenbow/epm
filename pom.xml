@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>br.net.woodstock.epm</groupId>
 	<artifactId>epm-parent</artifactId>
@@ -13,22 +14,17 @@
 		<!-- Test -->
 		<test />
 		<!-- Libs -->
-		<activiti.version>5.9</activiti.version>
-		<cssparser.version>0.9.6</cssparser.version>
-		<google.guava.version>r09</google.guava.version>
+		<activiti.version>5.10</activiti.version>
 		<groovy.version>1.8.6</groovy.version>
-		<jee.version>6.0</jee.version>
-		<jsf.version>2.1.7</jsf.version>
 		<junit.version>4.10</junit.version>
 		<jdbc.mysql.version>5.1.19</jdbc.mysql.version>
-		<lucene.version>3.5.0</lucene.version>
-		<richfaces.version>4.1.0.Final</richfaces.version>
-		<rockframework.version>2.0.3</rockframework.version>
+		<jdbc.pgsql.version>9.1-901-1.jdbc4</jdbc.pgsql.version>
+		<log4j.version>1.2.17</log4j.version>
+		<lucene.version>3.6.1</lucene.version>
+		<rockframework.version>2.0.5</rockframework.version>
 		<slf4j.version>1.6.3</slf4j.version>
-		<spring.version>3.1.1.RELEASE</spring.version>
-		<w3c.sac.version>1.3</w3c.sac.version>
+		<spring.version>3.1.2.RELEASE</spring.version>
 		<!-- Plugins -->
-		<plugin.ear.version>2.6</plugin.ear.version>
 		<plugin.compiler.version>2.3.2</plugin.compiler.version>
 		<plugin.jar.version>2.3.2</plugin.jar.version>
 		<plugin.resources.version>2.4.3</plugin.resources.version>
@@ -41,11 +37,13 @@
 	</organization>
 	<modules>
 		<module>epm-api</module>
-		<module>epm-document-api</module>
-		<module>epm-document-lucene</module>
 		<module>epm-impl</module>
 		<module>epm-process-api</module>
 		<module>epm-process-activiti</module>
+		<module>epm-search-api</module>
+		<module>epm-search-lucene</module>
+		<module>epm-store-api</module>
+		<module>epm-store-filesystem</module>
 		<module>epm-web</module>
 	</modules>
 	<build>
@@ -131,13 +129,25 @@
 			</dependency>
 			<dependency>
 				<groupId>br.net.woodstock.epm</groupId>
-				<artifactId>epm-document-api</artifactId>
+				<artifactId>epm-search-api</artifactId>
 				<version>${project.version}</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>br.net.woodstock.epm</groupId>
-				<artifactId>epm-document-lucene</artifactId>
+				<artifactId>epm-search-lucene</artifactId>
+				<version>${project.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>br.net.woodstock.epm</groupId>
+				<artifactId>epm-store-api</artifactId>
+				<version>${project.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>br.net.woodstock.epm</groupId>
+				<artifactId>epm-store-filesystem</artifactId>
 				<version>${project.version}</version>
 				<scope>provided</scope>
 			</dependency>
@@ -180,57 +190,21 @@
 				<type>war</type>
 			</dependency>
 			<dependency>
-				<groupId>com.google.guava</groupId>
-				<artifactId>guava</artifactId>
-				<version>${google.guava.version}</version>
-				<scope>provided</scope>
-			</dependency>
-			<dependency>
-				<groupId>com.sun.faces</groupId>
-				<artifactId>jsf-api</artifactId>
-				<version>${jsf.version}</version>
-				<scope>provided</scope>
-			</dependency>
-			<dependency>
-				<groupId>com.sun.faces</groupId>
-				<artifactId>jsf-impl</artifactId>
-				<version>${jsf.version}</version>
-				<scope>provided</scope>
-			</dependency>
-			<dependency>
-				<groupId>javax</groupId>
-				<artifactId>javaee-api</artifactId>
-				<version>${jee.version}</version>
-				<scope>provided</scope>
-			</dependency>
-			<dependency>
-				<groupId>javax</groupId>
-				<artifactId>javaee-endorsed-api</artifactId>
-				<version>${jee.version}</version>
-				<scope>provided</scope>
-			</dependency>
-			<dependency>
-				<groupId>javax</groupId>
-				<artifactId>javaee-web-api</artifactId>
-				<version>${jee.version}</version>
-				<scope>provided</scope>
-			</dependency>
-			<dependency>
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>
 				<version>${junit.version}</version>
 				<scope>test</scope>
 			</dependency>
 			<dependency>
-				<groupId>mysql</groupId>
-				<artifactId>mysql-connector-java</artifactId>
-				<version>${jdbc.mysql.version}</version>
+				<groupId>log4j</groupId>
+				<artifactId>log4j</artifactId>
+				<version>${log4j.version}</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
-				<groupId>net.sourceforge.cssparser</groupId>
-				<artifactId>cssparser</artifactId>
-				<version>${cssparser.version}</version>
+				<groupId>mysql</groupId>
+				<artifactId>mysql-connector-java</artifactId>
+				<version>${jdbc.mysql.version}</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
@@ -253,7 +227,19 @@
 			</dependency>
 			<dependency>
 				<groupId>org.apache.lucene</groupId>
+				<artifactId>lucene-analyzers-morfologik</artifactId>
+				<version>${lucene.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.lucene</groupId>
 				<artifactId>lucene-core</artifactId>
+				<version>${lucene.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.lucene</groupId>
+				<artifactId>lucene-highlighter</artifactId>
 				<version>${lucene.version}</version>
 				<scope>provided</scope>
 			</dependency>
@@ -273,37 +259,6 @@
 				<groupId>org.codehaus.groovy</groupId>
 				<artifactId>groovy-all</artifactId>
 				<version>${groovy.version}</version>
-				<scope>provided</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.richfaces</groupId>
-				<artifactId>richfaces-bom</artifactId>
-				<version>${richfaces.version}</version>
-				<scope>import</scope>
-				<type>pom</type>
-			</dependency>
-			<dependency>
-				<groupId>org.richfaces.core</groupId>
-				<artifactId>richfaces-core-api</artifactId>
-				<version>${richfaces.version}</version>
-				<scope>provided</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.richfaces.core</groupId>
-				<artifactId>richfaces-core-impl</artifactId>
-				<version>${richfaces.version}</version>
-				<scope>provided</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.richfaces.ui</groupId>
-				<artifactId>richfaces-components-api</artifactId>
-				<version>${richfaces.version}</version>
-				<scope>provided</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.richfaces.ui</groupId>
-				<artifactId>richfaces-components-ui</artifactId>
-				<version>${richfaces.version}</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
@@ -358,12 +313,6 @@
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-web</artifactId>
 				<version>${spring.version}</version>
-				<scope>provided</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.w3c</groupId>
-				<artifactId>sac</artifactId>
-				<version>${w3c.sac.version}</version>
 				<scope>provided</scope>
 			</dependency>
 		</dependencies>
