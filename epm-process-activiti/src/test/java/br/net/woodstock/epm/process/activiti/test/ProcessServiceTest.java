@@ -18,7 +18,7 @@ import br.net.woodstock.epm.process.api.DateFormField;
 import br.net.woodstock.epm.process.api.EnumFormField;
 import br.net.woodstock.epm.process.api.Form;
 import br.net.woodstock.epm.process.api.FormField;
-import br.net.woodstock.epm.process.api.Process;
+import br.net.woodstock.epm.process.api.ProcessDefinition;
 import br.net.woodstock.epm.process.api.ProcessInstance;
 import br.net.woodstock.epm.process.api.ProcessService;
 import br.net.woodstock.epm.process.api.Task;
@@ -38,8 +38,8 @@ public class ProcessServiceTest {
 
 	// @Test
 	public void testListProcess() throws Exception {
-		Collection<Process> collection = this.service.listProcessByName(null);
-		for (Process process : collection) {
+		Collection<ProcessDefinition> collection = this.service.listProcessByName(null);
+		for (ProcessDefinition process : collection) {
 			System.out.println(process.getId() + " - " + process.getName() + "(" + process.getVersion() + ")");
 		}
 	}
@@ -54,19 +54,19 @@ public class ProcessServiceTest {
 
 	// @Test
 	public void testListProcessByName() throws Exception {
-		Collection<Process> collection = this.service.listProcessByName("EPM Test Process");
-		for (Process process : collection) {
+		Collection<ProcessDefinition> collection = this.service.listProcessByName("EPM Test Process");
+		for (ProcessDefinition process : collection) {
 			System.out.println(process.getId() + " - " + process.getName() + "(" + process.getVersion() + ")");
 		}
 		collection = this.service.listProcessByName("EPM");
-		for (Process process : collection) {
+		for (ProcessDefinition process : collection) {
 			System.out.println(process.getId() + " - " + process.getName() + "(" + process.getVersion() + ")");
 		}
 	}
 
 	// @Test
 	public void testStartProcess() throws Exception {
-		Process process = this.service.getProcessById("epmprocess:2:213");
+		ProcessDefinition process = this.service.getProcessById("epmprocess:2:213");
 		if (process != null) {
 			Map<String, Object> parameters = new HashMap<String, Object>();
 			parameters.put("userId", "lourival.junior");

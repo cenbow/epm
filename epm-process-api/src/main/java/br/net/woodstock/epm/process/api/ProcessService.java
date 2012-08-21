@@ -36,16 +36,16 @@ public interface ProcessService extends Serializable {
 	byte[] getProcessInstanceImageByKey(final String key);
 
 	// Process
-	Process getProcessById(final String id);
+	ProcessDefinition getProcessById(final String id);
 	
-	Process getProcessByKey(final String key);
+	ProcessDefinition getProcessByKey(final String key);
 
 	// Query
 	Collection<String> listDeploymentByName(final String name);
 
-	Collection<Process> listProcessByName(final String name);
+	Collection<ProcessDefinition> listProcessByName(final String name);
 	
-	Collection<Process> listProcessByStartableUser(final String user);
+	Collection<ProcessDefinition> listProcessByStartableUser(final String user);
 
 	Collection<Task> listTasksByUser(final String user);
 
