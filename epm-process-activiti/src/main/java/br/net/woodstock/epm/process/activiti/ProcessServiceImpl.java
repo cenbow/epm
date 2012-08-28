@@ -141,11 +141,7 @@ public class ProcessServiceImpl implements ProcessService {
 			query.processInstanceId(id);
 			org.activiti.engine.runtime.ProcessInstance instance = query.singleResult();
 			if (instance != null) {
-				ProcessInstance pi = new ProcessInstance();
-				pi.setFinished(instance.isEnded());
-				pi.setId(instance.getId());
-				pi.setKey(instance.getBusinessKey());
-				pi.setSuspended(instance.isSuspended());
+				ProcessInstance pi = ConverterHelper.toProcessInstance(instance);
 
 				ConverterHelper.completeProcessInstance(this.engine, pi, instance.getProcessDefinitionId());
 
@@ -165,13 +161,7 @@ public class ProcessServiceImpl implements ProcessService {
 				}
 
 				if (hpi != null) {
-					ProcessInstance pi = new ProcessInstance();
-					pi.setEnd(hpi.getEndTime());
-					pi.setFinished(true);
-					pi.setId(hpi.getId());
-					pi.setKey(hpi.getBusinessKey());
-					pi.setStart(hpi.getStartTime());
-					pi.setSuspended(false);
+					ProcessInstance pi = ConverterHelper.toProcessInstance(hpi);
 
 					ConverterHelper.completeProcessInstance(this.engine, pi, hpi.getProcessDefinitionId());
 

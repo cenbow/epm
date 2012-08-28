@@ -15,6 +15,7 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.index.IndexWriterConfig.OpenMode;
+import org.apache.lucene.search.Query;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.util.Version;
 
@@ -29,13 +30,15 @@ import br.net.woodstock.rockframework.utils.SystemUtils;
 
 public class LuceneIndexWriter implements Runnable {
 
-	private static final long	SLEEP_TIME		= 5000;
+	private static final long	SLEEP_TIME			= 5000;
 
-	private static final String	DIR_NAME		= "lucene-tmp";
+	private static final String	DIR_NAME			= "lucene-tmp";
 
-	private static final String	FILE_EXTENSION	= "tmp";
+	private static final String	ADD_FILE_EXTENSION	= "add";
 
-	private static final String	FILE_SEPARATOR	= ".";
+	private static final String	DEL_FILE_EXTENSION	= "del";
+
+	private static final String	FILE_SEPARATOR		= ".";
 
 	private Version				version;
 
@@ -45,9 +48,11 @@ public class LuceneIndexWriter implements Runnable {
 
 	private File				tmpDir;
 
-	private FilenameFilter		filter;
+	private FilenameFilter		addFilter;
 
-	private RandomGenerator		generator		= new RandomGenerator(32);
+	private FilenameFilter		delFilter;
+
+	private RandomGenerator		generator			= new RandomGenerator(32);
 
 	private boolean				stop;
 
@@ -60,7 +65,9 @@ public class LuceneIndexWriter implements Runnable {
 		File parent = new File(SystemUtils.getProperty(SystemUtils.JAVA_IO_TMPDIR_PROPERTY));
 
 		this.tmpDir = new File(parent, LuceneIndexWriter.DIR_NAME);
-		this.filter = new FileExtensionFilter(LuceneIndexWriter.FILE_EXTENSION);
+
+		this.addFilter = new FileExtensionFilter(LuceneIndexWriter.ADD_FILE_EXTENSION);
+		this.delFilter = new FileExtensionFilter(LuceneIndexWriter.DEL_FILE_EXTENSION);
 
 		if (!this.tmpDir.exists()) {
 			this.tmpDir.mkdirs();
@@ -72,45 +79,31 @@ public class LuceneIndexWriter implements Runnable {
 	@Override
 	public void run() {
 		while (!this.stop) {
-			File[] files = this.tmpDir.listFiles(this.filter);
-			if (ConditionUtils.isNotEmpty(files)) {
+			IndexWriterConfig writerConfig = null;
+			IndexWriter writer = null;
+			try {
+				writerConfig = new IndexWriterConfig(this.version, this.analyzer);
+				writerConfig.setOpenMode(OpenMode.CREATE_OR_APPEND); // Create
 
-				IndexWriterConfig writerConfig = null;
-				IndexWriter writer = null;
-				try {
-					writerConfig = new IndexWriterConfig(this.version, this.analyzer);
-					writerConfig.setOpenMode(OpenMode.CREATE_OR_APPEND); // Create
+				writer = new IndexWriter(this.directory, new IndexWriterConfig(this.version, new StandardAnalyzer(this.version)));
 
-					writer = new IndexWriter(this.directory, new IndexWriterConfig(this.version, new StandardAnalyzer(this.version)));
+				File[] addFiles = this.tmpDir.listFiles(this.addFilter);
+				if (ConditionUtils.isNotEmpty(addFiles)) {
+					this.addFiles(writer, addFiles);
+				}
 
-					for (File file : files) {
-						Log.getLogger().info("Saving: " + file);
-						try {
-							FileInputStream inputStream = new FileInputStream(file);
-							ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
-
-							Document document = (Document) objectInputStream.readObject();
-
-							objectInputStream.close();
-							inputStream.close();
-
-							writer.addDocument(document);
-							file.delete();
-						} catch (IOException e) {
-							CoreLog.getInstance().getLog().log(Level.INFO, e.getMessage(), e);
-						} catch (ClassNotFoundException e) {
-							CoreLog.getInstance().getLog().log(Level.INFO, e.getMessage(), e);
-						}
-					}
-				} catch (IOException e) {
-					throw new ServiceException(e);
-				} finally {
-					if (writer != null) {
-						try {
-							writer.close();
-						} catch (IOException e) {
-							throw new ServiceException(e);
-						}
+				File[] delFiles = this.tmpDir.listFiles(this.delFilter);
+				if (ConditionUtils.isNotEmpty(delFiles)) {
+					this.delFiles(writer, delFiles);
+				}
+			} catch (IOException e) {
+				throw new ServiceException(e);
+			} finally {
+				if (writer != null) {
+					try {
+						writer.close();
+					} catch (IOException e) {
+						throw new ServiceException(e);
 					}
 				}
 			}
@@ -122,10 +115,54 @@ public class LuceneIndexWriter implements Runnable {
 		}
 	}
 
+	private void addFiles(final IndexWriter writer, final File[] files) {
+		for (File file : files) {
+			Log.getLogger().info("Saving: " + file);
+			try {
+				FileInputStream inputStream = new FileInputStream(file);
+				ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+
+				Document document = (Document) objectInputStream.readObject();
+
+				objectInputStream.close();
+				inputStream.close();
+
+				writer.addDocument(document);
+				file.delete();
+			} catch (IOException e) {
+				CoreLog.getInstance().getLog().log(Level.INFO, e.getMessage(), e);
+			} catch (ClassNotFoundException e) {
+				CoreLog.getInstance().getLog().log(Level.INFO, e.getMessage(), e);
+			}
+		}
+	}
+
+	private void delFiles(final IndexWriter writer, final File[] files) {
+		for (File file : files) {
+			Log.getLogger().info("Deleting: " + file);
+			try {
+				FileInputStream inputStream = new FileInputStream(file);
+				ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+
+				Query query = (Query) objectInputStream.readObject();
+
+				objectInputStream.close();
+				inputStream.close();
+
+				writer.deleteDocuments(query);
+				file.delete();
+			} catch (IOException e) {
+				CoreLog.getInstance().getLog().log(Level.INFO, e.getMessage(), e);
+			} catch (ClassNotFoundException e) {
+				CoreLog.getInstance().getLog().log(Level.INFO, e.getMessage(), e);
+			}
+		}
+	}
+
 	public void add(final Document document) throws IOException {
 		Assert.notNull(document, "document");
 
-		File file = new File(this.tmpDir, this.generator.generate() + LuceneIndexWriter.FILE_SEPARATOR + LuceneIndexWriter.FILE_EXTENSION);
+		File file = new File(this.tmpDir, this.generator.generate() + LuceneIndexWriter.FILE_SEPARATOR + LuceneIndexWriter.ADD_FILE_EXTENSION);
 
 		file.createNewFile();
 
@@ -134,6 +171,22 @@ public class LuceneIndexWriter implements Runnable {
 		FileOutputStream outputStream = new FileOutputStream(file);
 		ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
 		objectOutputStream.writeObject(document);
+		objectOutputStream.close();
+		outputStream.close();
+	}
+
+	public void delete(final Query query) throws IOException {
+		Assert.notNull(query, "query");
+
+		File file = new File(this.tmpDir, this.generator.generate() + LuceneIndexWriter.FILE_SEPARATOR + LuceneIndexWriter.DEL_FILE_EXTENSION);
+
+		file.createNewFile();
+
+		Log.getLogger().info("Adding: " + file);
+
+		FileOutputStream outputStream = new FileOutputStream(file);
+		ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
+		objectOutputStream.writeObject(query);
 		objectOutputStream.close();
 		outputStream.close();
 	}

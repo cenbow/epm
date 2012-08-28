@@ -84,11 +84,11 @@ public class ProcessServiceTest {
 		System.out.println(pi.getKey());
 		System.out.println(pi.isFinished());
 		System.out.println(pi.isSuspended());
-		if (pi.getProcess() != null) {
+		if (pi.getProcessDefinition() != null) {
 			System.out.println("\tProcess...");
-			System.out.println("\t\t" + pi.getProcess().getId());
-			System.out.println("\t\t" + pi.getProcess().getName());
-			System.out.println("\t\t" + pi.getProcess().getVersion());
+			System.out.println("\t\t" + pi.getProcessDefinition().getId());
+			System.out.println("\t\t" + pi.getProcessDefinition().getName());
+			System.out.println("\t\t" + pi.getProcessDefinition().getVersion());
 		}
 		System.out.println("\tHistory");
 		for (Activity a : pi.getHistory()) {

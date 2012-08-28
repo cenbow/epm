@@ -30,7 +30,7 @@ public class StoreServiceTest {
 		Thread.sleep(30000);
 
 		for (String id : ids) {
-			byte[] data = service.getData(id);
+			byte[] data = service.get(id);
 			System.out.println("\t" + new String(data));
 		}
 	}
@@ -39,7 +39,7 @@ public class StoreServiceTest {
 	public void test2() throws Exception {
 		StoreSevice service = new FileSystemStoreService(StoreServiceTest.PATH_STORE);
 		for (int i = 0; i < 10; i++) {
-			byte[] data = service.getData(Integer.toString(i));
+			byte[] data = service.get(Integer.toString(i));
 			System.out.println("\t" + new String(data));
 		}
 	}

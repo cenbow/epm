@@ -21,7 +21,9 @@ public class ProcessInstance implements Serializable {
 
 	private Date					end;
 
-	private ProcessDefinition					process;
+	private ProcessDefinition		processDefinition;
+
+	private ProcessInstance			parentProcessInstance;
 
 	private Collection<Activity>	current;
 
@@ -81,12 +83,20 @@ public class ProcessInstance implements Serializable {
 		this.end = end;
 	}
 
-	public ProcessDefinition getProcess() {
-		return this.process;
+	public ProcessDefinition getProcessDefinition() {
+		return this.processDefinition;
 	}
 
-	public void setProcess(final ProcessDefinition process) {
-		this.process = process;
+	public void setProcessDefinition(final ProcessDefinition processDefinition) {
+		this.processDefinition = processDefinition;
+	}
+
+	public ProcessInstance getParentProcessInstance() {
+		return this.parentProcessInstance;
+	}
+
+	public void setParentProcessInstance(final ProcessInstance parentProcessInstance) {
+		this.parentProcessInstance = parentProcessInstance;
 	}
 
 	public Collection<Activity> getCurrent() {

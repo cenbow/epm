@@ -6,12 +6,13 @@ public enum LuceneField {
 
 	CONTENT_TYPE(Field.CONTENT_TYPE, "CONTENT-TYPE"), /***/
 	DATE(Field.DATE, "DATE"), /***/
-	GROUP(Field.GROUP, "GROUP"), /***/
+	DESCRIPTION(Field.DESCRIPTION, "DESCRIPTION"), /***/
+	EXTENSION(Field.DATE, "DATE"), /***/
 	ID(Field.ID, "ID"), /***/
 	NAME(Field.NAME, "NAME"), /***/
-	USER(Field.USER, "USER"), /***/
-	VERSION(Field.VERSION, "VERSION"), /***/
-	TEXT(Field.TEXT, "TEXT");
+	OWNER(Field.OWNER, "OWNER"), /***/
+	TEXT(Field.TEXT, "TEXT"), /***/
+	TYPE(Field.TYPE, "TYPE");
 
 	private Field	field;
 

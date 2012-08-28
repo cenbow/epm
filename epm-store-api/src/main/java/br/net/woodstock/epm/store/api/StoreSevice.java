@@ -4,7 +4,9 @@ import java.io.Serializable;
 
 public interface StoreSevice extends Serializable {
 
-	byte[] getData(String id);
+	byte[] get(String id);
+
+	boolean remove(String id);
 
 	void save(String id, byte[] data);
 

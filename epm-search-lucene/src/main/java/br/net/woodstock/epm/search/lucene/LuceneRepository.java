@@ -9,6 +9,7 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.Field.Index;
 import org.apache.lucene.document.Field.Store;
+import org.apache.lucene.document.Fieldable;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.queryParser.ParseException;
@@ -24,7 +25,7 @@ import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
 
-import br.net.woodstock.epm.search.api.DocumentMetadata;
+import br.net.woodstock.epm.search.api.Item;
 import br.net.woodstock.epm.search.api.OrderBy;
 import br.net.woodstock.rockframework.domain.service.ServiceException;
 import br.net.woodstock.rockframework.persistence.Repository;
@@ -69,31 +70,37 @@ public class LuceneRepository implements Repository {
 		}
 	}
 
-	public DocumentMetadata get(final String id) throws IOException {
+	public Item get(final String id) throws IOException {
 		TermQuery query = new TermQuery(new Term(LuceneField.ID.getName(), id));
 		Sort sort = new Sort(new SortField(SortField.FIELD_SCORE.getField(), SortField.SCORE));
-		DocumentMetadata[] array = this.searchInternal(query, sort, 1);
+		Item[] array = this.searchInternal(query, sort, 1);
 		if (ConditionUtils.isNotEmpty(array)) {
 			return array[0];
 		}
 		return null;
 	}
 
-	public void save(final DocumentMetadata metadata) throws IOException {
+	public void remove(final String id) throws IOException {
+		TermQuery query = new TermQuery(new Term(LuceneField.ID.getName(), id));
+		this.writer.delete(query);
+	}
+
+	public void save(final Item item) throws IOException {
 		Document document = new Document();
-		document.add(new Field(LuceneField.CONTENT_TYPE.getName(), metadata.getContentType(), Store.YES, Index.NOT_ANALYZED_NO_NORMS));
-		document.add(new Field(LuceneField.DATE.getName(), metadata.getDate(), Store.YES, Index.NOT_ANALYZED_NO_NORMS));
-		document.add(new Field(LuceneField.GROUP.getName(), metadata.getGroup(), Store.YES, Index.NOT_ANALYZED_NO_NORMS));
-		document.add(new Field(LuceneField.ID.getName(), metadata.getId(), Store.YES, Index.NOT_ANALYZED_NO_NORMS));
-		document.add(new Field(LuceneField.NAME.getName(), metadata.getName(), Store.YES, Index.NOT_ANALYZED_NO_NORMS));
-		document.add(new Field(LuceneField.TEXT.getName(), metadata.getText(), Store.YES, Index.ANALYZED));
-		document.add(new Field(LuceneField.USER.getName(), metadata.getUser(), Store.YES, Index.NOT_ANALYZED_NO_NORMS));
-		document.add(new Field(LuceneField.VERSION.getName(), metadata.getVersion(), Store.YES, Index.NOT_ANALYZED_NO_NORMS));
+		document.add(new Field(LuceneField.CONTENT_TYPE.getName(), item.getContentType(), Store.YES, Index.NOT_ANALYZED_NO_NORMS));
+		document.add(new Field(LuceneField.DATE.getName(), item.getDate(), Store.YES, Index.NOT_ANALYZED_NO_NORMS));
+		document.add(new Field(LuceneField.DESCRIPTION.getName(), item.getDescription(), Store.YES, Index.ANALYZED));
+		document.add(new Field(LuceneField.EXTENSION.getName(), item.getExtension(), Store.YES, Index.NOT_ANALYZED_NO_NORMS));
+		document.add(new Field(LuceneField.ID.getName(), item.getId(), Store.YES, Index.NOT_ANALYZED_NO_NORMS));
+		document.add(new Field(LuceneField.NAME.getName(), item.getName(), Store.YES, Index.ANALYZED));
+		document.add(new Field(LuceneField.OWNER.getName(), item.getOwner(), Store.YES, Index.NOT_ANALYZED_NO_NORMS));
+		document.add(new Field(LuceneField.TEXT.getName(), item.getText(), Store.YES, Index.ANALYZED));
+		document.add(new Field(LuceneField.TYPE.getName(), item.getType(), Store.YES, Index.NOT_ANALYZED_NO_NORMS));
 
 		this.writer.add(document);
 	}
 
-	public DocumentMetadata[] search(final String filter, final OrderBy[] orders, final int maxResult) throws IOException {
+	public Item[] search(final String filter, final OrderBy[] orders, final int maxResult) throws IOException {
 		try {
 			QueryParser queryParser = new QueryParser(this.version, LuceneField.TEXT.getName(), this.analyzer);
 			Query query = queryParser.parse(filter);
@@ -110,14 +117,14 @@ public class LuceneRepository implements Repository {
 				sort = new Sort(new SortField(SortField.FIELD_SCORE.getField(), SortField.SCORE));
 			}
 
-			DocumentMetadata[] array = this.searchInternal(query, sort, maxResult);
+			Item[] array = this.searchInternal(query, sort, maxResult);
 			return array;
 		} catch (ParseException e) {
-			return new DocumentMetadata[0];
+			return new Item[0];
 		}
 	}
 
-	private DocumentMetadata[] searchInternal(final Query query, final Sort sort, final int maxResults) throws IOException {
+	private Item[] searchInternal(final Query query, final Sort sort, final int maxResults) throws IOException {
 		IndexReader reader = null;
 		IndexSearcher searcher = null;
 		try {
@@ -126,26 +133,27 @@ public class LuceneRepository implements Repository {
 
 			TopDocs docs = searcher.search(query, maxResults, sort);
 			ScoreDoc[] scores = docs.scoreDocs;
-			DocumentMetadata[] documents = new DocumentMetadata[scores.length];
+			Item[] items = new Item[scores.length];
 			for (int index = 0; index < scores.length; index++) {
 				int id = scores[index].doc;
 				Document document = searcher.doc(id);
 
-				DocumentMetadata metadata = new DocumentMetadata();
-				metadata.setContentType(document.getFieldable(LuceneField.CONTENT_TYPE.getName()).stringValue());
-				metadata.setDate(document.getFieldable(LuceneField.DATE.getName()).stringValue());
-				metadata.setGroup(document.getFieldable(LuceneField.GROUP.getName()).stringValue());
-				metadata.setId(document.getFieldable(LuceneField.ID.getName()).stringValue());
-				metadata.setName(document.getFieldable(LuceneField.NAME.getName()).stringValue());
-				metadata.setText(document.getFieldable(LuceneField.TEXT.getName()).stringValue());
-				metadata.setUser(document.getFieldable(LuceneField.USER.getName()).stringValue());
-				metadata.setVersion(document.getFieldable(LuceneField.VERSION.getName()).stringValue());
+				Item item = new Item();
+				item.setContentType(this.getStringValue(document, LuceneField.CONTENT_TYPE.getName()));
+				item.setDate(this.getStringValue(document, LuceneField.DATE.getName()));
+				item.setDescription(this.getStringValue(document, LuceneField.DESCRIPTION.getName()));
+				item.setExtension(this.getStringValue(document, LuceneField.EXTENSION.getName()));
+				item.setId(this.getStringValue(document, LuceneField.ID.getName()));
+				item.setName(this.getStringValue(document, LuceneField.NAME.getName()));
+				item.setOwner(this.getStringValue(document, LuceneField.OWNER.getName()));
+				item.setText(this.getStringValue(document, LuceneField.TEXT.getName()));
+				item.setType(this.getStringValue(document, LuceneField.TYPE.getName()));
 
-				documents[index] = metadata;
+				items[index] = item;
 			}
 			searcher.close();
 			reader.close();
-			return documents;
+			return items;
 		} finally {
 			if (searcher != null) {
 				try {
@@ -162,6 +170,17 @@ public class LuceneRepository implements Repository {
 				}
 			}
 		}
+	}
+
+	private String getStringValue(final Document document, final String name) {
+		if (document == null) {
+			return null;
+		}
+		Fieldable fieldable = document.getFieldable(name);
+		if (fieldable == null) {
+			return null;
+		}
+		return fieldable.stringValue();
 	}
 
 }

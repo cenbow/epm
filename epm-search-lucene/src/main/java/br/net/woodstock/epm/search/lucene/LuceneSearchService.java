@@ -1,6 +1,6 @@
 package br.net.woodstock.epm.search.lucene;
 
-import br.net.woodstock.epm.search.api.DocumentMetadata;
+import br.net.woodstock.epm.search.api.Item;
 import br.net.woodstock.epm.search.api.OrderBy;
 import br.net.woodstock.epm.search.api.SearchSevice;
 import br.net.woodstock.rockframework.domain.service.Service;
@@ -10,7 +10,7 @@ public class LuceneSearchService implements SearchSevice, Service {
 
 	private static final long	serialVersionUID	= 8196306738398173957L;
 
-	private LuceneRepository		repository;
+	private LuceneRepository	repository;
 
 	public LuceneSearchService(final String indexPath) {
 		super();
@@ -22,28 +22,37 @@ public class LuceneSearchService implements SearchSevice, Service {
 	}
 
 	@Override
-	public DocumentMetadata getMetadata(final String id) {
+	public Item get(final String id) {
 		try {
-			DocumentMetadata document = this.repository.get(id);
-			return document;
+			Item item = this.repository.get(id);
+			return item;
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		}
 	}
 
 	@Override
-	public void save(final DocumentMetadata document) {
+	public void remove(final String id) {
 		try {
-			this.repository.save(document);
+			this.repository.remove(id);
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		}
 	}
 
 	@Override
-	public DocumentMetadata[] search(final String filter, final OrderBy[] orders, final int maxResult) {
+	public void save(final Item item) {
 		try {
-			DocumentMetadata[] array = this.repository.search(filter, orders, maxResult);
+			this.repository.save(item);
+		} catch (Exception e) {
+			throw new ServiceException(e);
+		}
+	}
+
+	@Override
+	public Item[] search(final String filter, final OrderBy[] orders, final int maxResult) {
+		try {
+			Item[] array = this.repository.search(filter, orders, maxResult);
 			return array;
 		} catch (Exception e) {
 			throw new ServiceException(e);

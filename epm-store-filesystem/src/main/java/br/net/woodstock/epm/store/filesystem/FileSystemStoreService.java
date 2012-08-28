@@ -20,10 +20,20 @@ public class FileSystemStoreService implements StoreSevice, Service {
 	}
 
 	@Override
-	public byte[] getData(final String id) {
+	public byte[] get(final String id) {
 		try {
 			byte[] data = this.repository.get(id);
 			return data;
+		} catch (Exception e) {
+			throw new ServiceException(e);
+		}
+	}
+
+	@Override
+	public boolean remove(final String id) {
+		try {
+			boolean b = this.repository.remove(id);
+			return b;
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		}

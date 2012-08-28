@@ -4,10 +4,12 @@ import java.io.Serializable;
 
 public interface SearchSevice extends Serializable {
 
-	DocumentMetadata getMetadata(String id);
+	Item get(String id);
 
-	void save(DocumentMetadata document);
+	void remove(String id);
 
-	DocumentMetadata[] search(String filter, OrderBy[] orders, int maxResult);
+	void save(Item item);
+
+	Item[] search(String filter, OrderBy[] orders, int maxResult);
 
 }

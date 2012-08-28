@@ -8,12 +8,18 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import br.net.woodstock.rockframework.domain.service.Service;
+import br.net.woodstock.rockframework.security.digest.DigestType;
+import br.net.woodstock.rockframework.security.digest.impl.AsStringDigester;
+import br.net.woodstock.rockframework.security.digest.impl.Base64Digester;
+import br.net.woodstock.rockframework.security.digest.impl.BasicDigester;
 import br.net.woodstock.rockframework.util.Assert;
 import br.net.woodstock.rockframework.utils.IOUtils;
 
 public class FileSystemRepository implements Service {
 
 	private static final long	serialVersionUID	= -7290717732247236271L;
+
+	private AsStringDigester	digester			= new AsStringDigester(new Base64Digester(new BasicDigester(DigestType.SHA1)));
 
 	private File				root;
 
@@ -37,7 +43,8 @@ public class FileSystemRepository implements Service {
 	}
 
 	public byte[] get(final String id) throws IOException {
-		File file = new File(this.root, id);
+		String realId = this.parseId(id);
+		File file = new File(this.root, realId);
 		if (file.exists()) {
 			InputStream inputStream = null;
 			try {
@@ -55,11 +62,21 @@ public class FileSystemRepository implements Service {
 		return null;
 	}
 
+	public boolean remove(final String id) {
+		String realId = this.parseId(id);
+		File file = new File(this.root, realId);
+		if (file.exists()) {
+			return file.delete();
+		}
+		return false;
+	}
+
 	public void store(final String id, final byte[] data) throws IOException {
+		String realId = this.parseId(id);
 		File file = null;
 		OutputStream outputStream = null;
 		try {
-			file = new File(this.root, id);
+			file = new File(this.root, realId);
 			outputStream = new FileOutputStream(file);
 			outputStream.write(data);
 			outputStream.close();
@@ -74,4 +91,7 @@ public class FileSystemRepository implements Service {
 		}
 	}
 
+	private String parseId(final String id) {
+		return this.digester.digestAsString(id);
+	}
 }
