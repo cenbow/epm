@@ -13,18 +13,22 @@
 		<dependency>
 			<groupId>br.net.woodstock.rockframework</groupId>
 			<artifactId>rockframework-domain</artifactId>
+			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>br.net.woodstock.rockframework</groupId>
 			<artifactId>rockframework-persistence</artifactId>
+			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>br.net.woodstock.epm</groupId>
 			<artifactId>epm-api</artifactId>
+			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>br.net.woodstock.epm</groupId>
 			<artifactId>epm-process-api</artifactId>
+			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
@@ -37,18 +41,22 @@
 		<dependency>
 			<groupId>org.activiti</groupId>
 			<artifactId>activiti-engine</artifactId>
+			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.activiti</groupId>
 			<artifactId>activiti-osgi</artifactId>
+			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.activiti</groupId>
 			<artifactId>activiti-spring</artifactId>
+			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.codehaus.groovy</groupId>
 			<artifactId>groovy-all</artifactId>
+			<scope>compile</scope>
 		</dependency>
 	</dependencies>
 </project>

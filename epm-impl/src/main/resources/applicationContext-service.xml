@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+	
+	<bean id="ProcessService" class="br.net.woodstock.epm.process.activiti.ProcessServiceImpl">
+		<constructor-arg name="engine" ref="processEngine" />
+	</bean>
+	
+	<bean id="SearchService" class="br.net.woodstock.epm.search.lucene.LuceneSearchService">
+		<constructor-arg name="indexPath" value="/home/lourival/tmp/lucene" />
+	</bean>
+	
+	<bean id="StoreSevice" class="br.net.woodstock.epm.store.filesystem.FileSystemStoreService">
+		<constructor-arg name="storePath" value="/home/lourival/tmp/store" />
+	</bean>
+
+</beans>

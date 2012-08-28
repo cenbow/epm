@@ -52,7 +52,7 @@ public class ProcessServiceTest {
 		System.out.println("Deploy ID: " + id); // 110
 	}
 
-	// @Test
+	@Test
 	public void testListProcessByName() throws Exception {
 		Collection<ProcessDefinition> collection = this.service.listProcessByName("EPM Test Process");
 		for (ProcessDefinition process : collection) {
@@ -126,7 +126,7 @@ public class ProcessServiceTest {
 		}
 	}
 
-	@Test
+	// @Test
 	public void testImageProcess() throws Exception {
 		String[] keys = new String[] { "Test Lourival Sabino 2", "Test Lourival Sabino" };
 		for (String key : keys) {

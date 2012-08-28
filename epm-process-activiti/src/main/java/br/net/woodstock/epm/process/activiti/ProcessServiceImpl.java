@@ -22,25 +22,27 @@ import org.activiti.engine.repository.DeploymentQuery;
 import org.activiti.engine.repository.ProcessDefinitionQuery;
 import org.activiti.engine.runtime.ProcessInstanceQuery;
 import org.activiti.engine.task.TaskQuery;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import br.net.woodstock.epm.process.api.Form;
 import br.net.woodstock.epm.process.api.ProcessDefinition;
 import br.net.woodstock.epm.process.api.ProcessInstance;
 import br.net.woodstock.epm.process.api.ProcessService;
 import br.net.woodstock.epm.process.api.Task;
-import br.net.woodstock.rockframework.domain.jee.Service;
+import br.net.woodstock.rockframework.domain.service.Service;
 import br.net.woodstock.rockframework.domain.service.ServiceException;
 import br.net.woodstock.rockframework.utils.ConditionUtils;
 import br.net.woodstock.rockframework.utils.IOUtils;
 
-@Service
-public class ProcessServiceImpl implements ProcessService {
+public class ProcessServiceImpl implements ProcessService, Service {
 
 	private static final long	serialVersionUID	= -5930737454047853423L;
 
-	@Autowired(required = true)
 	private ProcessEngine		engine;
+
+	public ProcessServiceImpl(final ProcessEngine engine) {
+		super();
+		this.engine = engine;
+	}
 
 	// Deploy
 	@Override

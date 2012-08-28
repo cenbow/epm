@@ -12,11 +12,11 @@
 	<dependencies>
 		<dependency>
 			<groupId>br.net.woodstock.rockframework</groupId>
-			<artifactId>rockframework-domain</artifactId>
+			<artifactId>rockframework-core</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>br.net.woodstock.rockframework</groupId>
-			<artifactId>rockframework-persistence</artifactId>
+			<artifactId>rockframework-domain</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>br.net.woodstock.epm</groupId>
@@ -25,10 +25,6 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.lucene</groupId>
-			<artifactId>lucene-core</artifactId>
 		</dependency>
 	</dependencies>
 </project>

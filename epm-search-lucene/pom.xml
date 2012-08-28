@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>epm-search-lucene</artifactId>
 	<name>EPM Application - Search Implementation with Apache Lucene</name>
@@ -12,31 +13,42 @@
 	<dependencies>
 		<dependency>
 			<groupId>br.net.woodstock.rockframework</groupId>
+			<artifactId>rockframework-core</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>br.net.woodstock.rockframework</groupId>
 			<artifactId>rockframework-domain</artifactId>
+			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>br.net.woodstock.rockframework</groupId>
 			<artifactId>rockframework-persistence</artifactId>
+			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>br.net.woodstock.epm</groupId>
 			<artifactId>epm-api</artifactId>
+			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>br.net.woodstock.epm</groupId>
 			<artifactId>epm-search-api</artifactId>
+			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-core</artifactId>
+			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.lucene</groupId>
-			<artifactId>lucene-core</artifactId>
+			<artifactId>lucene-highlighter</artifactId>
+			<scope>compile</scope>
 		</dependency>
 	</dependencies>
 </project>

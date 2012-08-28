@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>epm-impl</artifactId>
 	<name>EPM Application - JEE 6 Implementation</name>
@@ -13,22 +14,119 @@
 		<dependency>
 			<groupId>br.net.woodstock.rockframework</groupId>
 			<artifactId>rockframework-core</artifactId>
+			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>br.net.woodstock.rockframework</groupId>
 			<artifactId>rockframework-domain</artifactId>
+			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>br.net.woodstock.rockframework</groupId>
 			<artifactId>rockframework-persistence</artifactId>
+			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>br.net.woodstock.epm</groupId>
 			<artifactId>epm-api</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>br.net.woodstock.epm</groupId>
+			<artifactId>epm-process-api</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>br.net.woodstock.epm</groupId>
+			<artifactId>epm-process-activiti</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>br.net.woodstock.epm</groupId>
+			<artifactId>epm-search-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>br.net.woodstock.epm</groupId>
+			<artifactId>epm-search-lucene</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>br.net.woodstock.epm</groupId>
+			<artifactId>epm-store-api</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>br.net.woodstock.epm</groupId>
+			<artifactId>epm-store-filesystem</artifactId>
+			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.antlr</groupId>
+			<artifactId>antlr</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.antlr</groupId>
+			<artifactId>antlr-runtime</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-aop</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-beans</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-tx</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+			<scope>compile</scope>
 		</dependency>
 	</dependencies>
 </project>
