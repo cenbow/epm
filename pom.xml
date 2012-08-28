@@ -17,11 +17,11 @@
 		<activiti.version>5.10</activiti.version>
 		<groovy.version>1.8.6</groovy.version>
 		<junit.version>4.10</junit.version>
-		<jdbc.mysql.version>5.1.19</jdbc.mysql.version>
+		<jdbc.mysql.version>5.1.21</jdbc.mysql.version>
 		<jdbc.pgsql.version>9.1-901-1.jdbc4</jdbc.pgsql.version>
 		<log4j.version>1.2.17</log4j.version>
 		<lucene.version>3.6.1</lucene.version>
-		<rockframework.version>2.0.5</rockframework.version>
+		<rockframework.version>2.0.6-SNAPSHOT</rockframework.version>
 		<slf4j.version>1.6.3</slf4j.version>
 		<spring.version>3.1.2.RELEASE</spring.version>
 		<!-- Plugins -->
@@ -244,6 +244,12 @@
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
+				<groupId>org.apache.lucene</groupId>
+				<artifactId>lucene-highlighter</artifactId>
+				<version>${lucene.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
 				<groupId>org.antlr</groupId>
 				<artifactId>antlr</artifactId>
 				<version>${antlr.version}</version>
@@ -313,6 +319,12 @@
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-web</artifactId>
 				<version>${spring.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>postgresql</groupId>
+				<artifactId>postgresql</artifactId>
+				<version>${jdbc.pgsql.version}</version>
 				<scope>provided</scope>
 			</dependency>
 		</dependencies>

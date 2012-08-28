@@ -1,6 +1,6 @@
-**.svn/
 **target/
-.classpath
-.project
-.settings/
-
+**.checkstyle
+**.classpath
+**.project
+**.settings/
+**.svn/
