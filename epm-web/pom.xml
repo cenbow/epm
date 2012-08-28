@@ -9,22 +9,6 @@
 		<relativePath>../</relativePath>
 		<version>1.0</version>
 	</parent>
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-war-plugin</artifactId>
-				<version>${plugin.war.version}</version>
-				<configuration>
-					<archive>
-						<manifestEntries>
-							<Dependencies>org.slf4j, javax.faces.api, com.sun.jsf-impl</Dependencies>
-						</manifestEntries>
-					</archive>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
 	<dependencies>
 		<dependency>
 			<groupId>br.net.woodstock.rockframework</groupId>

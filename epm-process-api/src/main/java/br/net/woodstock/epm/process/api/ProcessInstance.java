@@ -21,7 +21,7 @@ public class ProcessInstance implements Serializable {
 
 	private Date					end;
 
-	private Process					process;
+	private ProcessDefinition					process;
 
 	private Collection<Activity>	current;
 
@@ -81,11 +81,11 @@ public class ProcessInstance implements Serializable {
 		this.end = end;
 	}
 
-	public Process getProcess() {
+	public ProcessDefinition getProcess() {
 		return this.process;
 	}
 
-	public void setProcess(final Process process) {
+	public void setProcess(final ProcessDefinition process) {
 		this.process = process;
 	}
 

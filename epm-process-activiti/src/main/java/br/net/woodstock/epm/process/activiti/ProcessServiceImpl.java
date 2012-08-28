@@ -19,18 +19,17 @@ import org.activiti.engine.impl.persistence.entity.ProcessDefinitionEntity;
 import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.DeploymentBuilder;
 import org.activiti.engine.repository.DeploymentQuery;
-import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.repository.ProcessDefinitionQuery;
 import org.activiti.engine.runtime.ProcessInstanceQuery;
 import org.activiti.engine.task.TaskQuery;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import br.net.woodstock.epm.process.api.Form;
-import br.net.woodstock.epm.process.api.Process;
+import br.net.woodstock.epm.process.api.ProcessDefinition;
 import br.net.woodstock.epm.process.api.ProcessInstance;
 import br.net.woodstock.epm.process.api.ProcessService;
 import br.net.woodstock.epm.process.api.Task;
+import br.net.woodstock.rockframework.domain.jee.Service;
 import br.net.woodstock.rockframework.domain.service.ServiceException;
 import br.net.woodstock.rockframework.utils.ConditionUtils;
 import br.net.woodstock.rockframework.utils.IOUtils;
@@ -88,6 +87,16 @@ public class ProcessServiceImpl implements ProcessService {
 	public void delegateTask(final String taskId, final String userId) {
 		try {
 			this.engine.getTaskService().delegateTask(taskId, userId);
+		} catch (Exception e) {
+			throw new ServiceException(e);
+		}
+	}
+
+	// Execution
+	@Override
+	public void signalExecution(final String executionId) {
+		try {
+			this.engine.getRuntimeService().signal(executionId);
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		}
@@ -280,13 +289,29 @@ public class ProcessServiceImpl implements ProcessService {
 
 	// Process
 	@Override
-	public Process getProcessById(final String id) {
+	public ProcessDefinition getProcessById(final String id) {
 		try {
 			ProcessDefinitionQuery query = this.engine.getRepositoryService().createProcessDefinitionQuery();
 			query.processDefinitionId(id);
-			ProcessDefinition pd = query.singleResult();
+			org.activiti.engine.repository.ProcessDefinition pd = query.singleResult();
 			if (pd != null) {
-				return ConverterHelper.toProcess(pd);
+				return ConverterHelper.toProcessDefinition(pd);
+			}
+			return null;
+		} catch (Exception e) {
+			throw new ServiceException(e);
+		}
+	}
+
+	@Override
+	public ProcessDefinition getProcessByKey(final String key) {
+		try {
+			ProcessDefinitionQuery query = this.engine.getRepositoryService().createProcessDefinitionQuery();
+			query.processDefinitionKey(key);
+			query.latestVersion();
+			org.activiti.engine.repository.ProcessDefinition pd = query.singleResult();
+			if (pd != null) {
+				return ConverterHelper.toProcessDefinition(pd);
 			}
 			return null;
 		} catch (Exception e) {
@@ -315,17 +340,33 @@ public class ProcessServiceImpl implements ProcessService {
 	}
 
 	@Override
-	public Collection<Process> listProcessByName(final String name) {
+	public Collection<ProcessDefinition> listProcessByName(final String name) {
 		try {
 			ProcessDefinitionQuery query = this.engine.getRepositoryService().createProcessDefinitionQuery();
 			if (ConditionUtils.isNotEmpty(name)) {
 				String s = "%" + name + "%";
 				query.processDefinitionNameLike(s);
 			}
-			List<ProcessDefinition> list = query.list();
-			List<Process> result = new ArrayList<Process>();
-			for (ProcessDefinition definition : list) {
-				result.add(ConverterHelper.toProcess(definition));
+			List<org.activiti.engine.repository.ProcessDefinition> list = query.list();
+			List<ProcessDefinition> result = new ArrayList<ProcessDefinition>();
+			for (org.activiti.engine.repository.ProcessDefinition definition : list) {
+				result.add(ConverterHelper.toProcessDefinition(definition));
+			}
+			return result;
+		} catch (Exception e) {
+			throw new ServiceException(e);
+		}
+	}
+
+	@Override
+	public Collection<ProcessDefinition> listProcessByStartableUser(final String user) {
+		try {
+			ProcessDefinitionQuery query = this.engine.getRepositoryService().createProcessDefinitionQuery();
+			query.startableByUser(user);
+			List<org.activiti.engine.repository.ProcessDefinition> list = query.list();
+			List<ProcessDefinition> result = new ArrayList<ProcessDefinition>();
+			for (org.activiti.engine.repository.ProcessDefinition definition : list) {
+				result.add(ConverterHelper.toProcessDefinition(definition));
 			}
 			return result;
 		} catch (Exception e) {
@@ -338,6 +379,38 @@ public class ProcessServiceImpl implements ProcessService {
 		try {
 			TaskQuery query = this.engine.getTaskService().createTaskQuery();
 			query.taskAssignee(user);
+			List<org.activiti.engine.task.Task> list = query.list();
+			List<Task> result = new ArrayList<Task>();
+			for (org.activiti.engine.task.Task task : list) {
+				result.add(ConverterHelper.toTask(this.engine, task));
+			}
+			return result;
+		} catch (Exception e) {
+			throw new ServiceException(e);
+		}
+	}
+
+	@Override
+	public Collection<Task> listTasksByCandidateUser(final String user) {
+		try {
+			TaskQuery query = this.engine.getTaskService().createTaskQuery();
+			query.taskCandidateUser(user);
+			List<org.activiti.engine.task.Task> list = query.list();
+			List<Task> result = new ArrayList<Task>();
+			for (org.activiti.engine.task.Task task : list) {
+				result.add(ConverterHelper.toTask(this.engine, task));
+			}
+			return result;
+		} catch (Exception e) {
+			throw new ServiceException(e);
+		}
+	}
+
+	@Override
+	public Collection<Task> listTasksByCandidateGroup(final String group) {
+		try {
+			TaskQuery query = this.engine.getTaskService().createTaskQuery();
+			query.taskCandidateGroup(group);
 			List<org.activiti.engine.task.Task> list = query.list();
 			List<Task> result = new ArrayList<Task>();
 			for (org.activiti.engine.task.Task task : list) {

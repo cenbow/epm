@@ -2,7 +2,7 @@ package br.net.woodstock.epm.process.api;
 
 import java.io.Serializable;
 
-public class Process implements Serializable {
+public class ProcessDefinition implements Serializable {
 
 	private static final long	serialVersionUID	= -1763721657091463360L;
 

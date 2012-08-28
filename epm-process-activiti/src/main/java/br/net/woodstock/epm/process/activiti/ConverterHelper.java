@@ -12,7 +12,6 @@ import org.activiti.engine.form.TaskFormData;
 import org.activiti.engine.history.HistoricActivityInstance;
 import org.activiti.engine.history.HistoricActivityInstanceQuery;
 import org.activiti.engine.identity.UserQuery;
-import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.repository.ProcessDefinitionQuery;
 
 import br.net.woodstock.epm.api.User;
@@ -21,7 +20,7 @@ import br.net.woodstock.epm.process.api.DateFormField;
 import br.net.woodstock.epm.process.api.EnumFormField;
 import br.net.woodstock.epm.process.api.Form;
 import br.net.woodstock.epm.process.api.FormField;
-import br.net.woodstock.epm.process.api.Process;
+import br.net.woodstock.epm.process.api.ProcessDefinition;
 import br.net.woodstock.epm.process.api.ProcessInstance;
 import br.net.woodstock.epm.process.api.Task;
 import br.net.woodstock.rockframework.utils.ConditionUtils;
@@ -36,6 +35,7 @@ abstract class ConverterHelper {
 		//
 	}
 
+	@SuppressWarnings("unchecked")
 	public static Form toForm(final TaskFormData formData) {
 		if (formData == null) {
 			return null;
@@ -80,14 +80,14 @@ abstract class ConverterHelper {
 
 		ProcessDefinitionQuery processQuery = engine.getRepositoryService().createProcessDefinitionQuery();
 		processQuery.processDefinitionId(processDefinitionId);
-		ProcessDefinition processDefinition = processQuery.singleResult();
+		org.activiti.engine.repository.ProcessDefinition pd = processQuery.singleResult();
 
-		Process process = new Process();
-		process.setId(processDefinition.getId());
-		process.setName(processDefinition.getName());
-		process.setVersion(Integer.toString(processDefinition.getVersion()));
+		ProcessDefinition processDefinition = new ProcessDefinition();
+		processDefinition.setId(pd.getId());
+		processDefinition.setName(pd.getName());
+		processDefinition.setVersion(Integer.toString(pd.getVersion()));
 
-		instance.setProcess(process);
+		instance.setProcess(processDefinition);
 
 		HistoricActivityInstanceQuery activityInstanceQuery = engine.getHistoryService().createHistoricActivityInstanceQuery();
 		activityInstanceQuery.processInstanceId(instance.getId());
@@ -124,11 +124,11 @@ abstract class ConverterHelper {
 		}
 	}
 
-	public static Process toProcess(final ProcessDefinition definition) {
+	public static ProcessDefinition toProcessDefinition(final org.activiti.engine.repository.ProcessDefinition definition) {
 		if (definition == null) {
 			return null;
 		}
-		Process p = new Process();
+		ProcessDefinition p = new ProcessDefinition();
 		p.setId(definition.getId());
 		p.setName(definition.getName());
 		p.setVersion(Integer.toString(definition.getVersion()));

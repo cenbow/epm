@@ -1,6 +1,6 @@
 package br.net.woodstock.epm.api;
 
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 public abstract class EPMLog {
 
