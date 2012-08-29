@@ -1,5 +1,7 @@
 package br.net.woodstock.epm.process.activiti.test;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.util.Collection;
@@ -14,8 +16,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import br.net.woodstock.epm.process.api.Activity;
-import br.net.woodstock.epm.process.api.DateFormField;
-import br.net.woodstock.epm.process.api.EnumFormField;
+import br.net.woodstock.epm.process.api.DeploymentType;
 import br.net.woodstock.epm.process.api.Form;
 import br.net.woodstock.epm.process.api.FormField;
 import br.net.woodstock.epm.process.api.ProcessDefinition;
@@ -48,36 +49,64 @@ public class ProcessServiceTest {
 	public void testAdd() throws Exception {
 		InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("epm-process.bpmn");
 		byte[] bytes = IOUtils.toByteArray(inputStream);
-		String id = this.service.deploy("epm-process", "epm-process.bpmn20.xml", bytes, false);
+		String id = this.service.deploy("epm-process", bytes, DeploymentType.XML);
 		System.out.println("Deploy ID: " + id); // 110
 	}
 
-	@Test
-	public void testListProcessByName() throws Exception {
-		Collection<ProcessDefinition> collection = this.service.listProcessByName("EPM Test Process");
-		for (ProcessDefinition process : collection) {
-			System.out.println(process.getId() + " - " + process.getName() + "(" + process.getVersion() + ")");
-		}
-		collection = this.service.listProcessByName("EPM");
-		for (ProcessDefinition process : collection) {
-			System.out.println(process.getId() + " - " + process.getName() + "(" + process.getVersion() + ")");
+	// @Test
+	public void testAddSub() throws Exception {
+		String[] files = new String[] { "/tmp/sub-process.bpmn", "/tmp/main-process.bpmn" };
+		for (String file : files) {
+			File f = new File(file);
+			String name = f.getName().substring(0, f.getName().indexOf("."));
+			InputStream inputStream = new FileInputStream(f);
+			byte[] bytes = IOUtils.toByteArray(inputStream);
+			String id = this.service.deploy(name, bytes, DeploymentType.XML);
+			System.out.println("Deploy ID: " + id); // 110
+			inputStream.close();
 		}
 	}
 
 	// @Test
-	public void testStartProcess() throws Exception {
-		ProcessDefinition process = this.service.getProcessById("epmprocess:2:213");
-		if (process != null) {
-			Map<String, Object> parameters = new HashMap<String, Object>();
-			parameters.put("userId", "lourival.junior");
-			String id = this.service.startProccess(process.getId(), "Test Lourival Sabino 2", parameters);
-			System.out.println(id);
+	public void testListProcessByName() throws Exception {
+		Collection<ProcessDefinition> collection = this.service.listProcessByName(null);
+		for (ProcessDefinition process : collection) {
+			System.out.println(process.getId() + " - " + process.getName() + "(" + process.getVersion() + ")");
+		}
+		/*
+		 * collection = this.service.listProcessByName("proc"); for (ProcessDefinition process : collection) {
+		 * System.out.println(process.getId() + " - " + process.getName() + "(" + process.getVersion() + ")");
+		 * }
+		 */
+	}
+
+	// @Test
+	public void testProcessDefinition() throws Exception {
+		ProcessDefinition processDefinition = this.service.getProcessDefinitionByKey("main-process");
+		if (processDefinition != null) {
+			System.out.println(processDefinition.getId());
+			System.out.println(processDefinition.getKey());
+			System.out.println(processDefinition.getName());
+			System.out.println(processDefinition.getVersion());
 		} else {
 			System.out.println("Processo nao encontrado");
 		}
 	}
 
 	// @Test
+	public void testStartProcess() throws Exception {
+		ProcessDefinition processDefinition = this.service.getProcessDefinitionByKey("main-process");
+		if (processDefinition != null) {
+			Map<String, Object> parameters = new HashMap<String, Object>();
+			parameters.put("userId", "lourival.junior");
+			String id = this.service.startProccessById(processDefinition.getId(), "Test Lourival Sabino 2", parameters);
+			System.out.println(id);
+		} else {
+			System.out.println("Processo nao encontrado");
+		}
+	}
+
+	@Test
 	public void testInfoProcess() throws Exception {
 		ProcessInstance pi = this.service.getProccessInstanceByKey("Test Lourival Sabino 2");
 		System.out.println(pi.getId());
@@ -127,6 +156,27 @@ public class ProcessServiceTest {
 	}
 
 	// @Test
+	public void testListTasks() throws Exception {
+		Collection<Task> tasks = this.service.listTasksByProcessInstanceKey("Test Lourival Sabino 2");
+		System.out.println("====== TASKS =====");
+		for (Task task : tasks) {
+			System.out.println(task.getDescription());
+			System.out.println(task.getId());
+			System.out.println(task.getName());
+			System.out.println(task.getStatus());
+			System.out.println(task.getOwner());
+			System.out.println(task.getUser());
+			Form form = this.service.getForm(task.getId());
+			if (form != null) {
+				System.out.println(form.getId());
+				for (Entry<String, FormField> entry : form.getFields().entrySet()) {
+					System.out.println("\t" + entry.getKey() + " => " + entry.getValue().getId() + " => " + entry.getValue().getType());
+				}
+			}
+		}
+	}
+
+	// @Test
 	public void testImageProcess() throws Exception {
 		String[] keys = new String[] { "Test Lourival Sabino 2", "Test Lourival Sabino" };
 		for (String key : keys) {
@@ -140,7 +190,7 @@ public class ProcessServiceTest {
 
 	// @Test
 	public void testSetUserTask() throws Exception {
-		Collection<Task> tasks = this.service.listTasksByProcessInstanceId("310");
+		Collection<Task> tasks = this.service.listTasksByProcessInstanceKey("Test Lourival Sabino 2");
 		for (Task task : tasks) {
 			this.service.assignTask(task.getId(), "kermit");
 		}
@@ -170,35 +220,25 @@ public class ProcessServiceTest {
 	}
 
 	// @Test
-	public void testGetUserTaskForm() throws Exception {
-		Form form = this.service.getForm("314");
-		if (form != null) {
-			System.out.println(form.getId());
-			for (Entry<String, FormField> entry : form.getFields().entrySet()) {
-				System.out.println("\t" + entry.getKey() + " => " + entry.getValue().getId() + " => " + entry.getValue().getType());
-			}
-		}
+	public void testSetUserTaskForm() throws Exception {
+		Collection<Task> tasks = this.service.listTasksByProcessInstanceKey("Test Lourival Sabino 2");
+		Task task = tasks.iterator().next();
+		Form form = this.service.getForm(task.getId());
+		form.getField("telefone").setValue("1");
+		form.getField("nome").setValue("1");
+		form.getField("endereco").setValue("123456");
+		System.out.println("Definindo o Form");
+		this.service.submitForm(task.getId(), form);
 	}
 
 	// @Test
-	public void testSetUserTaskForm() throws Exception {
-		Form form = this.service.getForm("314");
-		form.getField("id").setValue("1");
-		form.getField("name").setValue("1");
-		form.getField("password").setValue("123456");
-		if (form.getField("birthday") instanceof DateFormField) {
-			DateFormField dff = (DateFormField) form.getField("birthday");
-			System.out.println(dff.getPattern());
-			dff.setValue("27/09/1999");
-		}
-		if (form.getField("status") instanceof EnumFormField) {
-			EnumFormField eff = (EnumFormField) form.getField("status");
-			System.out.println(eff.getValues());
-			form.getField("status").setValue("active");
-		}
-
-		System.out.println("Definindo o Form");
-		this.service.submitForm("314", form);
+	public void testGetUserTaskForm() throws Exception {
+		Collection<Task> tasks = this.service.listTasksByProcessInstanceKey("Test Lourival Sabino 2");
+		Task task = tasks.iterator().next();
+		Form form = this.service.getForm(task.getId());
+		System.out.println(form.getField("telefone").getValue());
+		System.out.println(form.getField("nome").getValue());
+		System.out.println(form.getField("endereco").getValue());
 	}
 
 }

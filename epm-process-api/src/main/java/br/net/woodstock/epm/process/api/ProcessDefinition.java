@@ -8,6 +8,8 @@ public class ProcessDefinition implements Serializable {
 
 	private String				id;
 
+	private String				key;
+
 	private String				name;
 
 	private String				version;
@@ -18,6 +20,14 @@ public class ProcessDefinition implements Serializable {
 
 	public void setId(final String id) {
 		this.id = id;
+	}
+
+	public String getKey() {
+		return this.key;
+	}
+
+	public void setKey(final String key) {
+		this.key = key;
 	}
 
 	public String getName() {

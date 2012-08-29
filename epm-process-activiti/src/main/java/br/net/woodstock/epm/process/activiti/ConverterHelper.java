@@ -182,6 +182,7 @@ abstract class ConverterHelper {
 		}
 		ProcessDefinition p = new ProcessDefinition();
 		p.setId(definition.getId());
+		p.setKey(definition.getKey());
 		p.setName(definition.getName());
 		p.setVersion(Integer.toString(definition.getVersion()));
 		return p;

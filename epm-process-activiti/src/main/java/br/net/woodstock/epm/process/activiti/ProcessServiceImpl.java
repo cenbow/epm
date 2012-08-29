@@ -23,6 +23,7 @@ import org.activiti.engine.repository.ProcessDefinitionQuery;
 import org.activiti.engine.runtime.ProcessInstanceQuery;
 import org.activiti.engine.task.TaskQuery;
 
+import br.net.woodstock.epm.process.api.DeploymentType;
 import br.net.woodstock.epm.process.api.Form;
 import br.net.woodstock.epm.process.api.ProcessDefinition;
 import br.net.woodstock.epm.process.api.ProcessInstance;
@@ -37,6 +38,8 @@ public class ProcessServiceImpl implements ProcessService, Service {
 
 	private static final long	serialVersionUID	= -5930737454047853423L;
 
+	private static final String	XML_SUFFIX			= ".bpmn20.xml";
+
 	private ProcessEngine		engine;
 
 	public ProcessServiceImpl(final ProcessEngine engine) {
@@ -46,17 +49,17 @@ public class ProcessServiceImpl implements ProcessService, Service {
 
 	// Deploy
 	@Override
-	public String deploy(final String processName, final String deploymentName, final byte[] data, final boolean zip) {
+	public String deploy(final String processName, final byte[] data, final DeploymentType type) {
 		try {
 			InputStream inputStream = new ByteArrayInputStream(data);
 			DeploymentBuilder builder = this.engine.getRepositoryService().createDeployment();
 			builder.name(processName);
 
-			if (zip) {
+			if (type.equals(DeploymentType.ZIP)) {
 				ZipInputStream zipInputStream = new ZipInputStream(inputStream);
 				builder.addZipInputStream(zipInputStream);
-			} else {
-				builder.addInputStream(deploymentName, inputStream);
+			} else if (type.equals(DeploymentType.XML)) {
+				builder.addInputStream(processName + ProcessServiceImpl.XML_SUFFIX, inputStream);
 			}
 
 			Deployment deployment = builder.deploy();
@@ -127,9 +130,9 @@ public class ProcessServiceImpl implements ProcessService, Service {
 
 	// Instance
 	@Override
-	public String startProccess(final String processId, final String key, final Map<String, Object> parameters) {
+	public String startProccessById(final String processId, final String instanceKey, final Map<String, Object> parameters) {
 		try {
-			org.activiti.engine.runtime.ProcessInstance instance = this.engine.getRuntimeService().startProcessInstanceById(processId, key, parameters);
+			org.activiti.engine.runtime.ProcessInstance instance = this.engine.getRuntimeService().startProcessInstanceById(processId, instanceKey, parameters);
 			return instance.getId();
 		} catch (Exception e) {
 			throw new ServiceException(e);
@@ -281,7 +284,7 @@ public class ProcessServiceImpl implements ProcessService, Service {
 
 	// Process
 	@Override
-	public ProcessDefinition getProcessById(final String id) {
+	public ProcessDefinition getProcessDefinitionById(final String id) {
 		try {
 			ProcessDefinitionQuery query = this.engine.getRepositoryService().createProcessDefinitionQuery();
 			query.processDefinitionId(id);
@@ -296,7 +299,7 @@ public class ProcessServiceImpl implements ProcessService, Service {
 	}
 
 	@Override
-	public ProcessDefinition getProcessByKey(final String key) {
+	public ProcessDefinition getProcessDefinitionByKey(final String key) {
 		try {
 			ProcessDefinitionQuery query = this.engine.getRepositoryService().createProcessDefinitionQuery();
 			query.processDefinitionKey(key);
@@ -434,7 +437,7 @@ public class ProcessServiceImpl implements ProcessService, Service {
 	public Collection<Task> listTasksByProcessInstanceKey(final String key) {
 		try {
 			TaskQuery query = this.engine.getTaskService().createTaskQuery();
-			query.processInstanceId(key);
+			query.processInstanceBusinessKey(key);
 			List<org.activiti.engine.task.Task> list = query.list();
 			List<Task> result = new ArrayList<Task>();
 			for (org.activiti.engine.task.Task task : list) {
