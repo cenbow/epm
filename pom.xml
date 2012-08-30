@@ -25,6 +25,7 @@
 		<rockframework.version>2.0.6-SNAPSHOT</rockframework.version>
 		<slf4j.version>1.6.3</slf4j.version>
 		<spring.version>3.1.2.RELEASE</spring.version>
+		<tika.version>1.2</tika.version>
 		<!-- Plugins -->
 		<plugin.compiler.version>2.3.2</plugin.compiler.version>
 		<plugin.jar.version>2.3.2</plugin.jar.version>
@@ -236,6 +237,18 @@
 				<groupId>org.apache.lucene</groupId>
 				<artifactId>lucene-highlighter</artifactId>
 				<version>${lucene.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.tika</groupId>
+				<artifactId>tika-core</artifactId>
+				<version>${tika.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.tika</groupId>
+				<artifactId>tika-parsers</artifactId>
+				<version>${tika.version}</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>

@@ -1,20 +1,14 @@
 package br.net.woodstock.epm.process.activiti;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.form.FormType;
 import org.activiti.engine.form.TaskFormData;
 import org.activiti.engine.history.HistoricActivityInstance;
-import org.activiti.engine.history.HistoricActivityInstanceQuery;
 import org.activiti.engine.history.HistoricProcessInstance;
-import org.activiti.engine.identity.UserQuery;
-import org.activiti.engine.repository.ProcessDefinitionQuery;
-import org.activiti.engine.runtime.ProcessInstanceQuery;
 
 import br.net.woodstock.epm.api.User;
 import br.net.woodstock.epm.process.api.Activity;
@@ -26,7 +20,6 @@ import br.net.woodstock.epm.process.api.Group;
 import br.net.woodstock.epm.process.api.ProcessDefinition;
 import br.net.woodstock.epm.process.api.ProcessInstance;
 import br.net.woodstock.epm.process.api.Task;
-import br.net.woodstock.rockframework.utils.ConditionUtils;
 
 abstract class ConverterHelper {
 
@@ -36,6 +29,21 @@ abstract class ConverterHelper {
 
 	private ConverterHelper() {
 		//
+	}
+
+	public static Activity toActivity(final HistoricActivityInstance activity) {
+		if (activity == null) {
+			return null;
+		}
+		Activity a = new Activity();
+
+		a.setEnd(activity.getEndTime());
+		a.setId(activity.getId());
+		a.setName(activity.getActivityName());
+		a.setType(activity.getActivityType());
+		a.setStart(activity.getStartTime());
+
+		return a;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -74,70 +82,6 @@ abstract class ConverterHelper {
 			f.getFields().put(ff.getId(), ff);
 		}
 		return f;
-	}
-
-	public static void completeProcessInstance(final ProcessEngine engine, final ProcessInstance instance, final String processDefinitionId) {
-		if (instance == null) {
-			return;
-		}
-
-		// Parent Process
-		if (!instance.isFinished()) {
-			ProcessInstanceQuery processInstanceQuery = engine.getRuntimeService().createProcessInstanceQuery();
-			processInstanceQuery.subProcessInstanceId(instance.getId());
-			org.activiti.engine.runtime.ProcessInstance pi = processInstanceQuery.singleResult();
-
-			if (pi != null) {
-				ProcessInstance parentProcessInstance = ConverterHelper.toProcessInstance(pi);
-				ConverterHelper.completeProcessInstance(engine, parentProcessInstance, pi.getProcessDefinitionId());
-			}
-		}
-
-		// Definition
-		ProcessDefinitionQuery processDefinitionQuery = engine.getRepositoryService().createProcessDefinitionQuery();
-		processDefinitionQuery.processDefinitionId(processDefinitionId);
-		org.activiti.engine.repository.ProcessDefinition pd = processDefinitionQuery.singleResult();
-
-		ProcessDefinition processDefinition = new ProcessDefinition();
-		processDefinition.setId(pd.getId());
-		processDefinition.setName(pd.getName());
-		processDefinition.setVersion(Integer.toString(pd.getVersion()));
-
-		instance.setProcessDefinition(processDefinition);
-
-		HistoricActivityInstanceQuery activityInstanceQuery = engine.getHistoryService().createHistoricActivityInstanceQuery();
-		activityInstanceQuery.processInstanceId(instance.getId());
-		List<HistoricActivityInstance> activityList = activityInstanceQuery.list();
-
-		if (ConditionUtils.isNotEmpty(activityList)) {
-			for (HistoricActivityInstance activityInstance : activityList) {
-
-				Activity a = new Activity();
-
-				a.setEnd(activityInstance.getEndTime());
-				a.setId(activityInstance.getId());
-				a.setName(activityInstance.getActivityName());
-				a.setType(activityInstance.getActivityType());
-				a.setStart(activityInstance.getStartTime());
-
-				if (ConditionUtils.isNotEmpty(activityInstance.getExecutionId())) {
-					engine.getRuntimeService().createExecutionQuery();
-				}
-
-				if (ConditionUtils.isNotEmpty(activityInstance.getAssignee())) {
-					UserQuery userQuery = engine.getIdentityService().createUserQuery();
-					userQuery.userId(activityInstance.getAssignee());
-					org.activiti.engine.identity.User user = userQuery.singleResult();
-					a.setUser(ConverterHelper.toUser(user));
-				}
-
-				if (activityInstance.getEndTime() != null) {
-					instance.getHistory().add(a);
-				} else {
-					instance.getCurrent().add(a);
-				}
-			}
-		}
 	}
 
 	public static Group toGroup(final org.activiti.engine.identity.Group group) {
@@ -188,7 +132,7 @@ abstract class ConverterHelper {
 		return p;
 	}
 
-	public static Task toTask(final ProcessEngine engine, final org.activiti.engine.task.Task task) {
+	public static Task toTask(final org.activiti.engine.task.Task task) {
 		if (task == null) {
 			return null;
 		}
@@ -197,19 +141,6 @@ abstract class ConverterHelper {
 		t.setId(task.getId());
 		t.setName(task.getName());
 		t.setStatus(ConverterHelper.toString(task.getDelegationState()));
-
-		if (ConditionUtils.isNotEmpty(task.getAssignee())) {
-			UserQuery userQuery = engine.getIdentityService().createUserQuery();
-			userQuery.userId(task.getAssignee());
-			org.activiti.engine.identity.User user = userQuery.singleResult();
-			t.setUser(ConverterHelper.toUser(user));
-		}
-		if (ConditionUtils.isNotEmpty(task.getOwner())) {
-			UserQuery userQuery = engine.getIdentityService().createUserQuery();
-			userQuery.userId(task.getOwner());
-			org.activiti.engine.identity.User user = userQuery.singleResult();
-			t.setOwner(ConverterHelper.toUser(user));
-		}
 		return t;
 	}
 

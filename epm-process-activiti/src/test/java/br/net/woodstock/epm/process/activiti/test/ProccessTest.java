@@ -81,7 +81,7 @@ public class ProccessTest {
 		System.out.println("BK : " + instance.getBusinessKey());
 	}
 
-	@Test
+	// @Test
 	public void testView() throws Exception {
 		String id = "310";
 		HistoricActivityInstanceQuery query = this.engine.getHistoryService().createHistoricActivityInstanceQuery();
@@ -155,5 +155,29 @@ public class ProccessTest {
 		this.engine.getTaskService().delegateTask(taskId, userId);
 		this.engine.getTaskService().claim(taskId, userId);
 		this.engine.getTaskService().complete(taskId);
+	}
+	
+	public void testSearch() throws Exception {
+		String id = "310";
+		HistoricActivityInstanceQuery query = this.engine.getHistoryService().createHistoricActivityInstanceQuery();
+		query.processInstanceId(id);
+		List<HistoricActivityInstance> list = query.list();
+		for (HistoricActivityInstance instance : list) {
+			System.out.println("Assignee: " + instance.getAssignee());
+			System.out.println("Assignee: " + instance.getExecutionId());
+			System.out.println("Act ID  : " + instance.getActivityId());
+			System.out.println("Act Name: " + instance.getActivityName());
+			System.out.println("Act Type: " + instance.getActivityType());
+			System.out.println("Start   : " + instance.getStartTime());
+			System.out.println("End     : " + instance.getEndTime());
+
+			// ProcessDefinitionEntity entity = new ProcessDefinitionEntity();
+			// entity.setId(instance.getProcessInstanceId());
+
+			// InputStream png = ProcessDiagramGenerator.generatePngDiagram(entity);
+			// FileOutputStream outputStream = new FileOutputStream("/tmp/310.png");
+			// IOUtils.copy(png, outputStream);
+			// outputStream.close();
+		}
 	}
 }

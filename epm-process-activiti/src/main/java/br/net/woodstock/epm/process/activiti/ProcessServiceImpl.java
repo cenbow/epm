@@ -142,39 +142,8 @@ public class ProcessServiceImpl implements ProcessService, Service {
 	@Override
 	public ProcessInstance getProccessInstanceById(final String id) {
 		try {
-			ProcessInstanceQuery query = this.engine.getRuntimeService().createProcessInstanceQuery();
-			query.processInstanceId(id);
-			org.activiti.engine.runtime.ProcessInstance instance = query.singleResult();
-			if (instance != null) {
-				ProcessInstance pi = ConverterHelper.toProcessInstance(instance);
-
-				ConverterHelper.completeProcessInstance(this.engine, pi, instance.getProcessDefinitionId());
-
-				return pi;
-			}
-
-			HistoricProcessInstanceQuery hQuery = this.engine.getHistoryService().createHistoricProcessInstanceQuery();
-			query.processInstanceId(id);
-			List<HistoricProcessInstance> list = hQuery.list();
-			if (list.size() > 0) {
-				HistoricProcessInstance hpi = null;
-				for (HistoricProcessInstance tmp : list) {
-					if (tmp.getId().equals(id)) {
-						hpi = tmp;
-						break;
-					}
-				}
-
-				if (hpi != null) {
-					ProcessInstance pi = ConverterHelper.toProcessInstance(hpi);
-
-					ConverterHelper.completeProcessInstance(this.engine, pi, hpi.getProcessDefinitionId());
-
-					return pi;
-				}
-			}
-
-			return null;
+			ProcessInstance instance = ProcessServiceHelper.getProcessInstance(this.engine, id, null);
+			return instance;
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		}
@@ -183,49 +152,8 @@ public class ProcessServiceImpl implements ProcessService, Service {
 	@Override
 	public ProcessInstance getProccessInstanceByKey(final String key) {
 		try {
-			ProcessInstanceQuery query = this.engine.getRuntimeService().createProcessInstanceQuery();
-			query.processInstanceBusinessKey(key);
-			org.activiti.engine.runtime.ProcessInstance instance = query.singleResult();
-			if (instance != null) {
-				ProcessInstance pi = new ProcessInstance();
-				pi.setFinished(instance.isEnded());
-				pi.setId(instance.getId());
-				pi.setKey(instance.getBusinessKey());
-				pi.setSuspended(instance.isSuspended());
-
-				ConverterHelper.completeProcessInstance(this.engine, pi, instance.getProcessDefinitionId());
-
-				return pi;
-			}
-
-			HistoricProcessInstanceQuery hQuery = this.engine.getHistoryService().createHistoricProcessInstanceQuery();
-			query.processInstanceBusinessKey(key);
-			List<HistoricProcessInstance> list = hQuery.list();
-			if (list.size() > 0) {
-				HistoricProcessInstance hpi = null;
-				for (HistoricProcessInstance tmp : list) {
-					if (tmp.getBusinessKey().equals(key)) {
-						hpi = tmp;
-						break;
-					}
-				}
-
-				if (hpi != null) {
-					ProcessInstance pi = new ProcessInstance();
-					pi.setEnd(hpi.getEndTime());
-					pi.setFinished(true);
-					pi.setId(hpi.getId());
-					pi.setKey(hpi.getBusinessKey());
-					pi.setStart(hpi.getStartTime());
-					pi.setSuspended(false);
-
-					ConverterHelper.completeProcessInstance(this.engine, pi, hpi.getProcessDefinitionId());
-
-					return pi;
-				}
-			}
-
-			return null;
+			ProcessInstance instance = ProcessServiceHelper.getProcessInstance(this.engine, null, key);
+			return instance;
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		}
@@ -377,7 +305,9 @@ public class ProcessServiceImpl implements ProcessService, Service {
 			List<org.activiti.engine.task.Task> list = query.list();
 			List<Task> result = new ArrayList<Task>();
 			for (org.activiti.engine.task.Task task : list) {
-				result.add(ConverterHelper.toTask(this.engine, task));
+				Task t = ConverterHelper.toTask(task);
+				ProcessServiceHelper.completeTask(this.engine, t);
+				result.add(t);
 			}
 			return result;
 		} catch (Exception e) {
@@ -393,7 +323,9 @@ public class ProcessServiceImpl implements ProcessService, Service {
 			List<org.activiti.engine.task.Task> list = query.list();
 			List<Task> result = new ArrayList<Task>();
 			for (org.activiti.engine.task.Task task : list) {
-				result.add(ConverterHelper.toTask(this.engine, task));
+				Task t = ConverterHelper.toTask(task);
+				ProcessServiceHelper.completeTask(this.engine, t);
+				result.add(t);
 			}
 			return result;
 		} catch (Exception e) {
@@ -409,7 +341,9 @@ public class ProcessServiceImpl implements ProcessService, Service {
 			List<org.activiti.engine.task.Task> list = query.list();
 			List<Task> result = new ArrayList<Task>();
 			for (org.activiti.engine.task.Task task : list) {
-				result.add(ConverterHelper.toTask(this.engine, task));
+				Task t = ConverterHelper.toTask(task);
+				ProcessServiceHelper.completeTask(this.engine, t);
+				result.add(t);
 			}
 			return result;
 		} catch (Exception e) {
@@ -425,7 +359,9 @@ public class ProcessServiceImpl implements ProcessService, Service {
 			List<org.activiti.engine.task.Task> list = query.list();
 			List<Task> result = new ArrayList<Task>();
 			for (org.activiti.engine.task.Task task : list) {
-				result.add(ConverterHelper.toTask(this.engine, task));
+				Task t = ConverterHelper.toTask(task);
+				ProcessServiceHelper.completeTask(this.engine, t);
+				result.add(t);
 			}
 			return result;
 		} catch (Exception e) {
@@ -441,7 +377,9 @@ public class ProcessServiceImpl implements ProcessService, Service {
 			List<org.activiti.engine.task.Task> list = query.list();
 			List<Task> result = new ArrayList<Task>();
 			for (org.activiti.engine.task.Task task : list) {
-				result.add(ConverterHelper.toTask(this.engine, task));
+				Task t = ConverterHelper.toTask(task);
+				ProcessServiceHelper.completeTask(this.engine, t);
+				result.add(t);
 			}
 			return result;
 		} catch (Exception e) {

@@ -23,6 +23,7 @@ import br.net.woodstock.epm.process.api.ProcessDefinition;
 import br.net.woodstock.epm.process.api.ProcessInstance;
 import br.net.woodstock.epm.process.api.ProcessService;
 import br.net.woodstock.epm.process.api.Task;
+import br.net.woodstock.rockframework.utils.ConditionUtils;
 import br.net.woodstock.rockframework.utils.IOUtils;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -55,7 +56,8 @@ public class ProcessServiceTest {
 
 	// @Test
 	public void testAddSub() throws Exception {
-		String[] files = new String[] { "/tmp/sub-process.bpmn", "/tmp/main-process.bpmn" };
+		// String[] files = new String[] { "/tmp/sub-process.bpmn", "/tmp/main-process.bpmn" };
+		String[] files = new String[] { "/tmp/sub-process.bpmn" };
 		for (String file : files) {
 			File f = new File(file);
 			String name = f.getName().substring(0, f.getName().indexOf("."));
@@ -99,7 +101,7 @@ public class ProcessServiceTest {
 		if (processDefinition != null) {
 			Map<String, Object> parameters = new HashMap<String, Object>();
 			parameters.put("userId", "lourival.junior");
-			String id = this.service.startProccessById(processDefinition.getId(), "Test Lourival Sabino 2", parameters);
+			String id = this.service.startProccessById(processDefinition.getId(), "Test Lourival Sabino 3", parameters);
 			System.out.println(id);
 		} else {
 			System.out.println("Processo nao encontrado");
@@ -108,51 +110,8 @@ public class ProcessServiceTest {
 
 	@Test
 	public void testInfoProcess() throws Exception {
-		ProcessInstance pi = this.service.getProccessInstanceByKey("Test Lourival Sabino 2");
-		System.out.println(pi.getId());
-		System.out.println(pi.getKey());
-		System.out.println(pi.isFinished());
-		System.out.println(pi.isSuspended());
-		if (pi.getProcessDefinition() != null) {
-			System.out.println("\tProcess...");
-			System.out.println("\t\t" + pi.getProcessDefinition().getId());
-			System.out.println("\t\t" + pi.getProcessDefinition().getName());
-			System.out.println("\t\t" + pi.getProcessDefinition().getVersion());
-		}
-		System.out.println("\tHistory");
-		for (Activity a : pi.getHistory()) {
-			System.out.println("\tActivity...");
-			System.out.println("\t\t" + a.getId());
-			System.out.println("\t\t" + a.getName());
-			System.out.println("\t\t" + a.getType());
-			System.out.println("\t\t" + a.getStart());
-			System.out.println("\t\t" + a.getEnd());
-			System.out.println("\t\t" + a.getUser());
-
-			if (a.getUser() != null) {
-				System.out.println("\t\tUser...");
-				System.out.println("\t\t\t" + a.getUser().getEmail());
-				System.out.println("\t\t\t" + a.getUser().getId());
-				System.out.println("\t\t\t" + a.getUser().getName());
-			}
-		}
-		System.out.println("\tCurrent");
-		for (Activity a : pi.getCurrent()) {
-			System.out.println("\tActivity...");
-			System.out.println("\t\t" + a.getId());
-			System.out.println("\t\t" + a.getName());
-			System.out.println("\t\t" + a.getType());
-			System.out.println("\t\t" + a.getStart());
-			System.out.println("\t\t" + a.getEnd());
-			System.out.println("\t\t" + a.getUser());
-
-			if (a.getUser() != null) {
-				System.out.println("\t\tUser...");
-				System.out.println("\t\t\t" + a.getUser().getEmail());
-				System.out.println("\t\t\t" + a.getUser().getId());
-				System.out.println("\t\t\t" + a.getUser().getName());
-			}
-		}
+		ProcessInstance pi = this.service.getProccessInstanceByKey("Test Lourival Sabino 3");
+		this.print(pi, "");
 	}
 
 	// @Test
@@ -178,13 +137,15 @@ public class ProcessServiceTest {
 
 	// @Test
 	public void testImageProcess() throws Exception {
-		String[] keys = new String[] { "Test Lourival Sabino 2", "Test Lourival Sabino" };
+		String[] keys = new String[] { "Test Lourival Sabino 3", "Test Lourival Sabino" };
 		for (String key : keys) {
 			ProcessInstance pi = this.service.getProccessInstanceByKey(key);
-			FileOutputStream fileOutputStream = new FileOutputStream("/tmp/" + pi.getKey() + ".png");
-			byte[] image = this.service.getProcessInstanceImageById(pi.getId());
-			fileOutputStream.write(image);
-			fileOutputStream.close();
+			if (pi != null) {
+				FileOutputStream fileOutputStream = new FileOutputStream("/tmp/" + pi.getKey() + ".png");
+				byte[] image = this.service.getProcessInstanceImageById(pi.getId());
+				fileOutputStream.write(image);
+				fileOutputStream.close();
+			}
 		}
 	}
 
@@ -221,7 +182,7 @@ public class ProcessServiceTest {
 
 	// @Test
 	public void testSetUserTaskForm() throws Exception {
-		Collection<Task> tasks = this.service.listTasksByProcessInstanceKey("Test Lourival Sabino 2");
+		Collection<Task> tasks = this.service.listTasksByProcessInstanceKey("Test Lourival Sabino 3");
 		Task task = tasks.iterator().next();
 		Form form = this.service.getForm(task.getId());
 		form.getField("telefone").setValue("1");
@@ -239,6 +200,65 @@ public class ProcessServiceTest {
 		System.out.println(form.getField("telefone").getValue());
 		System.out.println(form.getField("nome").getValue());
 		System.out.println(form.getField("endereco").getValue());
+	}
+
+	private void print(final ProcessInstance pi, final String tabs) throws Exception {
+		if (pi != null) {
+			System.out.println(tabs + "\t" + pi.getId());
+			System.out.println(tabs + "\t" + pi.getKey());
+			System.out.println(tabs + "\t" + pi.isFinished());
+			System.out.println(tabs + "\t" + pi.isSuspended());
+			if (pi.getProcessDefinition() != null) {
+				System.out.println(tabs + "\tDefinition...");
+				System.out.println(tabs + "\t\t" + pi.getProcessDefinition().getId());
+				System.out.println(tabs + "\t\t" + pi.getProcessDefinition().getName());
+				System.out.println(tabs + "\t\t" + pi.getProcessDefinition().getVersion());
+			}
+			if ((tabs.length() == 0) && (pi.getParentProcessInstance() != null)) {
+				System.out.println(tabs + "\tParent...");
+				this.print(pi.getParentProcessInstance(), tabs + "\t");
+			}
+			System.out.println(tabs + "\tHistory");
+			for (Activity a : pi.getHistory()) {
+				System.out.println(tabs + "\t\tActivity...");
+				System.out.println(tabs + "\t\t\t" + a.getId());
+				System.out.println(tabs + "\t\t\t" + a.getName());
+				System.out.println(tabs + "\t\t\t" + a.getType());
+				System.out.println(tabs + "\t\t\t" + a.getStart());
+				System.out.println(tabs + "\t\t\t" + a.getEnd());
+				System.out.println(tabs + "\t\t\t" + a.getUser());
+
+				if (a.getUser() != null) {
+					System.out.println(tabs + "\t\tUser...");
+					System.out.println(tabs + "\t\t\t\t" + a.getUser().getEmail());
+					System.out.println(tabs + "\t\t\t\t" + a.getUser().getId());
+					System.out.println(tabs + "\t\t\t\t" + a.getUser().getName());
+				}
+			}
+			System.out.println(tabs + "\tCurrent");
+			for (Activity a : pi.getCurrent()) {
+				System.out.println(tabs + "\t\tActivity...");
+				System.out.println(tabs + "\t\t\t" + a.getId());
+				System.out.println(tabs + "\t\t\t" + a.getName());
+				System.out.println(tabs + "\t\t\t" + a.getType());
+				System.out.println(tabs + "\t\t\t" + a.getStart());
+				System.out.println(tabs + "\t\t\t" + a.getEnd());
+				System.out.println(tabs + "\t\t\t" + a.getUser());
+
+				if (a.getUser() != null) {
+					System.out.println(tabs + "\t\t\tUser...");
+					System.out.println(tabs + "\t\t\t\t" + a.getUser().getEmail());
+					System.out.println(tabs + "\t\t\t\t" + a.getUser().getId());
+					System.out.println(tabs + "\t\t\t\t" + a.getUser().getName());
+				}
+			}
+			if (ConditionUtils.isNotEmpty(pi.getSubProcess())) {
+				System.out.println(tabs + "\tSubProcess...");
+				for (ProcessInstance sub : pi.getSubProcess()) {
+					this.print(sub, tabs + "\t");
+				}
+			}
+		}
 	}
 
 }

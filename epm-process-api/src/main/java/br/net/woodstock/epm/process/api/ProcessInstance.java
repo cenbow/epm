@@ -7,32 +7,35 @@ import java.util.Date;
 
 public class ProcessInstance implements Serializable {
 
-	private static final long		serialVersionUID	= 8874015973197883393L;
+	private static final long			serialVersionUID	= 8874015973197883393L;
 
-	private String					id;
+	private String						id;
 
-	private String					key;
+	private String						key;
 
-	private boolean					suspended;
+	private boolean						suspended;
 
-	private boolean					finished;
+	private boolean						finished;
 
-	private Date					start;
+	private Date						start;
 
-	private Date					end;
+	private Date						end;
 
-	private ProcessDefinition		processDefinition;
+	private ProcessDefinition			processDefinition;
 
-	private ProcessInstance			parentProcessInstance;
+	private ProcessInstance				parentProcessInstance;
 
-	private Collection<Activity>	current;
+	private Collection<Activity>		current;
 
-	private Collection<Activity>	history;
+	private Collection<Activity>		history;
+
+	private Collection<ProcessInstance>	subProcess;
 
 	public ProcessInstance() {
 		super();
 		this.current = new ArrayList<Activity>();
 		this.history = new ArrayList<Activity>();
+		this.subProcess = new ArrayList<ProcessInstance>();
 	}
 
 	public String getId() {
@@ -113,6 +116,14 @@ public class ProcessInstance implements Serializable {
 
 	public void setHistory(final Collection<Activity> history) {
 		this.history = history;
+	}
+
+	public Collection<ProcessInstance> getSubProcess() {
+		return this.subProcess;
+	}
+
+	public void setSubProcess(final Collection<ProcessInstance> subProcess) {
+		this.subProcess = subProcess;
 	}
 
 	@Override
