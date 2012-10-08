@@ -1,12 +1,10 @@
 package br.net.woodstock.epm.api;
 
-import java.util.Set;
-
 import br.net.woodstock.rockframework.domain.Pojo;
 
-public class Role implements Pojo {
+public class Resource implements Pojo {
 
-	private static final long	serialVersionUID	= -1932408409262519409L;
+	private static final long	serialVersionUID	= 9189241373976036057L;
 
 	private String				id;
 
@@ -14,13 +12,11 @@ public class Role implements Pojo {
 
 	private Boolean				active;
 
-	private Set<Resource>		resources;
-
-	public Role() {
+	public Resource() {
 		super();
 	}
 
-	public Role(final String id) {
+	public Resource(final String id) {
 		super();
 		this.id = id;
 	}
@@ -47,14 +43,6 @@ public class Role implements Pojo {
 
 	public void setActive(final Boolean active) {
 		this.active = active;
-	}
-
-	public Set<Resource> getResources() {
-		return this.resources;
-	}
-
-	public void setResources(final Set<Resource> resources) {
-		this.resources = resources;
 	}
 
 }

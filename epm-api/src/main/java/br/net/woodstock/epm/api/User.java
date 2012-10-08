@@ -1,5 +1,7 @@
 package br.net.woodstock.epm.api;
 
+import java.util.Set;
+
 import br.net.woodstock.rockframework.domain.Pojo;
 
 public class User implements Pojo {
@@ -16,9 +18,9 @@ public class User implements Pojo {
 
 	private String				password;
 
-	private UserStatus			status;
+	private Boolean				active;
 
-	private Role				role;
+	private Set<Role>			roles;
 
 	public User() {
 		super();
@@ -69,20 +71,20 @@ public class User implements Pojo {
 		this.password = password;
 	}
 
-	public UserStatus getStatus() {
-		return this.status;
+	public Boolean getActive() {
+		return this.active;
 	}
 
-	public void setStatus(final UserStatus status) {
-		this.status = status;
+	public void setActive(final Boolean active) {
+		this.active = active;
 	}
 
-	public Role getRole() {
-		return this.role;
+	public Set<Role> getRoles() {
+		return this.roles;
 	}
 
-	public void setRole(final Role role) {
-		this.role = role;
+	public void setRoles(final Set<Role> roles) {
+		this.roles = roles;
 	}
 
 }

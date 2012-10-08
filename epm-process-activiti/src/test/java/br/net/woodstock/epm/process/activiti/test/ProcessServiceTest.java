@@ -57,7 +57,8 @@ public class ProcessServiceTest {
 	// @Test
 	public void testAddSub() throws Exception {
 		// String[] files = new String[] { "/tmp/sub-process.bpmn", "/tmp/main-process.bpmn" };
-		String[] files = new String[] { "/tmp/sub-process.bpmn" };
+		//String[] files = new String[] { "/tmp/sub-process.bpmn" };
+		String[] files = new String[] { "/home/lourival/workspaces/projects-woodstock/epm/epm-process-activiti/src/test/resources/test-process.bpmn" };
 		for (String file : files) {
 			File f = new File(file);
 			String name = f.getName().substring(0, f.getName().indexOf("."));
@@ -84,7 +85,7 @@ public class ProcessServiceTest {
 
 	// @Test
 	public void testProcessDefinition() throws Exception {
-		ProcessDefinition processDefinition = this.service.getProcessDefinitionByKey("main-process");
+		ProcessDefinition processDefinition = this.service.getProcessDefinitionByKey("test-process");
 		if (processDefinition != null) {
 			System.out.println(processDefinition.getId());
 			System.out.println(processDefinition.getKey());
@@ -95,20 +96,20 @@ public class ProcessServiceTest {
 		}
 	}
 
-	// @Test
+	@Test
 	public void testStartProcess() throws Exception {
-		ProcessDefinition processDefinition = this.service.getProcessDefinitionByKey("main-process");
+		ProcessDefinition processDefinition = this.service.getProcessDefinitionByKey("test-process");
 		if (processDefinition != null) {
 			Map<String, Object> parameters = new HashMap<String, Object>();
 			parameters.put("userId", "lourival.junior");
-			String id = this.service.startProccessById(processDefinition.getId(), "Test Lourival Sabino 3", parameters);
+			String id = this.service.startProccessById(processDefinition.getId(), "Test Lourival Sabino 4", parameters);
 			System.out.println(id);
 		} else {
 			System.out.println("Processo nao encontrado");
 		}
 	}
 
-	@Test
+	// @Test
 	public void testInfoProcess() throws Exception {
 		ProcessInstance pi = this.service.getProccessInstanceByKey("Test Lourival Sabino 3");
 		this.print(pi, "");

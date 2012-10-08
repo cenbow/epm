@@ -10,8 +10,8 @@ import java.io.OutputStream;
 import br.net.woodstock.rockframework.domain.service.Service;
 import br.net.woodstock.rockframework.security.digest.DigestType;
 import br.net.woodstock.rockframework.security.digest.impl.AsStringDigester;
-import br.net.woodstock.rockframework.security.digest.impl.Base64Digester;
 import br.net.woodstock.rockframework.security.digest.impl.BasicDigester;
+import br.net.woodstock.rockframework.security.digest.impl.HexDigester;
 import br.net.woodstock.rockframework.util.Assert;
 import br.net.woodstock.rockframework.utils.IOUtils;
 
@@ -19,7 +19,7 @@ public class FileSystemRepository implements Service {
 
 	private static final long	serialVersionUID	= -7290717732247236271L;
 
-	private AsStringDigester	digester			= new AsStringDigester(new Base64Digester(new BasicDigester(DigestType.SHA1)));
+	private AsStringDigester	digester			= new AsStringDigester(new HexDigester(new BasicDigester(DigestType.SHA1)));
 
 	private File				root;
 

@@ -41,7 +41,7 @@ public class ProccessTest {
 		}
 	}
 
-	// @Test
+	@Test
 	public void testDeploy() throws Exception {
 		InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("test.bar");
 		ZipInputStream zipInputStream = new ZipInputStream(inputStream);

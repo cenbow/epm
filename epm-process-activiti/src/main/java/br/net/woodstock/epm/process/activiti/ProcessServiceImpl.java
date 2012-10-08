@@ -20,6 +20,8 @@ import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.DeploymentBuilder;
 import org.activiti.engine.repository.DeploymentQuery;
 import org.activiti.engine.repository.ProcessDefinitionQuery;
+import org.activiti.engine.runtime.Execution;
+import org.activiti.engine.runtime.ExecutionQuery;
 import org.activiti.engine.runtime.ProcessInstanceQuery;
 import org.activiti.engine.task.TaskQuery;
 
@@ -205,6 +207,34 @@ public class ProcessServiceImpl implements ProcessService, Service {
 			InputStream inputStream = ProcessDiagramGenerator.generatePngDiagram(entity);
 			byte[] image = IOUtils.toByteArray(inputStream);
 			return image;
+		} catch (Exception e) {
+			throw new ServiceException(e);
+		}
+	}
+
+	@Override
+	public void setVariableByProcessInstanceId(final String processInstanceId, final String name, final String value) {
+		try {
+			ExecutionQuery executionQuery = this.engine.getRuntimeService().createExecutionQuery();
+			executionQuery.processInstanceId(processInstanceId);
+			Execution execution = executionQuery.singleResult();
+			if (execution != null) {
+				this.engine.getRuntimeService().setVariable(execution.getId(), name, value);
+			}
+		} catch (Exception e) {
+			throw new ServiceException(e);
+		}
+	}
+
+	@Override
+	public void setVariableByProcessInstanceKey(final String processInstanceKey, final String name, final String value) {
+		try {
+			ExecutionQuery executionQuery = this.engine.getRuntimeService().createExecutionQuery();
+			executionQuery.processInstanceBusinessKey(processInstanceKey);
+			Execution execution = executionQuery.singleResult();
+			if (execution != null) {
+				this.engine.getRuntimeService().setVariable(execution.getId(), name, value);
+			}
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		}

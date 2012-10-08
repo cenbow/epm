@@ -17,13 +17,15 @@
 		<activiti.version>5.10</activiti.version>
 		<antlr.version>3.4</antlr.version>
 		<groovy.version>1.8.6</groovy.version>
+		<jackrabbit.version>2.5.2</jackrabbit.version>
+		<jcr.version>2.0</jcr.version>
 		<junit.version>4.10</junit.version>
 		<jdbc.mysql.version>5.1.21</jdbc.mysql.version>
 		<jdbc.pgsql.version>9.1-901-1.jdbc4</jdbc.pgsql.version>
 		<log4j.version>1.2.17</log4j.version>
 		<lucene.version>3.6.1</lucene.version>
-		<rockframework.version>2.0.6-SNAPSHOT</rockframework.version>
-		<slf4j.version>1.6.3</slf4j.version>
+		<rockframework.version>2.0.6</rockframework.version>
+		<slf4j.version>1.7.1</slf4j.version>
 		<spring.version>3.1.2.RELEASE</spring.version>
 		<tika.version>1.2</tika.version>
 		<!-- Plugins -->
@@ -42,10 +44,12 @@
 		<module>epm-impl</module>
 		<module>epm-process-api</module>
 		<module>epm-process-activiti</module>
+		<module>epm-process-client</module>
 		<module>epm-search-api</module>
 		<module>epm-search-lucene</module>
 		<module>epm-store-api</module>
 		<module>epm-store-filesystem</module>
+		<module>epm-store-jackrabbit</module>
 		<module>epm-web</module>
 	</modules>
 	<build>
@@ -192,6 +196,12 @@
 				<type>war</type>
 			</dependency>
 			<dependency>
+				<groupId>javax.jcr</groupId>
+				<artifactId>jcr</artifactId>
+				<version>${jcr.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>
 				<version>${junit.version}</version>
@@ -228,6 +238,60 @@
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
+				<groupId>org.apache.jackrabbit</groupId>
+				<artifactId>jackrabbit-api</artifactId>
+				<version>${jackrabbit.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.jackrabbit</groupId>
+				<artifactId>jackrabbit-core</artifactId>
+				<version>${jackrabbit.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.jackrabbit</groupId>
+				<artifactId>jackrabbit-jcr-commons</artifactId>
+				<version>${jackrabbit.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.jackrabbit</groupId>
+				<artifactId>jackrabbit-jcr-rmi</artifactId>
+				<version>${jackrabbit.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.jackrabbit</groupId>
+				<artifactId>jackrabbit-jcr-server</artifactId>
+				<version>${jackrabbit.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.jackrabbit</groupId>
+				<artifactId>jackrabbit-jcr-servlet</artifactId>
+				<version>${jackrabbit.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.jackrabbit</groupId>
+				<artifactId>jackrabbit-spi</artifactId>
+				<version>${jackrabbit.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.jackrabbit</groupId>
+				<artifactId>jackrabbit-spi-commons</artifactId>
+				<version>${jackrabbit.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.jackrabbit</groupId>
+				<artifactId>jackrabbit-webdav</artifactId>
+				<version>${jackrabbit.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
 				<groupId>org.apache.lucene</groupId>
 				<artifactId>lucene-core</artifactId>
 				<version>${lucene.version}</version>
@@ -236,6 +300,12 @@
 			<dependency>
 				<groupId>org.apache.lucene</groupId>
 				<artifactId>lucene-highlighter</artifactId>
+				<version>${lucene.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.lucene</groupId>
+				<artifactId>lucene-queries</artifactId>
 				<version>${lucene.version}</version>
 				<scope>provided</scope>
 			</dependency>
@@ -269,6 +339,18 @@
 				<version>${groovy.version}</version>
 				<scope>provided</scope>
 			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-api</artifactId>
+				<version>${slf4j.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-log4j12</artifactId>
+				<version>${slf4j.version}</version>
+				<scope>provided</scope>
+			</dependency>			
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-aop</artifactId>

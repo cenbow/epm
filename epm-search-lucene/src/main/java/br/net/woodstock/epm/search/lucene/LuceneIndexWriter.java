@@ -7,7 +7,6 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.logging.Level;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
@@ -110,7 +109,7 @@ public class LuceneIndexWriter implements Runnable {
 			try {
 				Thread.sleep(LuceneIndexWriter.SLEEP_TIME);
 			} catch (InterruptedException e) {
-				CoreLog.getInstance().getLog().log(Level.INFO, e.getMessage(), e);
+				CoreLog.getInstance().getLogger().info(e.getMessage(), e);
 			}
 		}
 	}
@@ -130,9 +129,9 @@ public class LuceneIndexWriter implements Runnable {
 				writer.addDocument(document);
 				file.delete();
 			} catch (IOException e) {
-				CoreLog.getInstance().getLog().log(Level.INFO, e.getMessage(), e);
+				CoreLog.getInstance().getLogger().info(e.getMessage(), e);
 			} catch (ClassNotFoundException e) {
-				CoreLog.getInstance().getLog().log(Level.INFO, e.getMessage(), e);
+				CoreLog.getInstance().getLogger().info(e.getMessage(), e);
 			}
 		}
 	}
@@ -152,9 +151,9 @@ public class LuceneIndexWriter implements Runnable {
 				writer.deleteDocuments(query);
 				file.delete();
 			} catch (IOException e) {
-				CoreLog.getInstance().getLog().log(Level.INFO, e.getMessage(), e);
+				CoreLog.getInstance().getLogger().info(e.getMessage(), e);
 			} catch (ClassNotFoundException e) {
-				CoreLog.getInstance().getLog().log(Level.INFO, e.getMessage(), e);
+				CoreLog.getInstance().getLogger().info(e.getMessage(), e);
 			}
 		}
 	}

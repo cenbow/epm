@@ -35,6 +35,10 @@ public interface ProcessService extends Serializable {
 
 	byte[] getProcessInstanceImageByKey(String key);
 
+	void setVariableByProcessInstanceId(String processInstanceId, String name, String value);
+
+	void setVariableByProcessInstanceKey(String processInstanceKey, String name, String value);
+
 	// Process
 	ProcessDefinition getProcessDefinitionById(String id);
 
