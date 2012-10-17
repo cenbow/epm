@@ -41,15 +41,8 @@
 	</organization>
 	<modules>
 		<module>epm-api</module>
+		<module>epm-client</module>
 		<module>epm-impl</module>
-		<module>epm-process-api</module>
-		<module>epm-process-activiti</module>
-		<module>epm-process-client</module>
-		<module>epm-search-api</module>
-		<module>epm-search-lucene</module>
-		<module>epm-store-api</module>
-		<module>epm-store-filesystem</module>
-		<module>epm-store-jackrabbit</module>
 		<module>epm-web</module>
 	</modules>
 	<build>
@@ -135,56 +128,13 @@
 			</dependency>
 			<dependency>
 				<groupId>br.net.woodstock.epm</groupId>
-				<artifactId>epm-search-api</artifactId>
-				<version>${project.version}</version>
-				<scope>provided</scope>
-			</dependency>
-			<dependency>
-				<groupId>br.net.woodstock.epm</groupId>
-				<artifactId>epm-search-lucene</artifactId>
-				<version>${project.version}</version>
-				<scope>provided</scope>
-			</dependency>
-			<dependency>
-				<groupId>br.net.woodstock.epm</groupId>
-				<artifactId>epm-store-api</artifactId>
-				<version>${project.version}</version>
-				<scope>provided</scope>
-			</dependency>
-			<dependency>
-				<groupId>br.net.woodstock.epm</groupId>
-				<artifactId>epm-store-filesystem</artifactId>
+				<artifactId>epm-client</artifactId>
 				<version>${project.version}</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>br.net.woodstock.epm</groupId>
 				<artifactId>epm-impl</artifactId>
-				<version>${project.version}</version>
-				<scope>provided</scope>
-			</dependency>
-			<dependency>
-				<groupId>br.net.woodstock.epm</groupId>
-				<artifactId>epm-impl</artifactId>
-				<version>${project.version}</version>
-				<scope>provided</scope>
-			</dependency>
-			<dependency>
-				<groupId>br.net.woodstock.epm</groupId>
-				<artifactId>epm-impl</artifactId>
-				<version>${project.version}</version>
-				<scope>provided</scope>
-				<type>ejb</type>
-			</dependency>
-			<dependency>
-				<groupId>br.net.woodstock.epm</groupId>
-				<artifactId>epm-process-api</artifactId>
-				<version>${project.version}</version>
-				<scope>provided</scope>
-			</dependency>
-			<dependency>
-				<groupId>br.net.woodstock.epm</groupId>
-				<artifactId>epm-process-activiti</artifactId>
 				<version>${project.version}</version>
 				<scope>provided</scope>
 			</dependency>
