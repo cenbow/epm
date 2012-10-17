@@ -10,6 +10,10 @@ public class Swimlane implements Serializable {
 
 	private String				name;
 
+	public Swimlane() {
+		super();
+	}
+
 	public String getId() {
 		return this.id;
 	}

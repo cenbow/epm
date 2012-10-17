@@ -1,6 +1,10 @@
 package br.net.woodstock.epm.process.activiti;
 
+public abstract class QueryHelper {
 
-public class QueryHelper {
 	//
+
+	private QueryHelper() {
+		//
+	}
 }

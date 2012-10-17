@@ -1,8 +1,8 @@
-package br.net.woodstock.epm.api;
+package br.net.woodstock.epm.acl.api;
 
-import br.net.woodstock.rockframework.domain.Pojo;
+import java.io.Serializable;
 
-public class Resource implements Pojo {
+public class Resource implements Serializable {
 
 	private static final long	serialVersionUID	= 9189241373976036057L;
 

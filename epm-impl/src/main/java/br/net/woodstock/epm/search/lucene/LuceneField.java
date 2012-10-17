@@ -11,6 +11,7 @@ public enum LuceneField {
 	ID(Field.ID, "ID"), /***/
 	NAME(Field.NAME, "NAME"), /***/
 	OWNER(Field.OWNER, "OWNER"), /***/
+	SCORE(null, "SCORE"), /***/
 	TEXT(Field.TEXT, "TEXT"), /***/
 	TYPE(Field.TYPE, "TYPE");
 

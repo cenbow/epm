@@ -3,7 +3,7 @@ package br.net.woodstock.epm.process.api;
 import java.io.Serializable;
 import java.util.Date;
 
-import br.net.woodstock.epm.api.User;
+import br.net.woodstock.epm.acl.api.User;
 
 public class Activity implements Serializable {
 
@@ -20,6 +20,10 @@ public class Activity implements Serializable {
 	private Date				end;
 
 	private User				user;
+
+	public Activity() {
+		super();
+	}
 
 	public String getId() {
 		return this.id;

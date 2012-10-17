@@ -22,7 +22,6 @@
 		<junit.version>4.10</junit.version>
 		<jdbc.mysql.version>5.1.21</jdbc.mysql.version>
 		<jdbc.pgsql.version>9.1-901-1.jdbc4</jdbc.pgsql.version>
-		<log4j.version>1.2.17</log4j.version>
 		<lucene.version>3.6.1</lucene.version>
 		<rockframework.version>2.0.6</rockframework.version>
 		<slf4j.version>1.7.1</slf4j.version>
@@ -156,12 +155,6 @@
 				<artifactId>junit</artifactId>
 				<version>${junit.version}</version>
 				<scope>test</scope>
-			</dependency>
-			<dependency>
-				<groupId>log4j</groupId>
-				<artifactId>log4j</artifactId>
-				<version>${log4j.version}</version>
-				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>mysql</groupId>

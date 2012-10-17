@@ -14,6 +14,10 @@ public class ProcessDefinition implements Serializable {
 
 	private String				version;
 
+	public ProcessDefinition() {
+		super();
+	}
+
 	public String getId() {
 		return this.id;
 	}

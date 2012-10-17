@@ -20,6 +20,10 @@ public class FormField implements Serializable {
 
 	private boolean				writeable;
 
+	public FormField() {
+		super();
+	}
+
 	public String getId() {
 		return this.id;
 	}

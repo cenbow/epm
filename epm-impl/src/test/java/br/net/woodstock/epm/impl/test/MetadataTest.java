@@ -1,4 +1,4 @@
-package br.net.woodstock.epm.search.lucene.test;
+package br.net.woodstock.epm.impl.test;
 
 import java.io.File;
 
@@ -8,6 +8,10 @@ import br.net.woodstock.epm.search.lucene.util.MetadataUtils;
 import br.net.woodstock.rockframework.utils.IOUtils;
 
 public class MetadataTest {
+
+	public MetadataTest() {
+		super();
+	}
 
 	@Test
 	public void test1() throws Exception {

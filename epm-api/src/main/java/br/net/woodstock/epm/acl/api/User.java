@@ -1,10 +1,9 @@
-package br.net.woodstock.epm.api;
+package br.net.woodstock.epm.acl.api;
 
+import java.io.Serializable;
 import java.util.Set;
 
-import br.net.woodstock.rockframework.domain.Pojo;
-
-public class User implements Pojo {
+public class User implements Serializable {
 
 	private static final long	serialVersionUID	= -1932408409262519409L;
 
@@ -21,6 +20,8 @@ public class User implements Pojo {
 	private Boolean				active;
 
 	private Set<Role>			roles;
+
+	private Set<Certificate>	certificates;
 
 	public User() {
 		super();
@@ -85,6 +86,14 @@ public class User implements Pojo {
 
 	public void setRoles(final Set<Role> roles) {
 		this.roles = roles;
+	}
+
+	public Set<Certificate> getCertificates() {
+		return this.certificates;
+	}
+
+	public void setCertificates(final Set<Certificate> certificates) {
+		this.certificates = certificates;
 	}
 
 }

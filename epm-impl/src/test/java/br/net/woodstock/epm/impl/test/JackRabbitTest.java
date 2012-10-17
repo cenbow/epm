@@ -1,4 +1,4 @@
-package br.net.woodstock.epm.store.jackrabbit.test;
+package br.net.woodstock.epm.impl.test;
 
 import javax.jcr.Node;
 import javax.jcr.Repository;
@@ -14,11 +14,15 @@ import org.junit.runners.BlockJUnit4ClassRunner;
 @RunWith(BlockJUnit4ClassRunner.class)
 public class JackRabbitTest {
 
-	static {
-		// System.setProperty("org.apache.jackrabbit.repository.home", "/tmp/jackrabbit");
+	// static {
+	// System.setProperty("org.apache.jackrabbit.repository.home", "/tmp/jackrabbit");
+	// }
+
+	public JackRabbitTest() {
+		super();
 	}
 
-	// @Test
+	@Test
 	public void test1() throws Exception {
 		RepositoryConfig config = RepositoryConfig.create(this.getClass().getClassLoader().getResourceAsStream("repository.xml"), "/tmp/jackrabbit");
 		Repository repository = new TransientRepository(config);

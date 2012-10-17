@@ -1,4 +1,4 @@
-package br.net.woodstock.epm.store.filesystem;
+package br.net.woodstock.epm.store.jackrabbit;
 
 import br.net.woodstock.epm.store.api.StoreSevice;
 import br.net.woodstock.rockframework.domain.service.Service;

@@ -2,6 +2,8 @@ package br.net.woodstock.epm.search.api;
 
 import java.io.Serializable;
 
+import br.net.woodstock.epm.util.Page;
+
 public interface SearchSevice extends Serializable {
 
 	Item get(String id);
@@ -10,6 +12,6 @@ public interface SearchSevice extends Serializable {
 
 	void save(Item item);
 
-	Item[] search(String filter, OrderBy[] orders, int maxResult);
+	SearchResultContainer search(String filter, OrderBy[] orders, Page page);
 
 }

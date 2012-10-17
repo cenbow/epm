@@ -1,4 +1,4 @@
-package br.net.woodstock.epm.store.filesystem;
+package br.net.woodstock.epm.store.jackrabbit;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;

@@ -2,7 +2,7 @@ package br.net.woodstock.epm.process.api;
 
 import java.io.Serializable;
 
-import br.net.woodstock.epm.api.User;
+import br.net.woodstock.epm.acl.api.User;
 
 public class Task implements Serializable {
 
@@ -19,6 +19,10 @@ public class Task implements Serializable {
 	private User				user;
 
 	private User				owner;
+
+	public Task() {
+		super();
+	}
 
 	public String getId() {
 		return this.id;

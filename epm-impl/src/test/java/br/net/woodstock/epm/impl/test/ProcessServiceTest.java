@@ -1,10 +1,9 @@
-package br.net.woodstock.epm.process.activiti.test;
+package br.net.woodstock.epm.impl.test;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -33,6 +32,10 @@ public class ProcessServiceTest {
 	@Autowired(required = true)
 	private ProcessService	service;
 
+	public ProcessServiceTest() {
+		super();
+	}
+
 	@Test
 	public void testConfig() {
 		System.out.println("Service OK: " + this.service);
@@ -40,8 +43,8 @@ public class ProcessServiceTest {
 
 	// @Test
 	public void testListProcess() throws Exception {
-		Collection<ProcessDefinition> collection = this.service.listProcessByName(null);
-		for (ProcessDefinition process : collection) {
+		ProcessDefinition[] array = this.service.listProcessByName(null);
+		for (ProcessDefinition process : array) {
 			System.out.println(process.getId() + " - " + process.getName() + "(" + process.getVersion() + ")");
 		}
 	}
@@ -57,7 +60,7 @@ public class ProcessServiceTest {
 	// @Test
 	public void testAddSub() throws Exception {
 		// String[] files = new String[] { "/tmp/sub-process.bpmn", "/tmp/main-process.bpmn" };
-		//String[] files = new String[] { "/tmp/sub-process.bpmn" };
+		// String[] files = new String[] { "/tmp/sub-process.bpmn" };
 		String[] files = new String[] { "/home/lourival/workspaces/projects-woodstock/epm/epm-process-activiti/src/test/resources/test-process.bpmn" };
 		for (String file : files) {
 			File f = new File(file);
@@ -72,8 +75,8 @@ public class ProcessServiceTest {
 
 	// @Test
 	public void testListProcessByName() throws Exception {
-		Collection<ProcessDefinition> collection = this.service.listProcessByName(null);
-		for (ProcessDefinition process : collection) {
+		ProcessDefinition[] array = this.service.listProcessByName(null);
+		for (ProcessDefinition process : array) {
 			System.out.println(process.getId() + " - " + process.getName() + "(" + process.getVersion() + ")");
 		}
 		/*
@@ -117,7 +120,7 @@ public class ProcessServiceTest {
 
 	// @Test
 	public void testListTasks() throws Exception {
-		Collection<Task> tasks = this.service.listTasksByProcessInstanceKey("Test Lourival Sabino 2");
+		Task[] tasks = this.service.listTasksByProcessInstanceKey("Test Lourival Sabino 2");
 		System.out.println("====== TASKS =====");
 		for (Task task : tasks) {
 			System.out.println(task.getDescription());
@@ -152,7 +155,7 @@ public class ProcessServiceTest {
 
 	// @Test
 	public void testSetUserTask() throws Exception {
-		Collection<Task> tasks = this.service.listTasksByProcessInstanceKey("Test Lourival Sabino 2");
+		Task[] tasks = this.service.listTasksByProcessInstanceKey("Test Lourival Sabino 2");
 		for (Task task : tasks) {
 			this.service.assignTask(task.getId(), "kermit");
 		}
@@ -160,7 +163,7 @@ public class ProcessServiceTest {
 
 	// @Test
 	public void testUserTask() throws Exception {
-		Collection<Task> tasks = this.service.listTasksByProcessInstanceId("310");
+		Task[] tasks = this.service.listTasksByProcessInstanceId("310");
 		for (Task task : tasks) {
 			System.out.println(task.getId());
 			System.out.println(task.getName());
@@ -183,8 +186,8 @@ public class ProcessServiceTest {
 
 	// @Test
 	public void testSetUserTaskForm() throws Exception {
-		Collection<Task> tasks = this.service.listTasksByProcessInstanceKey("Test Lourival Sabino 3");
-		Task task = tasks.iterator().next();
+		Task[] tasks = this.service.listTasksByProcessInstanceKey("Test Lourival Sabino 3");
+		Task task = tasks[0];
 		Form form = this.service.getForm(task.getId());
 		form.getField("telefone").setValue("1");
 		form.getField("nome").setValue("1");
@@ -195,8 +198,8 @@ public class ProcessServiceTest {
 
 	// @Test
 	public void testGetUserTaskForm() throws Exception {
-		Collection<Task> tasks = this.service.listTasksByProcessInstanceKey("Test Lourival Sabino 2");
-		Task task = tasks.iterator().next();
+		Task[] tasks = this.service.listTasksByProcessInstanceKey("Test Lourival Sabino 2");
+		Task task = tasks[0];
 		Form form = this.service.getForm(task.getId());
 		System.out.println(form.getField("telefone").getValue());
 		System.out.println(form.getField("nome").getValue());

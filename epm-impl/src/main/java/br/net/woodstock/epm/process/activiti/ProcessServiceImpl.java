@@ -2,8 +2,6 @@ package br.net.woodstock.epm.process.activiti;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -39,6 +37,10 @@ import br.net.woodstock.rockframework.utils.IOUtils;
 public class ProcessServiceImpl implements ProcessService, Service {
 
 	private static final long	serialVersionUID	= -5930737454047853423L;
+
+	private static final String	ALL_PATTERN			= "%";
+
+	private static final String	IMAGE_EXTENSION		= "png";
 
 	private static final String	XML_SUFFIX			= ".bpmn20.xml";
 
@@ -173,7 +175,7 @@ public class ProcessServiceImpl implements ProcessService, Service {
 
 				List<String> activeActivities = this.engine.getRuntimeService().getActiveActivityIds(id);
 
-				InputStream inputStream = ProcessDiagramGenerator.generateDiagram(processDefinition, "png", activeActivities);
+				InputStream inputStream = ProcessDiagramGenerator.generateDiagram(processDefinition, ProcessServiceImpl.IMAGE_EXTENSION, activeActivities);
 				byte[] image = IOUtils.toByteArray(inputStream);
 				return image;
 			}
@@ -187,7 +189,7 @@ public class ProcessServiceImpl implements ProcessService, Service {
 
 				List<String> activeActivities = Collections.emptyList();
 
-				InputStream inputStream = ProcessDiagramGenerator.generateDiagram(processDefinition, "png", activeActivities);
+				InputStream inputStream = ProcessDiagramGenerator.generateDiagram(processDefinition, ProcessServiceImpl.IMAGE_EXTENSION, activeActivities);
 				byte[] image = IOUtils.toByteArray(inputStream);
 				return image;
 			}
@@ -274,7 +276,7 @@ public class ProcessServiceImpl implements ProcessService, Service {
 
 	// Query
 	@Override
-	public Collection<String> listDeploymentByName(final String name) {
+	public String[] listDeploymentByName(final String name) {
 		try {
 
 			DeploymentQuery query = this.engine.getRepositoryService().createDeploymentQuery();
@@ -282,136 +284,138 @@ public class ProcessServiceImpl implements ProcessService, Service {
 				query.deploymentNameLike(name);
 			}
 			List<Deployment> list = query.list();
-			List<String> result = new ArrayList<String>();
-			for (Deployment deployment : list) {
-				result.add(deployment.getId());
+			String[] array = new String[list.size()];
+			for (int i = 0; i < list.size(); i++) {
+				array[i] = list.get(i).getId();
 			}
-			return result;
+			return array;
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		}
 	}
 
 	@Override
-	public Collection<ProcessDefinition> listProcessByName(final String name) {
+	public ProcessDefinition[] listProcessByName(final String name) {
 		try {
 			ProcessDefinitionQuery query = this.engine.getRepositoryService().createProcessDefinitionQuery();
 			if (ConditionUtils.isNotEmpty(name)) {
-				String s = "%" + name + "%";
+				String s = ProcessServiceImpl.ALL_PATTERN + name + ProcessServiceImpl.ALL_PATTERN;
 				query.processDefinitionNameLike(s);
 			}
 			List<org.activiti.engine.repository.ProcessDefinition> list = query.list();
-			List<ProcessDefinition> result = new ArrayList<ProcessDefinition>();
-			for (org.activiti.engine.repository.ProcessDefinition definition : list) {
-				result.add(ConverterHelper.toProcessDefinition(definition));
+			ProcessDefinition[] array = new ProcessDefinition[list.size()];
+			for (int i = 0; i < list.size(); i++) {
+				ProcessDefinition p = ConverterHelper.toProcessDefinition(list.get(i));
+				array[i] = p;
 			}
-			return result;
+			return array;
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		}
 	}
 
 	@Override
-	public Collection<ProcessDefinition> listProcessByStartableUser(final String user) {
+	public ProcessDefinition[] listProcessByStartableUser(final String user) {
 		try {
 			ProcessDefinitionQuery query = this.engine.getRepositoryService().createProcessDefinitionQuery();
 			query.startableByUser(user);
 			List<org.activiti.engine.repository.ProcessDefinition> list = query.list();
-			List<ProcessDefinition> result = new ArrayList<ProcessDefinition>();
-			for (org.activiti.engine.repository.ProcessDefinition definition : list) {
-				result.add(ConverterHelper.toProcessDefinition(definition));
+			ProcessDefinition[] array = new ProcessDefinition[list.size()];
+			for (int i = 0; i < list.size(); i++) {
+				ProcessDefinition p = ConverterHelper.toProcessDefinition(list.get(i));
+				array[i] = p;
 			}
-			return result;
+			return array;
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		}
 	}
 
 	@Override
-	public Collection<Task> listTasksByUser(final String user) {
+	public Task[] listTasksByUser(final String user) {
 		try {
 			TaskQuery query = this.engine.getTaskService().createTaskQuery();
 			query.taskAssignee(user);
 			List<org.activiti.engine.task.Task> list = query.list();
-			List<Task> result = new ArrayList<Task>();
-			for (org.activiti.engine.task.Task task : list) {
-				Task t = ConverterHelper.toTask(task);
+			Task[] array = new Task[list.size()];
+			for (int i = 0; i < list.size(); i++) {
+				Task t = ConverterHelper.toTask(list.get(i));
 				ProcessServiceHelper.completeTask(this.engine, t);
-				result.add(t);
+				array[i] = t;
 			}
-			return result;
+			return array;
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		}
 	}
 
 	@Override
-	public Collection<Task> listTasksByCandidateUser(final String user) {
+	public Task[] listTasksByCandidateUser(final String user) {
 		try {
 			TaskQuery query = this.engine.getTaskService().createTaskQuery();
 			query.taskCandidateUser(user);
 			List<org.activiti.engine.task.Task> list = query.list();
-			List<Task> result = new ArrayList<Task>();
-			for (org.activiti.engine.task.Task task : list) {
-				Task t = ConverterHelper.toTask(task);
+			Task[] array = new Task[list.size()];
+			for (int i = 0; i < list.size(); i++) {
+				Task t = ConverterHelper.toTask(list.get(i));
 				ProcessServiceHelper.completeTask(this.engine, t);
-				result.add(t);
+				array[i] = t;
 			}
-			return result;
+			return array;
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		}
 	}
 
 	@Override
-	public Collection<Task> listTasksByCandidateGroup(final String group) {
+	public Task[] listTasksByCandidateGroup(final String group) {
 		try {
 			TaskQuery query = this.engine.getTaskService().createTaskQuery();
 			query.taskCandidateGroup(group);
 			List<org.activiti.engine.task.Task> list = query.list();
-			List<Task> result = new ArrayList<Task>();
-			for (org.activiti.engine.task.Task task : list) {
-				Task t = ConverterHelper.toTask(task);
+			Task[] array = new Task[list.size()];
+			for (int i = 0; i < list.size(); i++) {
+				Task t = ConverterHelper.toTask(list.get(i));
 				ProcessServiceHelper.completeTask(this.engine, t);
-				result.add(t);
+				array[i] = t;
 			}
-			return result;
+			return array;
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		}
 	}
 
 	@Override
-	public Collection<Task> listTasksByProcessInstanceId(final String id) {
+	public Task[] listTasksByProcessInstanceId(final String id) {
 		try {
 			TaskQuery query = this.engine.getTaskService().createTaskQuery();
 			query.processInstanceId(id);
 			List<org.activiti.engine.task.Task> list = query.list();
-			List<Task> result = new ArrayList<Task>();
-			for (org.activiti.engine.task.Task task : list) {
-				Task t = ConverterHelper.toTask(task);
+			Task[] array = new Task[list.size()];
+			for (int i = 0; i < list.size(); i++) {
+				Task t = ConverterHelper.toTask(list.get(i));
 				ProcessServiceHelper.completeTask(this.engine, t);
-				result.add(t);
+				array[i] = t;
 			}
-			return result;
+			return array;
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		}
 	}
 
 	@Override
-	public Collection<Task> listTasksByProcessInstanceKey(final String key) {
+	public Task[] listTasksByProcessInstanceKey(final String key) {
 		try {
 			TaskQuery query = this.engine.getTaskService().createTaskQuery();
 			query.processInstanceBusinessKey(key);
 			List<org.activiti.engine.task.Task> list = query.list();
-			List<Task> result = new ArrayList<Task>();
-			for (org.activiti.engine.task.Task task : list) {
-				Task t = ConverterHelper.toTask(task);
+			Task[] array = new Task[list.size()];
+			for (int i = 0; i < list.size(); i++) {
+				Task t = ConverterHelper.toTask(list.get(i));
 				ProcessServiceHelper.completeTask(this.engine, t);
-				result.add(t);
+				array[i] = t;
 			}
-			return result;
+			return array;
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		}

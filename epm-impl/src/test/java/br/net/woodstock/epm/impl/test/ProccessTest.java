@@ -1,4 +1,4 @@
-package br.net.woodstock.epm.process.activiti.test;
+package br.net.woodstock.epm.impl.test;
 
 import java.io.InputStream;
 import java.util.HashMap;
@@ -31,6 +31,10 @@ public class ProccessTest {
 
 	@Autowired(required = true)
 	private ProcessEngine	engine;
+
+	public ProccessTest() {
+		super();
+	}
 
 	// @Test
 	public void testListDeployment() throws Exception {
@@ -156,7 +160,7 @@ public class ProccessTest {
 		this.engine.getTaskService().claim(taskId, userId);
 		this.engine.getTaskService().complete(taskId);
 	}
-	
+
 	public void testSearch() throws Exception {
 		String id = "310";
 		HistoricActivityInstanceQuery query = this.engine.getHistoryService().createHistoricActivityInstanceQuery();

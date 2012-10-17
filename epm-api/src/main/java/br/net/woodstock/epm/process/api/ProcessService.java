@@ -1,7 +1,6 @@
 package br.net.woodstock.epm.process.api;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Map;
 
 public interface ProcessService extends Serializable {
@@ -45,20 +44,20 @@ public interface ProcessService extends Serializable {
 	ProcessDefinition getProcessDefinitionByKey(String key);
 
 	// Query
-	Collection<String> listDeploymentByName(String name);
+	String[] listDeploymentByName(String name);
 
-	Collection<ProcessDefinition> listProcessByName(String name);
+	ProcessDefinition[] listProcessByName(String name);
 
-	Collection<ProcessDefinition> listProcessByStartableUser(String user);
+	ProcessDefinition[] listProcessByStartableUser(String user);
 
-	Collection<Task> listTasksByUser(String user);
+	Task[] listTasksByUser(String user);
 
-	Collection<Task> listTasksByCandidateUser(String user);
+	Task[] listTasksByCandidateUser(String user);
 
-	Collection<Task> listTasksByCandidateGroup(String group);
+	Task[] listTasksByCandidateGroup(String group);
 
-	Collection<Task> listTasksByProcessInstanceId(String id);
+	Task[] listTasksByProcessInstanceId(String id);
 
-	Collection<Task> listTasksByProcessInstanceKey(String key);
+	Task[] listTasksByProcessInstanceKey(String key);
 
 }

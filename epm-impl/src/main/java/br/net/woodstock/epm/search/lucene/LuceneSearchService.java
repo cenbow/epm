@@ -2,7 +2,9 @@ package br.net.woodstock.epm.search.lucene;
 
 import br.net.woodstock.epm.search.api.Item;
 import br.net.woodstock.epm.search.api.OrderBy;
+import br.net.woodstock.epm.search.api.SearchResultContainer;
 import br.net.woodstock.epm.search.api.SearchSevice;
+import br.net.woodstock.epm.util.Page;
 import br.net.woodstock.rockframework.domain.service.Service;
 import br.net.woodstock.rockframework.domain.service.ServiceException;
 
@@ -50,10 +52,10 @@ public class LuceneSearchService implements SearchSevice, Service {
 	}
 
 	@Override
-	public Item[] search(final String filter, final OrderBy[] orders, final int maxResult) {
+	public SearchResultContainer search(final String filter, final OrderBy[] orders, final Page page) {
 		try {
-			Item[] array = this.repository.search(filter, orders, maxResult);
-			return array;
+			SearchResultContainer container = this.repository.search(filter, orders, page);
+			return container;
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		}

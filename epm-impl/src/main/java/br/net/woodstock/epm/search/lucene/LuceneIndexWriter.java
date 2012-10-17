@@ -18,7 +18,7 @@ import org.apache.lucene.search.Query;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.util.Version;
 
-import br.net.woodstock.epm.api.Log;
+import br.net.woodstock.epm.util.EPMLog;
 import br.net.woodstock.rockframework.config.CoreLog;
 import br.net.woodstock.rockframework.domain.service.ServiceException;
 import br.net.woodstock.rockframework.io.FileExtensionFilter;
@@ -116,7 +116,7 @@ public class LuceneIndexWriter implements Runnable {
 
 	private void addFiles(final IndexWriter writer, final File[] files) {
 		for (File file : files) {
-			Log.getLogger().info("Saving: " + file);
+			EPMLog.getLogger().info("Saving: " + file);
 			try {
 				FileInputStream inputStream = new FileInputStream(file);
 				ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
@@ -138,7 +138,7 @@ public class LuceneIndexWriter implements Runnable {
 
 	private void delFiles(final IndexWriter writer, final File[] files) {
 		for (File file : files) {
-			Log.getLogger().info("Deleting: " + file);
+			EPMLog.getLogger().info("Deleting: " + file);
 			try {
 				FileInputStream inputStream = new FileInputStream(file);
 				ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
@@ -165,7 +165,7 @@ public class LuceneIndexWriter implements Runnable {
 
 		file.createNewFile();
 
-		Log.getLogger().info("Adding: " + file);
+		EPMLog.getLogger().info("Adding: " + file);
 
 		FileOutputStream outputStream = new FileOutputStream(file);
 		ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
@@ -181,7 +181,7 @@ public class LuceneIndexWriter implements Runnable {
 
 		file.createNewFile();
 
-		Log.getLogger().info("Adding: " + file);
+		EPMLog.getLogger().info("Adding: " + file);
 
 		FileOutputStream outputStream = new FileOutputStream(file);
 		ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);

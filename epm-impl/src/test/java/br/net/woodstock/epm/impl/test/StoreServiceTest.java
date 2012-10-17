@@ -1,4 +1,4 @@
-package br.net.woodstock.epm.store.filesystem.test;
+package br.net.woodstock.epm.impl.test;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -13,6 +13,10 @@ import br.net.woodstock.epm.store.filesystem.FileSystemStoreService;
 public class StoreServiceTest {
 
 	private static final String	PATH_STORE	= "/home/lourival/tmp/store";
+
+	public StoreServiceTest() {
+		super();
+	}
 
 	// @Test
 	public void test1() throws Exception {

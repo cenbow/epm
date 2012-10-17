@@ -1,4 +1,4 @@
-package br.net.woodstock.epm.store.jackrabbit.test;
+package br.net.woodstock.epm.impl.test;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -8,12 +8,16 @@ import org.junit.runner.RunWith;
 import org.junit.runners.BlockJUnit4ClassRunner;
 
 import br.net.woodstock.epm.store.api.StoreSevice;
-import br.net.woodstock.epm.store.filesystem.JackRabbitStoreService;
+import br.net.woodstock.epm.store.jackrabbit.JackRabbitStoreService;
 
 @RunWith(BlockJUnit4ClassRunner.class)
 public class JackRabbitServiceTest {
 
 	private static final String	PATH_STORE	= "/home/lourival/tmp/jackrabbit";
+
+	public JackRabbitServiceTest() {
+		super();
+	}
 
 	// @Test
 	public void test1() throws Exception {

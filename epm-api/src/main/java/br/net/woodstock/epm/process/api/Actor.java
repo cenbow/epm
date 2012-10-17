@@ -10,6 +10,10 @@ public class Actor implements Serializable {
 
 	private String				name;
 
+	public Actor() {
+		super();
+	}
+
 	public String getId() {
 		return this.id;
 	}

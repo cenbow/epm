@@ -1,4 +1,4 @@
-package br.net.woodstock.epm.process.activiti.test;
+package br.net.woodstock.epm.impl.test;
 
 import org.activiti.engine.ProcessEngine;
 import org.junit.Test;
@@ -13,6 +13,10 @@ public class SpringTest {
 
 	@Autowired(required = true)
 	private ProcessEngine	engine;
+
+	public SpringTest() {
+		super();
+	}
 
 	@Test
 	public void test1() throws Exception {

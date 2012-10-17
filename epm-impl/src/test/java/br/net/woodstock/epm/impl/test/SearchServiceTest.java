@@ -1,4 +1,4 @@
-package br.net.woodstock.epm.search.lucene.test;
+package br.net.woodstock.epm.impl.test;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -11,19 +11,25 @@ import org.junit.runners.BlockJUnit4ClassRunner;
 import br.net.woodstock.epm.search.api.Field;
 import br.net.woodstock.epm.search.api.Item;
 import br.net.woodstock.epm.search.api.OrderBy;
+import br.net.woodstock.epm.search.api.SearchResultContainer;
 import br.net.woodstock.epm.search.api.SearchSevice;
 import br.net.woodstock.epm.search.lucene.LuceneSearchService;
+import br.net.woodstock.epm.util.Page;
 
 @RunWith(BlockJUnit4ClassRunner.class)
 public class SearchServiceTest {
 
 	private static final String	PATH_LUCENE	= "/home/lourival/tmp/lucene";
 
+	public SearchServiceTest() {
+		super();
+	}
+
 	// @Test
 	public void test1() throws Exception {
 		SearchSevice service = new LuceneSearchService(SearchServiceTest.PATH_LUCENE);
 		Collection<String> ids = new ArrayList<String>();
-		for (int i = 0; i < 20; i++) {
+		for (int i = 0; i < 1000; i++) {
 			String text = "Lourival Sabino " + i;
 
 			Item item = new Item();
@@ -43,11 +49,6 @@ public class SearchServiceTest {
 		}
 
 		Thread.sleep(30000);
-
-		for (String id : ids) {
-			Item item = service.get(id);
-			this.print(item);
-		}
 	}
 
 	// @Test
@@ -59,21 +60,31 @@ public class SearchServiceTest {
 		}
 	}
 
-	// @Test
+	@Test
 	public void test3() throws Exception {
 		SearchSevice service = new LuceneSearchService(SearchServiceTest.PATH_LUCENE);
-		Item[] array = service.search("lourival", new OrderBy[] { new OrderBy(Field.ID) }, 100);
+		SearchResultContainer container = service.search("lourival", new OrderBy[] { new OrderBy(Field.ID) }, new Page(1, 20));
+		System.out.println("Total : " + container.getTotal());
+		System.out.println("Pagina: " + container.getCurrentPage().getPageNumber());
+		Item[] array = container.getItems();
 		for (Item item : array) {
 			this.print(item);
-			service.remove(item.getId());
 		}
-		Thread.sleep(30000);
+		while (container.getNextPage() != null) {
+			container = service.search("lourival", new OrderBy[] { new OrderBy(Field.ID) }, container.getNextPage());
+			System.out.println("Pagina: " + container.getCurrentPage().getPageNumber());
+			array = container.getItems();
+			for (Item item : array) {
+				this.print(item);
+			}
+		}
 	}
 
-	@Test
+	// @Test
 	public void test4() throws Exception {
 		SearchSevice service = new LuceneSearchService(SearchServiceTest.PATH_LUCENE);
-		Item[] array = service.search("lourival", new OrderBy[] { new OrderBy(Field.ID) }, 100);
+		SearchResultContainer container = service.search("lourival", new OrderBy[] { new OrderBy(Field.ID) }, new Page(1, 20));
+		Item[] array = container.getItems();
 		for (Item item : array) {
 			System.out.println("Del: " + item.getId());
 			service.remove(item.getId());
@@ -82,15 +93,15 @@ public class SearchServiceTest {
 	}
 
 	private void print(final Item item) {
-		System.out.println(item.getId());
-		System.out.println("\t" + item.getContentType());
-		System.out.println("\t" + item.getDate());
-		System.out.println("\t" + item.getDescription());
-		System.out.println("\t" + item.getExtension());
-		System.out.println("\t" + item.getName());
-		System.out.println("\t" + item.getOwner());
-		System.out.println("\t" + item.getText());
-		System.out.println("\t" + item.getType());
+		System.out.println("\t" + item.getId());
+		System.out.println("\t\t" + item.getContentType());
+		System.out.println("\t\t" + item.getDate());
+		System.out.println("\t\t" + item.getDescription());
+		System.out.println("\t\t" + item.getExtension());
+		System.out.println("\t\t" + item.getName());
+		System.out.println("\t\t" + item.getOwner());
+		System.out.println("\t\t" + item.getText());
+		System.out.println("\t\t" + item.getType());
 	}
 
 }

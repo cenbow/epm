@@ -10,7 +10,7 @@ import org.activiti.engine.form.TaskFormData;
 import org.activiti.engine.history.HistoricActivityInstance;
 import org.activiti.engine.history.HistoricProcessInstance;
 
-import br.net.woodstock.epm.api.User;
+import br.net.woodstock.epm.acl.api.User;
 import br.net.woodstock.epm.process.api.Activity;
 import br.net.woodstock.epm.process.api.DateFormField;
 import br.net.woodstock.epm.process.api.EnumFormField;
