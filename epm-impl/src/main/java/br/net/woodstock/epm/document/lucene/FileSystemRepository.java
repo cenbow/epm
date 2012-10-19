@@ -1,7 +1,8 @@
-package br.net.woodstock.epm.store.filesystem;
+package br.net.woodstock.epm.document.lucene;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -71,12 +72,27 @@ public class FileSystemRepository implements Service {
 		return false;
 	}
 
-	public void store(final String id, final byte[] data) throws IOException {
+	public void save(final String id, final byte[] data) throws IOException {
+		this.store(id, data, false);
+	}
+
+	public void update(final String id, final byte[] data) throws IOException {
+		this.store(id, data, true);
+	}
+
+	private void store(final String id, final byte[] data, final boolean isUpdate) throws IOException {
 		String realId = this.parseId(id);
 		File file = null;
 		OutputStream outputStream = null;
 		try {
 			file = new File(this.root, realId);
+
+			if (!file.exists()) {
+				if (isUpdate) {
+					throw new FileNotFoundException();
+				}
+			}
+
 			outputStream = new FileOutputStream(file);
 			outputStream.write(data);
 			outputStream.close();
@@ -84,8 +100,10 @@ public class FileSystemRepository implements Service {
 			if (outputStream != null) {
 				outputStream.close();
 			}
-			if (file != null) {
-				file.delete();
+			if (!isUpdate) {
+				if ((file != null) && (file.exists())) {
+					file.delete();
+				}
 			}
 			throw e;
 		}

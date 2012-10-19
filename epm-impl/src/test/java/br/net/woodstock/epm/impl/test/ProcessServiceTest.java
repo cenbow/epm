@@ -41,7 +41,7 @@ public class ProcessServiceTest {
 		System.out.println("Service OK: " + this.service);
 	}
 
-	// @Test
+	@Test
 	public void testListProcess() throws Exception {
 		ProcessDefinition[] array = this.service.listProcessByName(null);
 		for (ProcessDefinition process : array) {
@@ -99,7 +99,7 @@ public class ProcessServiceTest {
 		}
 	}
 
-	@Test
+	// @Test
 	public void testStartProcess() throws Exception {
 		ProcessDefinition processDefinition = this.service.getProcessDefinitionByKey("test-process");
 		if (processDefinition != null) {

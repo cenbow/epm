@@ -1,19 +1,22 @@
 package br.net.woodstock.epm.impl.test;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Date;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.BlockJUnit4ClassRunner;
 
-import br.net.woodstock.epm.store.api.StoreSevice;
-import br.net.woodstock.epm.store.jackrabbit.JackRabbitStoreService;
+import br.net.woodstock.epm.acl.api.User;
+import br.net.woodstock.epm.document.api.Document;
+import br.net.woodstock.epm.document.api.DocumentService;
+import br.net.woodstock.epm.document.jackrabbit.JackRabbitDocumentService;
 
 @RunWith(BlockJUnit4ClassRunner.class)
 public class JackRabbitServiceTest {
 
-	private static final String	PATH_STORE	= "/home/lourival/tmp/jackrabbit";
+	private static final String	JNDI_NAME	= "jcrRepo";
+
+	private static final String	HOME		= "/home/lourival/tmp/jackrabbit";
 
 	public JackRabbitServiceTest() {
 		super();
@@ -21,31 +24,31 @@ public class JackRabbitServiceTest {
 
 	// @Test
 	public void test1() throws Exception {
-		StoreSevice service = new JackRabbitStoreService(JackRabbitServiceTest.PATH_STORE);
-		Collection<String> ids = new ArrayList<String>();
+		DocumentService service = new JackRabbitDocumentService(JackRabbitServiceTest.JNDI_NAME, JackRabbitServiceTest.HOME);
 		for (int i = 0; i < 10; i++) {
-			String text = "Lourival Sabino " + i;
-			byte[] data = text.getBytes();
 			String id = Integer.toString(i);
+			String text = "Lourival Sabino " + i;
+			byte[] binary = text.getBytes();
+			Document document = new Document();
+			document.setBinary(binary);
+			document.setCreated(new Date());
+			document.setId(id);
+			document.setMimeType("text/plain");
+			document.setModified(new Date());
+			document.setName("test-" + i + ".txt");
+			document.setOwner(new User("admin"));
+			document.setText(text);
 
-			service.save(id, data);
-			ids.add(id);
-		}
-
-		Thread.sleep(30000);
-
-		for (String id : ids) {
-			byte[] data = service.get(id);
-			System.out.println("\t" + new String(data));
+			service.save(document);
 		}
 	}
 
 	@Test
 	public void test2() throws Exception {
-		StoreSevice service = new JackRabbitStoreService(JackRabbitServiceTest.PATH_STORE);
+		DocumentService service = new JackRabbitDocumentService(JackRabbitServiceTest.JNDI_NAME, JackRabbitServiceTest.HOME);
 		for (int i = 0; i < 10; i++) {
-			byte[] data = service.get(Integer.toString(i));
-			System.out.println("\t" + new String(data));
+			Document document = service.get(Integer.toString(i));
+			System.out.println("\t" + new String(document.getBinary()));
 		}
 	}
 
