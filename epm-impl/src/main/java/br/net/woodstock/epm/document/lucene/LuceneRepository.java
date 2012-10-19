@@ -15,7 +15,6 @@ import org.apache.lucene.document.Fieldable;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
-import org.apache.lucene.index.IndexWriterConfig.OpenMode;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
@@ -85,16 +84,17 @@ class LuceneRepository implements Repository {
 
 	private void init(final File path) {
 		try {
+			if (!path.exists()) {
+				path.mkdirs();
+			}
 			this.version = Version.LUCENE_36;
 			this.analyzer = new StandardAnalyzer(this.version);
 			this.directory = FSDirectory.open(path);
 
-			this.reader = IndexReader.open(this.directory);
-
-			IndexWriterConfig writerConfig = new IndexWriterConfig(this.version, this.analyzer);
-			writerConfig.setOpenMode(OpenMode.CREATE_OR_APPEND); // Create
-
 			this.writer = new IndexWriter(this.directory, new IndexWriterConfig(this.version, new StandardAnalyzer(this.version)));
+			this.writer.commit();
+
+			this.reader = IndexReader.open(this.directory);
 		} catch (Exception e) {
 			EPMLog.getLogger().error(e.getMessage(), e);
 			throw new ServiceException(e);

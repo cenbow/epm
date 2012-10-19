@@ -1,8 +1,9 @@
 package br.net.woodstock.epm.impl.test;
 
+import java.io.File;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,6 +15,7 @@ import br.net.woodstock.epm.document.api.DocumentResultContainer;
 import br.net.woodstock.epm.document.api.DocumentService;
 import br.net.woodstock.epm.document.lucene.LuceneDocumentService;
 import br.net.woodstock.epm.util.Page;
+import br.net.woodstock.rockframework.utils.IOUtils;
 
 @RunWith(BlockJUnit4ClassRunner.class)
 public class LuceneServiceTest {
@@ -27,7 +29,6 @@ public class LuceneServiceTest {
 	// @Test
 	public void testSave() throws Exception {
 		LuceneDocumentService service = new LuceneDocumentService(LuceneServiceTest.PATH_LUCENE);
-		Collection<String> ids = new ArrayList<String>();
 		for (int i = 1000; i < 2000; i++) {
 			System.out.println("Salvando " + i);
 			String text = "Lourival Sabino " + i;
@@ -44,10 +45,50 @@ public class LuceneServiceTest {
 			item.setText(text);
 
 			service.save(item);
-			ids.add(item.getId());
 		}
 
 		// service.close();
+	}
+
+	// @Test
+	public void testSaveDoc() throws Exception {
+		LuceneDocumentService service = new LuceneDocumentService(LuceneServiceTest.PATH_LUCENE);
+		List<String> list = new ArrayList<String>();
+		list.add("/home/lourival/Documents/curriculum.odt");
+		list.add("/home/lourival/Documents/curriculum.pdf");
+		list.add("/home/lourival/Documents/registro_de_ponto_posto_de_trabalho_vs1_0.doc");
+		list.add("/home/lourival/Documents/ws-sedesc1.xls");
+		list.add("/home/lourival/Documents/teste.rtf");
+		list.add("/home/lourival/Documents/pje-cnj-1.png");
+		list.add("/home/lourival/Documents/Acesso-soapui-project.xml");
+		for (String l : list) {
+			File file = new File(l);
+			byte[] binary = IOUtils.toByteArray(file);
+			Document item = new Document();
+
+			item.setBinary(binary);
+			item.setCreated(new Date());
+			item.setId(file.getName());
+			item.setMimeType("text/plain");
+			item.setModified(new Date());
+			item.setName(file.getName());
+			item.setOwner(new User("admin"));
+
+			service.save(item);
+		}
+	}
+
+	@Test
+	public void testSearchDoc() throws Exception {
+		DocumentService service = new LuceneDocumentService(LuceneServiceTest.PATH_LUCENE);
+		DocumentResultContainer container = service.search("Testando AND NAME:\"curriculum.odt\"", new Page(1, 1000));
+		System.out.println("Total : " + container.getTotal());
+		System.out.println("Pagina: " + container.getCurrentPage().getPageNumber());
+		Document[] array = container.getItems();
+		for (Document item : array) {
+			System.out.println(item.getName());
+			// this.print(item);
+		}
 	}
 
 	// @Test
@@ -59,7 +100,7 @@ public class LuceneServiceTest {
 		}
 	}
 
-	@Test
+	// @Test
 	public void testSearch() throws Exception {
 		DocumentService service = new LuceneDocumentService(LuceneServiceTest.PATH_LUCENE);
 		DocumentResultContainer container = service.search("lourival", new Page(1, 20));
