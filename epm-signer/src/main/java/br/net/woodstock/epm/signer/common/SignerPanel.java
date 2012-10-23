@@ -36,6 +36,7 @@ import br.net.woodstock.rockframework.security.store.StoreException;
 import br.net.woodstock.rockframework.utils.ConditionUtils;
 import br.net.woodstock.rockframework.utils.FileUtils;
 import br.net.woodstock.rockframework.utils.IOUtils;
+import br.net.woodstock.rockframework.utils.SystemUtils;
 
 public class SignerPanel extends JPanel {
 
@@ -99,7 +100,13 @@ public class SignerPanel extends JPanel {
 
 		// Type
 		this.lbType = new JLabel(SignerHolder.getInstance().getMessage().getMessage(Constants.LABEL_TYPE) + Constants.LABEL_SUFFIX);
-		this.cbType = new JComboBox(new Object[] { SignerHolder.getInstance().getMessage().getMessage(Constants.LABEL_SELECT), new PKCS12StoreTypeHandler() });
+		this.cbType = new JComboBox();
+		this.cbType.addItem(SignerHolder.getInstance().getMessage().getMessage(Constants.LABEL_SELECT));
+		this.cbType.addItem(new PKCS12StoreTypeHandler());
+
+		if (System.getProperty(SystemUtils.OS_NAME_PROPERTY).startsWith(Constants.WINDOWS_OS_NAME)) {
+			this.cbType.addItem(new WindowsMYStoreTypeHandler());
+		}
 
 		this.add(this.lbType, SwingUtils.getConstraints(line, 0, 1, 1, GridBagConstraints.EAST, GridBagConstraints.NONE));
 		this.add(this.cbType, SwingUtils.getConstraints(line, 1, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE));
