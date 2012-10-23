@@ -16,7 +16,7 @@
 		<!-- Libs -->
 		<activiti.version>5.10</activiti.version>
 		<antlr.version>3.4</antlr.version>
-		<bouncycastle.version>1.46</bouncycastle.version>
+		<bouncycastle.version>1.47</bouncycastle.version>
 		<groovy.version>1.8.6</groovy.version>
 		<itext.version>5.1.2</itext.version>
 		<jackrabbit.version>2.5.2</jackrabbit.version>
@@ -293,19 +293,19 @@
 			</dependency>
 			<dependency>
 				<groupId>org.bouncycastle</groupId>
-				<artifactId>bcmail-jdk16</artifactId>
+				<artifactId>bcmail-jdk15on</artifactId>
 				<version>${bouncycastle.version}</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.bouncycastle</groupId>
-				<artifactId>bcprov-jdk16</artifactId>
+				<artifactId>bcprov-jdk15on</artifactId>
 				<version>${bouncycastle.version}</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.bouncycastle</groupId>
-				<artifactId>bctsp-jdk16</artifactId>
+				<artifactId>bctsp-jdk15on</artifactId>
 				<version>${bouncycastle.version}</version>
 				<scope>provided</scope>
 			</dependency>
