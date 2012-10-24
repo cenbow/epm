@@ -23,6 +23,7 @@ public class WindowsMYStoreTypeHandler implements StoreTypeHandler {
 
 	@Override
 	public void execute() {
+		SignerHolder.getInstance().setHandler(this);
 		try {
 			KeyStore keyStore = KeyStore.getInstance(KeyStoreType.WINDOWS_MY.getType(), ProviderType.SUN_MSCAPI.getType());
 			keyStore.load(null, null);

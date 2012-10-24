@@ -139,6 +139,7 @@ public class PKCS12StoreTypeHandler implements StoreTypeHandler {
 
 	@Override
 	public void execute() {
+		SignerHolder.getInstance().setHandler(this);
 		this.frame.setVisible(true);
 	}
 
