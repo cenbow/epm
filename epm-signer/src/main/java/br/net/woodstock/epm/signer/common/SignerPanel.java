@@ -33,6 +33,8 @@ import br.net.woodstock.rockframework.security.store.PasswordAlias;
 import br.net.woodstock.rockframework.security.store.Store;
 import br.net.woodstock.rockframework.security.store.StoreEntryType;
 import br.net.woodstock.rockframework.security.store.StoreException;
+import br.net.woodstock.rockframework.security.timestamp.TimeStampClient;
+import br.net.woodstock.rockframework.security.timestamp.impl.URLTimeStampClient;
 import br.net.woodstock.rockframework.utils.ConditionUtils;
 import br.net.woodstock.rockframework.utils.FileUtils;
 import br.net.woodstock.rockframework.utils.IOUtils;
@@ -73,6 +75,10 @@ public class SignerPanel extends JPanel {
 	private JLabel				lbPdf;
 
 	private JCheckBox			ckPdfEmbedded;
+
+	private JLabel				lbTimeStampURL;
+
+	private JTextField			txTimeStampURL;
 
 	private JLabel				lbOutput;
 
@@ -171,6 +177,14 @@ public class SignerPanel extends JPanel {
 
 		this.add(this.lbPdf, SwingUtils.getConstraints(line, 0, 1, 1, GridBagConstraints.EAST, GridBagConstraints.NONE));
 		this.add(this.ckPdfEmbedded, SwingUtils.getConstraints(line, 1, 2, 1, GridBagConstraints.WEST, GridBagConstraints.NONE));
+		line++;
+
+		// TimeStamp
+		this.lbTimeStampURL = new JLabel(SignerHolder.getInstance().getMessage().getMessage(Constants.LABEL_TIMESTAMP) + Constants.LABEL_SUFFIX);
+		this.txTimeStampURL = new JTextField(30);
+
+		this.add(this.lbTimeStampURL, SwingUtils.getConstraints(line, 0, 1, 1, GridBagConstraints.EAST, GridBagConstraints.NONE));
+		this.add(this.txTimeStampURL, SwingUtils.getConstraints(line, 1, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE));
 		line++;
 
 		// Output
@@ -423,6 +437,11 @@ public class SignerPanel extends JPanel {
 				alias = new Alias(selectedAlias.getName());
 			}
 
+			TimeStampClient timeStampClient = null;
+			if (ConditionUtils.isNotEmpty(this.txTimeStampURL.getText())) {
+				timeStampClient = new URLTimeStampClient(this.txTimeStampURL.getText());
+			}
+
 			PKCS7SignatureMode mode = null;
 			if (!pdf) {
 				if (this.ckP7sDetached.isSelected()) {
@@ -434,7 +453,7 @@ public class SignerPanel extends JPanel {
 
 			Store store = SignerHolder.getInstance().getStore();
 			SignatureInfo signatureInfo = new SignatureInfo();
-			PKCS7SignatureParameters parameters = new PKCS7SignatureParameters(alias, store, signatureInfo, null, mode);
+			PKCS7SignatureParameters parameters = new PKCS7SignatureParameters(alias, store, signatureInfo, timeStampClient, mode);
 			parameters.setProvider(SignerHolder.getInstance().getHandler().getProvider());
 
 			Signer signer = null;

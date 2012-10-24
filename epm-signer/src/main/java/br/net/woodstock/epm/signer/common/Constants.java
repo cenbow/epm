@@ -45,6 +45,8 @@ public abstract class Constants {
 
 	public static final String	LABEL_SIGN				= "label.sign";
 
+	public static final String	LABEL_TIMESTAMP			= "label.timestamp";
+
 	public static final String	LABEL_TYPE				= "label.type";
 
 	public static final String	LABEL_SUFFIX			= " :";

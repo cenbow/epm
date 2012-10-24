@@ -30,8 +30,8 @@ import br.net.woodstock.rockframework.utils.ConditionUtils;
 public class PKCS12StoreTypeHandler implements StoreTypeHandler {
 
 	private static final String	TYPE_NAME	= "PKCS12 File";
-	
-	private static final String PROVIDER = ProviderType.BOUNCY_CASTLE.getType();
+
+	private static final String	PROVIDER	= ProviderType.BOUNCY_CASTLE.getType();
 
 	private JFrame				frame;
 
@@ -189,7 +189,7 @@ public class PKCS12StoreTypeHandler implements StoreTypeHandler {
 	public Store getStore() {
 		return this.store;
 	}
-	
+
 	@Override
 	public String getProvider() {
 		return PKCS12StoreTypeHandler.PROVIDER;
