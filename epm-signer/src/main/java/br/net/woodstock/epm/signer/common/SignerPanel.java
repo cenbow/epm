@@ -347,7 +347,7 @@ public class SignerPanel extends JPanel {
 		if (!(this.cbCertificate.getSelectedItem() instanceof Alias)) {
 			enabled = false;
 		}
-		if ((this.txKeyPassword.isEnabled() && (ConditionUtils.isEmpty(this.txKeyPassword.getPassword())))) {
+		if ((this.txKeyPassword.isEditable() && (ConditionUtils.isEmpty(this.txKeyPassword.getPassword())))) {
 			enabled = false;
 		}
 		if (ConditionUtils.isEmpty(this.txFile.getText())) {
