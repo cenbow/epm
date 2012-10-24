@@ -435,6 +435,7 @@ public class SignerPanel extends JPanel {
 			Store store = SignerHolder.getInstance().getStore();
 			SignatureInfo signatureInfo = new SignatureInfo();
 			PKCS7SignatureParameters parameters = new PKCS7SignatureParameters(alias, store, signatureInfo, null, mode);
+			parameters.setProvider(SignerHolder.getInstance().getHandler().getProvider());
 
 			Signer signer = null;
 			if ((pdf) && (this.ckPdfEmbedded.isSelected())) {

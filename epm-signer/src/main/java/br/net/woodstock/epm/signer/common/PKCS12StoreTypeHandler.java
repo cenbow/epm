@@ -21,6 +21,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 
+import br.net.woodstock.rockframework.security.ProviderType;
 import br.net.woodstock.rockframework.security.store.KeyStoreType;
 import br.net.woodstock.rockframework.security.store.Store;
 import br.net.woodstock.rockframework.security.store.impl.JCAStore;
@@ -29,6 +30,8 @@ import br.net.woodstock.rockframework.utils.ConditionUtils;
 public class PKCS12StoreTypeHandler implements StoreTypeHandler {
 
 	private static final String	TYPE_NAME	= "PKCS12 File";
+	
+	private static final String PROVIDER = ProviderType.BOUNCY_CASTLE.getType();
 
 	private JFrame				frame;
 
@@ -184,6 +187,11 @@ public class PKCS12StoreTypeHandler implements StoreTypeHandler {
 
 	public Store getStore() {
 		return this.store;
+	}
+	
+	@Override
+	public String getProvider() {
+		return PKCS12StoreTypeHandler.PROVIDER;
 	}
 
 	@Override

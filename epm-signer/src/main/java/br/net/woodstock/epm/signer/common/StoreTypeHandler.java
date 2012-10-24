@@ -4,4 +4,6 @@ public interface StoreTypeHandler {
 
 	void execute();
 
+	String getProvider();
+
 }

@@ -13,6 +13,8 @@ public class WindowsMYStoreTypeHandler implements StoreTypeHandler {
 
 	private static final String	TYPE_NAME	= "Windows MY";
 
+	private static final String	PROVIDER	= ProviderType.SUN_MSCAPI.getType();
+
 	private Store				store;
 
 	public WindowsMYStoreTypeHandler() {
@@ -31,6 +33,11 @@ public class WindowsMYStoreTypeHandler implements StoreTypeHandler {
 			JOptionPane.showMessageDialog(null, e, SignerHolder.getInstance().getMessage().getMessage(Constants.LABEL_ERROR), JOptionPane.ERROR_MESSAGE);
 			SignerLog.getLogger().debug(e.getMessage(), e);
 		}
+	}
+
+	@Override
+	public String getProvider() {
+		return WindowsMYStoreTypeHandler.PROVIDER;
 	}
 
 	@Override
