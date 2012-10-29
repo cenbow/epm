@@ -7,12 +7,8 @@
 		<constructor-arg name="engine" ref="processEngine" />
 	</bean>
 	
-	<bean id="SearchService" class="br.net.woodstock.epm.search.lucene.LuceneSearchService">
-		<constructor-arg name="indexPath" value="/home/lourival/tmp/lucene" />
-	</bean>
-	
-	<bean id="StoreSevice" class="br.net.woodstock.epm.store.filesystem.FileSystemStoreService">
-		<constructor-arg name="storePath" value="/home/lourival/tmp/store" />
+	<bean id="DocumentService" class="br.net.woodstock.epm.document.lucene.LuceneDocumentService" destroy-method="close" >
+		<constructor-arg name="home" value="/home/lourival/tmp/epm" />
 	</bean>
 
 </beans>

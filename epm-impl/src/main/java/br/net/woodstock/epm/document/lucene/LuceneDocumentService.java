@@ -5,6 +5,7 @@ import java.io.File;
 import br.net.woodstock.epm.document.api.Document;
 import br.net.woodstock.epm.document.api.DocumentResultContainer;
 import br.net.woodstock.epm.document.api.DocumentService;
+import br.net.woodstock.epm.util.EPMLog;
 import br.net.woodstock.epm.util.Page;
 import br.net.woodstock.rockframework.domain.service.Service;
 import br.net.woodstock.rockframework.domain.service.ServiceException;
@@ -33,8 +34,11 @@ public class LuceneDocumentService implements DocumentService, Service {
 
 	public void close() {
 		try {
+			EPMLog.getLogger().info("Closing repository...");
 			this.luceneRepository.close();
+			EPMLog.getLogger().info("Closing repository OK");
 		} catch (Exception e) {
+			EPMLog.getLogger().error("Closing repository Error: " + e.getMessage(), e);
 			throw new ServiceException(e);
 		}
 	}
