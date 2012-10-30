@@ -88,7 +88,7 @@ public class SignerPanel extends JPanel {
 
 	public SignerPanel() {
 		super();
-		SignerHolder.getInstance().setPanel(this);
+		ApplicationHolder.getInstance().setPanel(this);
 		this.init();
 	}
 
@@ -105,9 +105,9 @@ public class SignerPanel extends JPanel {
 		int line = 0;
 
 		// Type
-		this.lbType = new JLabel(SignerHolder.getInstance().getMessage().getMessage(Constants.LABEL_TYPE) + Constants.LABEL_SUFFIX);
+		this.lbType = new JLabel(ApplicationHolder.getInstance().getMessage().getMessage(Constants.LABEL_TYPE) + Constants.LABEL_SUFFIX);
 		this.cbType = new JComboBox();
-		this.cbType.addItem(SignerHolder.getInstance().getMessage().getMessage(Constants.LABEL_SELECT));
+		this.cbType.addItem(ApplicationHolder.getInstance().getMessage().getMessage(Constants.LABEL_SELECT));
 		this.cbType.addItem(new PKCS12StoreTypeHandler());
 
 		if (System.getProperty(SystemUtils.OS_NAME_PROPERTY).startsWith(Constants.WINDOWS_OS_NAME)) {
@@ -119,7 +119,7 @@ public class SignerPanel extends JPanel {
 		line++;
 
 		// Certificate
-		this.lbCertificate = new JLabel(SignerHolder.getInstance().getMessage().getMessage(Constants.LABEL_CERTIFICATE) + Constants.LABEL_SUFFIX);
+		this.lbCertificate = new JLabel(ApplicationHolder.getInstance().getMessage().getMessage(Constants.LABEL_CERTIFICATE) + Constants.LABEL_SUFFIX);
 		this.cbCertificate = new JComboBox();
 
 		this.add(this.lbCertificate, SwingUtils.getConstraints(line, 0, 1, 1, GridBagConstraints.EAST, GridBagConstraints.NONE));
@@ -127,7 +127,7 @@ public class SignerPanel extends JPanel {
 		line++;
 
 		// Password
-		this.lbKeyPassword = new JLabel(SignerHolder.getInstance().getMessage().getMessage(Constants.LABEL_PASSWORD) + Constants.LABEL_SUFFIX);
+		this.lbKeyPassword = new JLabel(ApplicationHolder.getInstance().getMessage().getMessage(Constants.LABEL_PASSWORD) + Constants.LABEL_SUFFIX);
 		this.txKeyPassword = new JPasswordField(20);
 		this.txKeyPassword.setEditable(false);
 
@@ -136,12 +136,12 @@ public class SignerPanel extends JPanel {
 		line++;
 
 		// File
-		this.lbFile = new JLabel(SignerHolder.getInstance().getMessage().getMessage(Constants.LABEL_FILE) + Constants.LABEL_SUFFIX);
+		this.lbFile = new JLabel(ApplicationHolder.getInstance().getMessage().getMessage(Constants.LABEL_FILE) + Constants.LABEL_SUFFIX);
 
 		this.txFile = new JTextField(25);
 		this.txFile.setEditable(false);
 
-		this.btFile = new JButton(SignerHolder.getInstance().getMessage().getMessage(Constants.LABEL_SEARCH));
+		this.btFile = new JButton(ApplicationHolder.getInstance().getMessage().getMessage(Constants.LABEL_SEARCH));
 
 		this.add(this.lbFile, SwingUtils.getConstraints(line, 0, 1, 1, GridBagConstraints.EAST, GridBagConstraints.NONE));
 		this.add(this.txFile, SwingUtils.getConstraints(line, 1, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE));
@@ -149,12 +149,12 @@ public class SignerPanel extends JPanel {
 		line++;
 
 		// Dir
-		this.lbDir = new JLabel(SignerHolder.getInstance().getMessage().getMessage(Constants.LABEL_DIR) + Constants.LABEL_SUFFIX);
+		this.lbDir = new JLabel(ApplicationHolder.getInstance().getMessage().getMessage(Constants.LABEL_DIR) + Constants.LABEL_SUFFIX);
 
 		this.txDir = new JTextField(25);
 		this.txDir.setEditable(false);
 
-		this.btDir = new JButton(SignerHolder.getInstance().getMessage().getMessage(Constants.LABEL_SEARCH));
+		this.btDir = new JButton(ApplicationHolder.getInstance().getMessage().getMessage(Constants.LABEL_SEARCH));
 
 		this.add(this.lbDir, SwingUtils.getConstraints(line, 0, 1, 1, GridBagConstraints.EAST, GridBagConstraints.NONE));
 		this.add(this.txDir, SwingUtils.getConstraints(line, 1, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE));
@@ -162,8 +162,8 @@ public class SignerPanel extends JPanel {
 		line++;
 
 		// P7S
-		this.lbP7s = new JLabel(SignerHolder.getInstance().getMessage().getMessage(Constants.LABEL_P7S_OPTIONS) + Constants.LABEL_SUFFIX);
-		this.ckP7sDetached = new JCheckBox(SignerHolder.getInstance().getMessage().getMessage(Constants.LABEL_P7S_DETACHED));
+		this.lbP7s = new JLabel(ApplicationHolder.getInstance().getMessage().getMessage(Constants.LABEL_P7S_OPTIONS) + Constants.LABEL_SUFFIX);
+		this.ckP7sDetached = new JCheckBox(ApplicationHolder.getInstance().getMessage().getMessage(Constants.LABEL_P7S_DETACHED));
 		this.ckP7sDetached.setEnabled(false);
 
 		this.add(this.lbP7s, SwingUtils.getConstraints(line, 0, 1, 1, GridBagConstraints.EAST, GridBagConstraints.NONE));
@@ -171,8 +171,8 @@ public class SignerPanel extends JPanel {
 		line++;
 
 		// PDF
-		this.lbPdf = new JLabel(SignerHolder.getInstance().getMessage().getMessage(Constants.LABEL_PDF_OPTIONS) + Constants.LABEL_SUFFIX);
-		this.ckPdfEmbedded = new JCheckBox(SignerHolder.getInstance().getMessage().getMessage(Constants.LABEL_PDF_EMBEDDED));
+		this.lbPdf = new JLabel(ApplicationHolder.getInstance().getMessage().getMessage(Constants.LABEL_PDF_OPTIONS) + Constants.LABEL_SUFFIX);
+		this.ckPdfEmbedded = new JCheckBox(ApplicationHolder.getInstance().getMessage().getMessage(Constants.LABEL_PDF_EMBEDDED));
 		this.ckPdfEmbedded.setEnabled(false);
 
 		this.add(this.lbPdf, SwingUtils.getConstraints(line, 0, 1, 1, GridBagConstraints.EAST, GridBagConstraints.NONE));
@@ -180,7 +180,7 @@ public class SignerPanel extends JPanel {
 		line++;
 
 		// TimeStamp
-		this.lbTimeStampURL = new JLabel(SignerHolder.getInstance().getMessage().getMessage(Constants.LABEL_TIMESTAMP) + Constants.LABEL_SUFFIX);
+		this.lbTimeStampURL = new JLabel(ApplicationHolder.getInstance().getMessage().getMessage(Constants.LABEL_TIMESTAMP) + Constants.LABEL_SUFFIX);
 		this.txTimeStampURL = new JTextField(30);
 
 		this.add(this.lbTimeStampURL, SwingUtils.getConstraints(line, 0, 1, 1, GridBagConstraints.EAST, GridBagConstraints.NONE));
@@ -188,7 +188,7 @@ public class SignerPanel extends JPanel {
 		line++;
 
 		// Output
-		this.lbOutput = new JLabel(SignerHolder.getInstance().getMessage().getMessage(Constants.LABEL_OUTPUT) + Constants.LABEL_SUFFIX);
+		this.lbOutput = new JLabel(ApplicationHolder.getInstance().getMessage().getMessage(Constants.LABEL_OUTPUT) + Constants.LABEL_SUFFIX);
 		this.txOutput = new JTextField(25);
 		this.txOutput.setEditable(false);
 
@@ -197,7 +197,7 @@ public class SignerPanel extends JPanel {
 		line++;
 
 		// Buttons
-		this.btSign = new JButton(SignerHolder.getInstance().getMessage().getMessage(Constants.LABEL_SIGN));
+		this.btSign = new JButton(ApplicationHolder.getInstance().getMessage().getMessage(Constants.LABEL_SIGN));
 		this.btSign.setEnabled(false);
 
 		this.add(this.btSign, SwingUtils.getConstraints(line, 0, 3, 1, GridBagConstraints.CENTER, GridBagConstraints.NONE));
@@ -244,7 +244,7 @@ public class SignerPanel extends JPanel {
 			public void actionPerformed(final ActionEvent e) {
 				JFileChooser fileChooser = new JFileChooser();
 				fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-				int result = fileChooser.showDialog(SignerPanel.this, SignerHolder.getInstance().getMessage().getMessage(Constants.LABEL_OK));
+				int result = fileChooser.showDialog(SignerPanel.this, ApplicationHolder.getInstance().getMessage().getMessage(Constants.LABEL_OK));
 				if (result == JFileChooser.APPROVE_OPTION) {
 					File file = fileChooser.getSelectedFile();
 					SignerPanel.this.onSelectFile(file);
@@ -259,7 +259,7 @@ public class SignerPanel extends JPanel {
 			public void actionPerformed(final ActionEvent e) {
 				JFileChooser fileChooser = new JFileChooser();
 				fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-				int result = fileChooser.showDialog(SignerPanel.this, SignerHolder.getInstance().getMessage().getMessage(Constants.LABEL_OK));
+				int result = fileChooser.showDialog(SignerPanel.this, ApplicationHolder.getInstance().getMessage().getMessage(Constants.LABEL_OK));
 				if (result == JFileChooser.APPROVE_OPTION) {
 					File file = fileChooser.getSelectedFile();
 					SignerPanel.this.onSelectOutput(file);
@@ -288,7 +288,7 @@ public class SignerPanel extends JPanel {
 	}
 
 	public void onSelectStore() {
-		Store store = SignerHolder.getInstance().getStore();
+		Store store = ApplicationHolder.getInstance().getStore();
 
 		if (store == null) {
 			this.cbType.setSelectedIndex(0);
@@ -374,7 +374,7 @@ public class SignerPanel extends JPanel {
 	}
 
 	protected void checkAlias() {
-		Store store = SignerHolder.getInstance().getStore();
+		Store store = ApplicationHolder.getInstance().getStore();
 		try {
 			Alias selectedAlias = (Alias) this.cbCertificate.getSelectedItem();
 			if (selectedAlias != null) {
@@ -451,10 +451,10 @@ public class SignerPanel extends JPanel {
 				}
 			}
 
-			Store store = SignerHolder.getInstance().getStore();
+			Store store = ApplicationHolder.getInstance().getStore();
 			SignatureInfo signatureInfo = new SignatureInfo();
 			PKCS7SignatureParameters parameters = new PKCS7SignatureParameters(alias, store, signatureInfo, timeStampClient, mode);
-			parameters.setProvider(SignerHolder.getInstance().getHandler().getProvider());
+			parameters.setProvider(ApplicationHolder.getInstance().getHandler().getProvider());
 
 			Signer signer = null;
 			if ((pdf) && (this.ckPdfEmbedded.isSelected())) {
@@ -470,9 +470,9 @@ public class SignerPanel extends JPanel {
 			outputStream.write(signature);
 			outputStream.close();
 
-			JOptionPane.showMessageDialog(this, SignerHolder.getInstance().getMessage().getMessage(Constants.MSG_SUCCESS), SignerHolder.getInstance().getMessage().getMessage(Constants.LABEL_INFO), JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(this, ApplicationHolder.getInstance().getMessage().getMessage(Constants.MSG_SUCCESS), ApplicationHolder.getInstance().getMessage().getMessage(Constants.LABEL_INFO), JOptionPane.INFORMATION_MESSAGE);
 		} catch (Exception ex) {
-			JOptionPane.showMessageDialog(this, ex, SignerHolder.getInstance().getMessage().getMessage(Constants.LABEL_ERROR), JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this, ex, ApplicationHolder.getInstance().getMessage().getMessage(Constants.LABEL_ERROR), JOptionPane.ERROR_MESSAGE);
 			SignerLog.getLogger().warn(ex.getMessage(), ex);
 		} finally {
 			if (inputStream != null) {

@@ -9,6 +9,8 @@ public abstract class Constants {
 	public static final int		APP_HEIGHT				= 320;
 
 	// Labels
+	public static final String	LABEL_BACK				= "label.back";
+
 	public static final String	LABEL_CANCEL			= "label.cancel";
 
 	public static final String	LABEL_CERTIFICATE		= "label.certificate";
@@ -22,6 +24,8 @@ public abstract class Constants {
 	public static final String	LABEL_FILE				= "label.file";
 
 	public static final String	LABEL_INFO				= "label.info";
+
+	public static final String	LABEL_NEXT				= "label.next";
 
 	public static final String	LABEL_OK				= "label.ok";
 

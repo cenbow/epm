@@ -23,15 +23,15 @@ public class WindowsMYStoreTypeHandler implements StoreTypeHandler {
 
 	@Override
 	public void execute() {
-		SignerHolder.getInstance().setHandler(this);
+		ApplicationHolder.getInstance().setHandler(this);
 		try {
 			KeyStore keyStore = KeyStore.getInstance(KeyStoreType.WINDOWS_MY.getType(), ProviderType.SUN_MSCAPI.getType());
 			keyStore.load(null, null);
 			this.store = new JCAStore(keyStore);
-			SignerHolder.getInstance().setStore(this.store);
-			SignerHolder.getInstance().onSelectStore();
+			ApplicationHolder.getInstance().setStore(this.store);
+			//ApplicationHolder.getInstance().onSelectStore();
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, e, SignerHolder.getInstance().getMessage().getMessage(Constants.LABEL_ERROR), JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, e, ApplicationHolder.getInstance().getMessage().getMessage(Constants.LABEL_ERROR), JOptionPane.ERROR_MESSAGE);
 			SignerLog.getLogger().debug(e.getMessage(), e);
 		}
 	}
