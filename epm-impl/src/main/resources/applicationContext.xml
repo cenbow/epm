@@ -12,5 +12,6 @@
 	<import resource="classpath:applicationContext-activiti.xml" />
 	<import resource="classpath:applicationContext-resource.xml" />
 	<import resource="classpath:applicationContext-service.xml" />
+	<import resource="classpath:applicationContext-ws.xml" />
 	
 </beans>

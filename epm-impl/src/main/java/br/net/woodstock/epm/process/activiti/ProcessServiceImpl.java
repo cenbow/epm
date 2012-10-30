@@ -28,7 +28,7 @@ import br.net.woodstock.epm.process.api.Form;
 import br.net.woodstock.epm.process.api.ProcessDefinition;
 import br.net.woodstock.epm.process.api.ProcessInstance;
 import br.net.woodstock.epm.process.api.ProcessService;
-import br.net.woodstock.epm.process.api.Task;
+import br.net.woodstock.epm.process.api.TaskInstance;
 import br.net.woodstock.rockframework.domain.service.Service;
 import br.net.woodstock.rockframework.domain.service.ServiceException;
 import br.net.woodstock.rockframework.utils.ConditionUtils;
@@ -157,6 +157,16 @@ public class ProcessServiceImpl implements ProcessService, Service {
 	public ProcessInstance getProccessInstanceByKey(final String key) {
 		try {
 			ProcessInstance instance = ProcessServiceHelper.getProcessInstance(this.engine, null, key);
+			return instance;
+		} catch (Exception e) {
+			throw new ServiceException(e);
+		}
+	}
+
+	@Override
+	public TaskInstance getTaskInstanceById(final String id) {
+		try {
+			TaskInstance instance = ProcessServiceHelper.getTaskInstance(this.engine, id);
 			return instance;
 		} catch (Exception e) {
 			throw new ServiceException(e);
@@ -332,15 +342,14 @@ public class ProcessServiceImpl implements ProcessService, Service {
 	}
 
 	@Override
-	public Task[] listTasksByUser(final String user) {
+	public TaskInstance[] listTasksByUser(final String user) {
 		try {
 			TaskQuery query = this.engine.getTaskService().createTaskQuery();
 			query.taskAssignee(user);
 			List<org.activiti.engine.task.Task> list = query.list();
-			Task[] array = new Task[list.size()];
+			TaskInstance[] array = new TaskInstance[list.size()];
 			for (int i = 0; i < list.size(); i++) {
-				Task t = ConverterHelper.toTask(list.get(i));
-				ProcessServiceHelper.completeTask(this.engine, t);
+				TaskInstance t = ProcessServiceHelper.getTaskInstance(this.engine, list.get(i).getId());
 				array[i] = t;
 			}
 			return array;
@@ -350,15 +359,14 @@ public class ProcessServiceImpl implements ProcessService, Service {
 	}
 
 	@Override
-	public Task[] listTasksByCandidateUser(final String user) {
+	public TaskInstance[] listTasksByCandidateUser(final String user) {
 		try {
 			TaskQuery query = this.engine.getTaskService().createTaskQuery();
 			query.taskCandidateUser(user);
 			List<org.activiti.engine.task.Task> list = query.list();
-			Task[] array = new Task[list.size()];
+			TaskInstance[] array = new TaskInstance[list.size()];
 			for (int i = 0; i < list.size(); i++) {
-				Task t = ConverterHelper.toTask(list.get(i));
-				ProcessServiceHelper.completeTask(this.engine, t);
+				TaskInstance t = ProcessServiceHelper.getTaskInstance(this.engine, list.get(i).getId());
 				array[i] = t;
 			}
 			return array;
@@ -368,15 +376,14 @@ public class ProcessServiceImpl implements ProcessService, Service {
 	}
 
 	@Override
-	public Task[] listTasksByCandidateGroup(final String group) {
+	public TaskInstance[] listTasksByCandidateGroup(final String group) {
 		try {
 			TaskQuery query = this.engine.getTaskService().createTaskQuery();
 			query.taskCandidateGroup(group);
 			List<org.activiti.engine.task.Task> list = query.list();
-			Task[] array = new Task[list.size()];
+			TaskInstance[] array = new TaskInstance[list.size()];
 			for (int i = 0; i < list.size(); i++) {
-				Task t = ConverterHelper.toTask(list.get(i));
-				ProcessServiceHelper.completeTask(this.engine, t);
+				TaskInstance t = ProcessServiceHelper.getTaskInstance(this.engine, list.get(i).getId());
 				array[i] = t;
 			}
 			return array;
@@ -386,15 +393,14 @@ public class ProcessServiceImpl implements ProcessService, Service {
 	}
 
 	@Override
-	public Task[] listTasksByProcessInstanceId(final String id) {
+	public TaskInstance[] listTasksByProcessInstanceId(final String id) {
 		try {
 			TaskQuery query = this.engine.getTaskService().createTaskQuery();
 			query.processInstanceId(id);
 			List<org.activiti.engine.task.Task> list = query.list();
-			Task[] array = new Task[list.size()];
+			TaskInstance[] array = new TaskInstance[list.size()];
 			for (int i = 0; i < list.size(); i++) {
-				Task t = ConverterHelper.toTask(list.get(i));
-				ProcessServiceHelper.completeTask(this.engine, t);
+				TaskInstance t = ProcessServiceHelper.getTaskInstance(this.engine, list.get(i).getId());
 				array[i] = t;
 			}
 			return array;
@@ -404,15 +410,14 @@ public class ProcessServiceImpl implements ProcessService, Service {
 	}
 
 	@Override
-	public Task[] listTasksByProcessInstanceKey(final String key) {
+	public TaskInstance[] listTasksByProcessInstanceKey(final String key) {
 		try {
 			TaskQuery query = this.engine.getTaskService().createTaskQuery();
 			query.processInstanceBusinessKey(key);
 			List<org.activiti.engine.task.Task> list = query.list();
-			Task[] array = new Task[list.size()];
+			TaskInstance[] array = new TaskInstance[list.size()];
 			for (int i = 0; i < list.size(); i++) {
-				Task t = ConverterHelper.toTask(list.get(i));
-				ProcessServiceHelper.completeTask(this.engine, t);
+				TaskInstance t = ProcessServiceHelper.getTaskInstance(this.engine, list.get(i).getId());
 				array[i] = t;
 			}
 			return array;

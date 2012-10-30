@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import br.net.woodstock.epm.acl.api.User;
 
-public class Task implements Serializable {
+public class TaskInstance implements Serializable {
 
 	private static final long	serialVersionUID	= -2068654141082732847L;
 
@@ -20,7 +20,9 @@ public class Task implements Serializable {
 
 	private User				owner;
 
-	public Task() {
+	private ProcessInstance		processInstance;
+
+	public TaskInstance() {
 		super();
 	}
 
@@ -70,6 +72,14 @@ public class Task implements Serializable {
 
 	public void setOwner(final User owner) {
 		this.owner = owner;
+	}
+
+	public ProcessInstance getProcessInstance() {
+		return this.processInstance;
+	}
+
+	public void setProcessInstance(final ProcessInstance processInstance) {
+		this.processInstance = processInstance;
 	}
 
 	@Override

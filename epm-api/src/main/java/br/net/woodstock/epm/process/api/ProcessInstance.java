@@ -1,41 +1,36 @@
 package br.net.woodstock.epm.process.api;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 
 public class ProcessInstance implements Serializable {
 
-	private static final long			serialVersionUID	= 8874015973197883393L;
+	private static final long	serialVersionUID	= 8874015973197883393L;
 
-	private String						id;
+	private String				id;
 
-	private String						key;
+	private String				key;
 
-	private boolean						suspended;
+	private boolean				suspended;
 
-	private boolean						finished;
+	private boolean				finished;
 
-	private Date						start;
+	private Date				start;
 
-	private Date						end;
+	private Date				end;
 
-	private ProcessDefinition			processDefinition;
+	private ProcessDefinition	processDefinition;
 
-	private ProcessInstance				parentProcessInstance;
+	private ProcessInstance		parentProcessInstance;
 
-	private Collection<Activity>		current;
+	private Activity[]			current;
 
-	private Collection<Activity>		history;
+	private Activity[]			history;
 
-	private Collection<ProcessInstance>	subProcess;
+	private ProcessInstance[]	subProcess;
 
 	public ProcessInstance() {
 		super();
-		this.current = new ArrayList<Activity>();
-		this.history = new ArrayList<Activity>();
-		this.subProcess = new ArrayList<ProcessInstance>();
 	}
 
 	public String getId() {
@@ -102,27 +97,27 @@ public class ProcessInstance implements Serializable {
 		this.parentProcessInstance = parentProcessInstance;
 	}
 
-	public Collection<Activity> getCurrent() {
+	public Activity[] getCurrent() {
 		return this.current;
 	}
 
-	public void setCurrent(final Collection<Activity> current) {
+	public void setCurrent(final Activity[] current) {
 		this.current = current;
 	}
 
-	public Collection<Activity> getHistory() {
+	public Activity[] getHistory() {
 		return this.history;
 	}
 
-	public void setHistory(final Collection<Activity> history) {
+	public void setHistory(final Activity[] history) {
 		this.history = history;
 	}
 
-	public Collection<ProcessInstance> getSubProcess() {
+	public ProcessInstance[] getSubProcess() {
 		return this.subProcess;
 	}
 
-	public void setSubProcess(final Collection<ProcessInstance> subProcess) {
+	public void setSubProcess(final ProcessInstance[] subProcess) {
 		this.subProcess = subProcess;
 	}
 

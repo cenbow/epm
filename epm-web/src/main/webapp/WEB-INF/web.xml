@@ -2,11 +2,11 @@
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
 
 	<display-name>epm</display-name>
-	<description>Ticket Application</description>
+	<description>EPM Web</description>
 
 	<!-- Index -->
 	<welcome-file-list>
-		<welcome-file>index.xhtml</welcome-file>
+		<welcome-file>index.action</welcome-file>
 	</welcome-file-list>
 
 	<!-- JSTL -->
@@ -14,30 +14,26 @@
 		<param-name>javax.servlet.jsp.jstl.fmt.locale</param-name>
 		<param-value>pt_BR</param-value>
 	</context-param>
+	
+	<!-- Spring -->
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
 
-	<!-- JSF -->
-	<servlet>
-		<servlet-name>Faces Servlet</servlet-name>
-		<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
-		<load-on-startup>1</load-on-startup>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>Faces Servlet</servlet-name>
-		<url-pattern>*.xhtml</url-pattern>
-	</servlet-mapping>
 	<context-param>
-		<param-name>javax.faces.PROJECT_STAGE</param-name>
-		<param-value>Development</param-value>
-	</context-param>
-	<context-param>
-		<param-name>javax.faces.STATE_SAVING_METHOD</param-name>
-		<param-value>server</param-value>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>classpath*:applicationContext.xml</param-value>
 	</context-param>
 
-	<!-- RichFaces -->
-	<context-param>
-		<param-name>org.richfaces.skin</param-name>
-		<param-value>blueSky</param-value>
-	</context-param>
+	<filter>
+		<filter-name>spring</filter-name>
+		<filter-class>org.springframework.web.filter.RequestContextFilter</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>spring</filter-name>
+		<url-pattern>*.action</url-pattern>
+	</filter-mapping>
+
 
 </web-app>

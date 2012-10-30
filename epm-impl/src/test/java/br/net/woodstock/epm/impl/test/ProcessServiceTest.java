@@ -6,7 +6,6 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,7 +20,8 @@ import br.net.woodstock.epm.process.api.FormField;
 import br.net.woodstock.epm.process.api.ProcessDefinition;
 import br.net.woodstock.epm.process.api.ProcessInstance;
 import br.net.woodstock.epm.process.api.ProcessService;
-import br.net.woodstock.epm.process.api.Task;
+import br.net.woodstock.epm.process.api.TaskInstance;
+import br.net.woodstock.epm.process.util.Forms;
 import br.net.woodstock.rockframework.utils.ConditionUtils;
 import br.net.woodstock.rockframework.utils.IOUtils;
 
@@ -120,9 +120,9 @@ public class ProcessServiceTest {
 
 	// @Test
 	public void testListTasks() throws Exception {
-		Task[] tasks = this.service.listTasksByProcessInstanceKey("Test Lourival Sabino 2");
+		TaskInstance[] tasks = this.service.listTasksByProcessInstanceKey("Test Lourival Sabino 2");
 		System.out.println("====== TASKS =====");
-		for (Task task : tasks) {
+		for (TaskInstance task : tasks) {
 			System.out.println(task.getDescription());
 			System.out.println(task.getId());
 			System.out.println(task.getName());
@@ -132,8 +132,8 @@ public class ProcessServiceTest {
 			Form form = this.service.getForm(task.getId());
 			if (form != null) {
 				System.out.println(form.getId());
-				for (Entry<String, FormField> entry : form.getFields().entrySet()) {
-					System.out.println("\t" + entry.getKey() + " => " + entry.getValue().getId() + " => " + entry.getValue().getType());
+				for (FormField field : form.getFields()) {
+					System.out.println("\t" + field.getId() + " => " + field.getType());
 				}
 			}
 		}
@@ -155,16 +155,16 @@ public class ProcessServiceTest {
 
 	// @Test
 	public void testSetUserTask() throws Exception {
-		Task[] tasks = this.service.listTasksByProcessInstanceKey("Test Lourival Sabino 2");
-		for (Task task : tasks) {
+		TaskInstance[] tasks = this.service.listTasksByProcessInstanceKey("Test Lourival Sabino 2");
+		for (TaskInstance task : tasks) {
 			this.service.assignTask(task.getId(), "kermit");
 		}
 	}
 
 	// @Test
 	public void testUserTask() throws Exception {
-		Task[] tasks = this.service.listTasksByProcessInstanceId("310");
-		for (Task task : tasks) {
+		TaskInstance[] tasks = this.service.listTasksByProcessInstanceId("310");
+		for (TaskInstance task : tasks) {
 			System.out.println(task.getId());
 			System.out.println(task.getName());
 			System.out.println(task.getDescription());
@@ -174,7 +174,7 @@ public class ProcessServiceTest {
 		}
 
 		tasks = this.service.listTasksByUser("kermit");
-		for (Task task : tasks) {
+		for (TaskInstance task : tasks) {
 			System.out.println(task.getId());
 			System.out.println(task.getName());
 			System.out.println(task.getDescription());
@@ -186,24 +186,24 @@ public class ProcessServiceTest {
 
 	// @Test
 	public void testSetUserTaskForm() throws Exception {
-		Task[] tasks = this.service.listTasksByProcessInstanceKey("Test Lourival Sabino 3");
-		Task task = tasks[0];
+		TaskInstance[] tasks = this.service.listTasksByProcessInstanceKey("Test Lourival Sabino 3");
+		TaskInstance task = tasks[0];
 		Form form = this.service.getForm(task.getId());
-		form.getField("telefone").setValue("1");
-		form.getField("nome").setValue("1");
-		form.getField("endereco").setValue("123456");
+		Forms.getField(form, "telefone").setValue("1");
+		Forms.getField(form, "nome").setValue("1");
+		Forms.getField(form, "endereco").setValue("123456");
 		System.out.println("Definindo o Form");
 		this.service.submitForm(task.getId(), form);
 	}
 
 	// @Test
 	public void testGetUserTaskForm() throws Exception {
-		Task[] tasks = this.service.listTasksByProcessInstanceKey("Test Lourival Sabino 2");
-		Task task = tasks[0];
+		TaskInstance[] tasks = this.service.listTasksByProcessInstanceKey("Test Lourival Sabino 2");
+		TaskInstance task = tasks[0];
 		Form form = this.service.getForm(task.getId());
-		System.out.println(form.getField("telefone").getValue());
-		System.out.println(form.getField("nome").getValue());
-		System.out.println(form.getField("endereco").getValue());
+		System.out.println(Forms.getField(form, "telefone").getValue());
+		System.out.println(Forms.getField(form, "nome").getValue());
+		System.out.println(Forms.getField(form, "endereco").getValue());
 	}
 
 	private void print(final ProcessInstance pi, final String tabs) throws Exception {

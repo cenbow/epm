@@ -1,5 +1,6 @@
 package br.net.woodstock.epm.process.activiti;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,7 +18,8 @@ import org.activiti.engine.task.TaskQuery;
 import br.net.woodstock.epm.process.api.Activity;
 import br.net.woodstock.epm.process.api.ProcessDefinition;
 import br.net.woodstock.epm.process.api.ProcessInstance;
-import br.net.woodstock.epm.process.api.Task;
+import br.net.woodstock.epm.process.api.TaskInstance;
+import br.net.woodstock.rockframework.utils.CollectionUtils;
 import br.net.woodstock.rockframework.utils.ConditionUtils;
 
 abstract class ProcessServiceHelper {
@@ -78,6 +80,31 @@ abstract class ProcessServiceHelper {
 		return null;
 	}
 
+	public static TaskInstance getTaskInstance(final ProcessEngine engine, final String id) {
+		TaskQuery query = engine.getTaskService().createTaskQuery();
+		query.taskId(id);
+		org.activiti.engine.task.Task t = query.singleResult();
+		if (t != null) {
+			TaskInstance instance = ConverterHelper.toTask(t);
+			instance.setProcessInstance(ProcessServiceHelper.getProcessInstance(engine, t.getProcessInstanceId(), null));
+
+			if (ConditionUtils.isNotEmpty(t.getAssignee())) {
+				UserQuery userQuery = engine.getIdentityService().createUserQuery();
+				userQuery.userId(t.getAssignee());
+				org.activiti.engine.identity.User user = userQuery.singleResult();
+				instance.setUser(ConverterHelper.toUser(user));
+			}
+			if (ConditionUtils.isNotEmpty(t.getOwner())) {
+				UserQuery userQuery = engine.getIdentityService().createUserQuery();
+				userQuery.userId(t.getOwner());
+				org.activiti.engine.identity.User user = userQuery.singleResult();
+				instance.setOwner(ConverterHelper.toUser(user));
+			}
+			return instance;
+		}
+		return null;
+	}
+
 	private static void completeProcessInstance(final ProcessEngine engine, final ProcessInstance instance, final String processDefinitionId, final String parentProcessInstanceId, final Map<String, ProcessInstance> cache) {
 		cache.put(instance.getId(), instance);
 		ProcessServiceHelper.addParentProcessInstance(engine, instance, parentProcessInstanceId, cache);
@@ -99,6 +126,9 @@ abstract class ProcessServiceHelper {
 		activityInstanceQuery.processInstanceId(instance.getId());
 		List<HistoricActivityInstance> activityList = activityInstanceQuery.list();
 
+		List<Activity> histories = new ArrayList<Activity>();
+		List<Activity> currents = new ArrayList<Activity>();
+
 		if (ConditionUtils.isNotEmpty(activityList)) {
 			for (HistoricActivityInstance activityInstance : activityList) {
 				Activity a = ConverterHelper.toActivity(activityInstance);
@@ -117,12 +147,15 @@ abstract class ProcessServiceHelper {
 				}
 
 				if (activityInstance.getEndTime() != null) {
-					instance.getHistory().add(a);
+					histories.add(a);
 				} else {
-					instance.getCurrent().add(a);
+					currents.add(a);
 				}
 			}
 		}
+
+		instance.setHistory(CollectionUtils.toArray(histories, Activity.class));
+		instance.setCurrent(CollectionUtils.toArray(currents, Activity.class));
 	}
 
 	private static void addParentProcessInstance(final ProcessEngine engine, final ProcessInstance instance, final String parentProcessInstanceId, final Map<String, ProcessInstance> cache) {
@@ -165,6 +198,7 @@ abstract class ProcessServiceHelper {
 
 	private static void addSubProcessInstance(final ProcessEngine engine, final ProcessInstance instance, final Map<String, ProcessInstance> cache) {
 		// Child Process
+		List<ProcessInstance> list = new ArrayList<ProcessInstance>();
 		if (!instance.isFinished()) {
 			ProcessInstanceQuery processInstanceQuery = engine.getRuntimeService().createProcessInstanceQuery();
 			processInstanceQuery.superProcessInstanceId(instance.getId());
@@ -173,11 +207,11 @@ abstract class ProcessServiceHelper {
 				for (org.activiti.engine.runtime.ProcessInstance tmpPi : processInstancelist) {
 					if (!cache.containsKey(tmpPi.getId())) {
 						ProcessInstance subProcessInstance = ConverterHelper.toProcessInstance(tmpPi);
-						instance.getSubProcess().add(subProcessInstance);
+						list.add(subProcessInstance);
 						cache.put(tmpPi.getId(), subProcessInstance);
 						ProcessServiceHelper.completeProcessInstance(engine, subProcessInstance, tmpPi.getProcessDefinitionId(), instance.getId(), cache);
 					} else {
-						instance.getSubProcess().add(cache.get(tmpPi.getId()));
+						list.add(cache.get(tmpPi.getId()));
 					}
 				}
 			}
@@ -190,37 +224,15 @@ abstract class ProcessServiceHelper {
 			for (HistoricProcessInstance hpi : historicProcessInstancelist) {
 				if (!cache.containsKey(hpi.getId())) {
 					ProcessInstance subProcessInstance = ConverterHelper.toProcessInstance(hpi);
-					instance.getSubProcess().add(subProcessInstance);
+					list.add(subProcessInstance);
 					cache.put(hpi.getId(), subProcessInstance);
 					ProcessServiceHelper.completeProcessInstance(engine, subProcessInstance, hpi.getProcessDefinitionId(), hpi.getSuperProcessInstanceId(), cache);
 				} else {
-					instance.getSubProcess().add(cache.get(hpi.getId()));
+					list.add(cache.get(hpi.getId()));
 				}
 			}
 		}
-	}
-
-	public static void completeTask(final ProcessEngine engine, final Task instance) {
-		if (instance == null) {
-			return;
-		}
-		TaskQuery query = engine.getTaskService().createTaskQuery();
-		query.taskId(instance.getId());
-		org.activiti.engine.task.Task t = query.singleResult();
-		if (t != null) {
-			if (ConditionUtils.isNotEmpty(t.getAssignee())) {
-				UserQuery userQuery = engine.getIdentityService().createUserQuery();
-				userQuery.userId(t.getAssignee());
-				org.activiti.engine.identity.User user = userQuery.singleResult();
-				instance.setUser(ConverterHelper.toUser(user));
-			}
-			if (ConditionUtils.isNotEmpty(t.getOwner())) {
-				UserQuery userQuery = engine.getIdentityService().createUserQuery();
-				userQuery.userId(t.getOwner());
-				org.activiti.engine.identity.User user = userQuery.singleResult();
-				instance.setOwner(ConverterHelper.toUser(user));
-			}
-		}
+		instance.setSubProcess(CollectionUtils.toArray(list, ProcessInstance.class));
 	}
 
 }

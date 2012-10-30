@@ -1,8 +1,9 @@
 package br.net.woodstock.epm.process.activiti;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.form.FormType;
@@ -19,7 +20,8 @@ import br.net.woodstock.epm.process.api.FormField;
 import br.net.woodstock.epm.process.api.Group;
 import br.net.woodstock.epm.process.api.ProcessDefinition;
 import br.net.woodstock.epm.process.api.ProcessInstance;
-import br.net.woodstock.epm.process.api.Task;
+import br.net.woodstock.epm.process.api.TaskInstance;
+import br.net.woodstock.rockframework.utils.CollectionUtils;
 
 abstract class ConverterHelper {
 
@@ -53,6 +55,7 @@ abstract class ConverterHelper {
 		}
 		Form f = new Form();
 		f.setId(formData.getFormKey());
+		List<FormField> list = new ArrayList<FormField>();
 		for (FormProperty property : formData.getFormProperties()) {
 			FormType ft = property.getType();
 			String type = ft.getName();
@@ -79,8 +82,9 @@ abstract class ConverterHelper {
 
 			ff.setType(type);
 
-			f.getFields().put(ff.getId(), ff);
+			list.add(ff);
 		}
+		f.setFields(CollectionUtils.toArray(list, FormField.class));
 		return f;
 	}
 
@@ -132,11 +136,11 @@ abstract class ConverterHelper {
 		return p;
 	}
 
-	public static Task toTask(final org.activiti.engine.task.Task task) {
+	public static TaskInstance toTask(final org.activiti.engine.task.Task task) {
 		if (task == null) {
 			return null;
 		}
-		Task t = new Task();
+		TaskInstance t = new TaskInstance();
 		t.setDescription(task.getDescription());
 		t.setId(task.getId());
 		t.setName(task.getName());
@@ -168,8 +172,8 @@ abstract class ConverterHelper {
 			return null;
 		}
 		Map<String, String> map = new HashMap<String, String>();
-		for (Entry<String, FormField> entry : form.getFields().entrySet()) {
-			map.put(entry.getKey(), entry.getValue().getValue());
+		for (FormField field : form.getFields()) {
+			map.put(field.getId(), field.getValue());
 		}
 		return map;
 	}

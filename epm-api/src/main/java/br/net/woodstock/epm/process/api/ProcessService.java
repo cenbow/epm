@@ -30,6 +30,8 @@ public interface ProcessService extends Serializable {
 
 	ProcessInstance getProccessInstanceByKey(String key);
 
+	TaskInstance getTaskInstanceById(String id);
+
 	byte[] getProcessInstanceImageById(String id);
 
 	byte[] getProcessInstanceImageByKey(String key);
@@ -38,7 +40,7 @@ public interface ProcessService extends Serializable {
 
 	void setVariableByProcessInstanceKey(String processInstanceKey, String name, String value);
 
-	// Process
+	// Definition
 	ProcessDefinition getProcessDefinitionById(String id);
 
 	ProcessDefinition getProcessDefinitionByKey(String key);
@@ -50,14 +52,14 @@ public interface ProcessService extends Serializable {
 
 	ProcessDefinition[] listProcessByStartableUser(String user);
 
-	Task[] listTasksByUser(String user);
+	TaskInstance[] listTasksByUser(String user);
 
-	Task[] listTasksByCandidateUser(String user);
+	TaskInstance[] listTasksByCandidateUser(String user);
 
-	Task[] listTasksByCandidateGroup(String group);
+	TaskInstance[] listTasksByCandidateGroup(String group);
 
-	Task[] listTasksByProcessInstanceId(String id);
+	TaskInstance[] listTasksByProcessInstanceId(String id);
 
-	Task[] listTasksByProcessInstanceKey(String key);
+	TaskInstance[] listTasksByProcessInstanceKey(String key);
 
 }
