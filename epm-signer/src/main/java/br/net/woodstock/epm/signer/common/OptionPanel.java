@@ -11,9 +11,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class OptionPanel extends JPanel {
+public final class OptionPanel extends JPanel {
 
 	private static final long	serialVersionUID	= -2336931609465577799L;
+
+	private static OptionPanel	instance			= new OptionPanel();
 
 	private JLabel				lbP7s;
 
@@ -31,7 +33,7 @@ public class OptionPanel extends JPanel {
 
 	private JButton				btNext;
 
-	public OptionPanel() {
+	private OptionPanel() {
 		super();
 		this.init();
 	}
@@ -97,9 +99,9 @@ public class OptionPanel extends JPanel {
 
 			@Override
 			public void actionPerformed(final ActionEvent e) {
-				ApplicationPanel.getInstance().getTabbedPane().setEnabledAt(1, false);
-				ApplicationPanel.getInstance().getTabbedPane().setEnabledAt(0, true);
-				ApplicationPanel.getInstance().getTabbedPane().setSelectedIndex(0);
+				ApplicationPanel.getInstance().getTabbedPane().setEnabledAt(2, false);
+				ApplicationPanel.getInstance().getTabbedPane().setEnabledAt(1, true);
+				ApplicationPanel.getInstance().getTabbedPane().setSelectedIndex(1);
 			}
 
 		});
@@ -108,9 +110,9 @@ public class OptionPanel extends JPanel {
 
 			@Override
 			public void actionPerformed(final ActionEvent e) {
-				ApplicationPanel.getInstance().getTabbedPane().setEnabledAt(1, false);
-				ApplicationPanel.getInstance().getTabbedPane().setEnabledAt(2, true);
-				ApplicationPanel.getInstance().getTabbedPane().setSelectedIndex(2);
+				ApplicationPanel.getInstance().getTabbedPane().setEnabledAt(2, false);
+				ApplicationPanel.getInstance().getTabbedPane().setEnabledAt(3, true);
+				ApplicationPanel.getInstance().getTabbedPane().setSelectedIndex(3);
 			}
 
 		});
@@ -124,6 +126,11 @@ public class OptionPanel extends JPanel {
 			this.ckP7sDetached.setEnabled(true);
 			this.ckP7sDetached.setSelected(true);
 		}
+	}
+
+	// Instance
+	public static OptionPanel getInstance() {
+		return OptionPanel.instance;
 	}
 
 }

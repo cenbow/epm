@@ -40,6 +40,7 @@ import br.net.woodstock.rockframework.utils.FileUtils;
 import br.net.woodstock.rockframework.utils.IOUtils;
 import br.net.woodstock.rockframework.utils.SystemUtils;
 
+@Deprecated
 public class SignerPanel extends JPanel {
 
 	private static final long	serialVersionUID	= -2336931609465577799L;
@@ -88,7 +89,7 @@ public class SignerPanel extends JPanel {
 
 	public SignerPanel() {
 		super();
-		ApplicationHolder.getInstance().setPanel(this);
+		//ApplicationHolder.getInstance().setPanel(this);
 		this.init();
 	}
 

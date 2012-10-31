@@ -29,13 +29,17 @@ import br.net.woodstock.rockframework.utils.ConditionUtils;
 import br.net.woodstock.rockframework.utils.FileUtils;
 import br.net.woodstock.rockframework.utils.IOUtils;
 
-public class ConfirmPanel extends JPanel {
+public final class ConfirmPanel extends JPanel {
 
 	private static final long	serialVersionUID	= -174842827285258834L;
 
+	private static ConfirmPanel	instance			= new ConfirmPanel();
+
+	private JButton				btBack;
+	
 	private JButton				btSign;
 
-	public ConfirmPanel() {
+	private ConfirmPanel() {
 		super();
 		this.init();
 	}
@@ -53,14 +57,26 @@ public class ConfirmPanel extends JPanel {
 		int line = 0;
 
 		// Buttons
+		this.btBack = new JButton(ApplicationHolder.getInstance().getMessage().getMessage(Constants.LABEL_BACK));
+		this.add(this.btBack, SwingUtils.getConstraints(line, 0, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.NONE));
+		
 		this.btSign = new JButton(ApplicationHolder.getInstance().getMessage().getMessage(Constants.LABEL_SIGN));
-		this.btSign.setEnabled(false);
-
-		this.add(this.btSign, SwingUtils.getConstraints(line, 0, 3, 1, GridBagConstraints.CENTER, GridBagConstraints.NONE));
+		this.add(this.btSign, SwingUtils.getConstraints(line, 1, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.NONE));
 	}
 
 	protected void addGUIEvents() {
 
+		this.btBack.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				ApplicationPanel.getInstance().getTabbedPane().setEnabledAt(3, false);
+				ApplicationPanel.getInstance().getTabbedPane().setEnabledAt(2, true);
+				ApplicationPanel.getInstance().getTabbedPane().setSelectedIndex(2);
+			}
+
+		});
+		
 		this.btSign.addActionListener(new ActionListener() {
 
 			@Override
@@ -159,8 +175,15 @@ public class ConfirmPanel extends JPanel {
 			newFileName = fileName + Constants.P7S_FILE_SUFFIX;
 		}
 
-		File outputFile = new File(file.getParentFile(), newFileName);
+		//File outputFile = new File(file.getParentFile(), newFileName);
+		File outputFile = new File("/tmp/", newFileName);
 		return outputFile;
+	}
+
+	// Instance
+
+	public static ConfirmPanel getInstance() {
+		return ConfirmPanel.instance;
 	}
 
 }

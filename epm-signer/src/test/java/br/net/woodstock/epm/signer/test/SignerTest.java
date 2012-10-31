@@ -26,19 +26,19 @@ public class SignerTest extends TestCase {
 	}
 
 	public void test7() throws Exception {
-		JCAStore store = new JCAStore(KeyStoreType.JKS);
+		JCAStore store = new JCAStore(KeyStoreType.PKCS12);
 		store.read(new FileInputStream("/home/lourival/tmp/cert/lourival.pfx"), "lourival");
 
-		FileInputStream fileInputStream = new FileInputStream("/home/lourival/Documentos/teste.pdf");
+		FileInputStream fileInputStream = new FileInputStream("/home/lourival/Documents/output.pdf");
 
-		TimeStampClient timeStampClient = new URLTimeStampClient("http://tsa.safelayer.com:8093");
+		//TimeStampClient timeStampClient = new URLTimeStampClient("http://tsa.safelayer.com:8093");
 		PKCS7SignatureParameters signatureParameters = new PKCS7SignatureParameters(new PasswordAlias("lourival", "lourival"), store);
 		SignatureInfo signatureInfo = new SignatureInfo();
 		signatureInfo.setContactInfo("ConcactInfo");
 		signatureInfo.setLocation("Location");
 		signatureInfo.setName("Lourival Sabino");
 		signatureInfo.setReason("Reason");
-		signatureParameters.setTimeStampClient(timeStampClient);
+		//signatureParameters.setTimeStampClient(timeStampClient);
 		signatureParameters.setSignatureInfo(signatureInfo);
 
 		PDFSigner signer = new PDFSigner(signatureParameters);

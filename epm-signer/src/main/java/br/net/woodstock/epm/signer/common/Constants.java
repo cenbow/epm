@@ -25,6 +25,8 @@ public abstract class Constants {
 
 	public static final String	LABEL_INFO				= "label.info";
 
+	public static final String	LABEL_MY_COMPUTER		= "label.myComputer";
+
 	public static final String	LABEL_NEXT				= "label.next";
 
 	public static final String	LABEL_OK				= "label.ok";

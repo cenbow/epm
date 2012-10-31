@@ -25,11 +25,13 @@ public final class ApplicationPanel extends JPanel {
 		this.tabbedPane = new JTabbedPane();
 
 		this.tabbedPane.addTab("KeyStore", KeyStorePanel.getInstance());
-		this.tabbedPane.addTab("Options", new OptionPanel());
-		this.tabbedPane.addTab("Confirm", new ConfirmPanel());
+		this.tabbedPane.addTab("File", FilePanel.getInstance());
+		this.tabbedPane.addTab("Options", OptionPanel.getInstance());
+		this.tabbedPane.addTab("Confirm", ConfirmPanel.getInstance());
 
 		this.tabbedPane.setEnabledAt(1, false);
 		this.tabbedPane.setEnabledAt(2, false);
+		this.tabbedPane.setEnabledAt(3, false);
 
 		this.add(this.tabbedPane);
 	}

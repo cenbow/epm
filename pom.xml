@@ -25,7 +25,7 @@
 		<jdbc.mysql.version>5.1.21</jdbc.mysql.version>
 		<jdbc.pgsql.version>9.1-901-1.jdbc4</jdbc.pgsql.version>
 		<lucene.version>3.6.1</lucene.version>
-		<rockframework.version>2.0.7-SNAPSHOT</rockframework.version>
+		<rockframework.version>2.0.7</rockframework.version>
 		<slf4j.version>1.7.1</slf4j.version>
 		<spring.version>3.1.2.RELEASE</spring.version>
 		<tika.version>1.2</tika.version>
