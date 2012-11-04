@@ -10,6 +10,7 @@ import java.awt.event.KeyEvent;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 
@@ -60,9 +61,9 @@ public final class KeyStorePanel extends JPanel {
 		int line = 0;
 
 		// Type
-		this.lbType = new JLabel(ApplicationHolder.getInstance().getMessage().getMessage(Constants.LABEL_TYPE) + Constants.LABEL_SUFFIX);
+		this.lbType = new JLabel(ApplicationHolder.getInstance().getMessage(Constants.LABEL_TYPE) + Constants.LABEL_SUFFIX);
 		this.cbType = new JComboBox();
-		this.cbType.addItem(ApplicationHolder.getInstance().getMessage().getMessage(Constants.LABEL_SELECT));
+		this.cbType.addItem(ApplicationHolder.getInstance().getMessage(Constants.LABEL_SELECT));
 		this.cbType.addItem(new PKCS12StoreTypeHandler());
 
 		if (System.getProperty(SystemUtils.OS_NAME_PROPERTY).startsWith(Constants.WINDOWS_OS_NAME)) {
@@ -74,7 +75,7 @@ public final class KeyStorePanel extends JPanel {
 		line++;
 
 		// Certificate
-		this.lbCertificate = new JLabel(ApplicationHolder.getInstance().getMessage().getMessage(Constants.LABEL_CERTIFICATE) + Constants.LABEL_SUFFIX);
+		this.lbCertificate = new JLabel(ApplicationHolder.getInstance().getMessage(Constants.LABEL_CERTIFICATE) + Constants.LABEL_SUFFIX);
 		this.cbCertificate = new JComboBox();
 
 		this.add(this.lbCertificate, SwingUtils.getConstraints(line, 0, 1, 1, GridBagConstraints.EAST, GridBagConstraints.NONE));
@@ -82,7 +83,7 @@ public final class KeyStorePanel extends JPanel {
 		line++;
 
 		// Password
-		this.lbKeyPassword = new JLabel(ApplicationHolder.getInstance().getMessage().getMessage(Constants.LABEL_PASSWORD) + Constants.LABEL_SUFFIX);
+		this.lbKeyPassword = new JLabel(ApplicationHolder.getInstance().getMessage(Constants.LABEL_PASSWORD) + Constants.LABEL_SUFFIX);
 		this.txKeyPassword = new JPasswordField(20);
 		this.txKeyPassword.setEditable(false);
 
@@ -91,7 +92,7 @@ public final class KeyStorePanel extends JPanel {
 		line++;
 
 		// Buttons
-		this.btNext = new JButton(ApplicationHolder.getInstance().getMessage().getMessage(Constants.LABEL_NEXT));
+		this.btNext = new JButton(ApplicationHolder.getInstance().getMessage(Constants.LABEL_NEXT));
 		this.btNext.setEnabled(false);
 
 		this.add(this.btNext, SwingUtils.getConstraints(line, 0, 3, 1, GridBagConstraints.CENTER, GridBagConstraints.NONE));
@@ -139,33 +140,38 @@ public final class KeyStorePanel extends JPanel {
 				// Verify
 				Store store = ApplicationHolder.getInstance().getStore();
 
-				Alias selectedAlias = ApplicationHolder.getInstance().getAlias();
-				Alias alias = null;
+				if (store != null) {
+					Alias selectedAlias = ApplicationHolder.getInstance().getAlias();
+					Alias alias = null;
 
-				if ((ConditionUtils.isNotEmpty(KeyStorePanel.this.getTxKeyPassword().getPassword()))) {
-					alias = new PasswordAlias(selectedAlias.getName(), new String(KeyStorePanel.this.getTxKeyPassword().getPassword()));
+					if ((ConditionUtils.isNotEmpty(KeyStorePanel.this.getTxKeyPassword().getPassword()))) {
+						alias = new PasswordAlias(selectedAlias.getName(), new String(KeyStorePanel.this.getTxKeyPassword().getPassword()));
+					} else {
+						alias = new Alias(selectedAlias.getName());
+					}
+
+					boolean ok = false;
+					try {
+						PrivateKeyEntry privateKeyEntry = (PrivateKeyEntry) store.get(alias, StoreEntryType.PRIVATE_KEY);
+						if (privateKeyEntry != null) {
+							ok = true;
+						}
+					} catch (Exception ex) {
+						JOptionPane.showMessageDialog(KeyStorePanel.this, ApplicationHolder.getInstance().getMessage(Constants.MSG_ERROR_OPEN_PRIVATE_KEY), ApplicationHolder.getInstance().getMessage(Constants.LABEL_ERROR), JOptionPane.ERROR_MESSAGE);
+						SignerLog.getLogger().info(ex.getMessage(), ex);
+					}
+
+					if (ok) {
+						if (KeyStorePanel.this.getTxKeyPassword().isEditable()) {
+							ApplicationHolder.getInstance().setPassword(new String(KeyStorePanel.this.getTxKeyPassword().getPassword()));
+						}
+
+						ApplicationPanel.getInstance().getTabbedPane().setEnabledAt(0, false);
+						ApplicationPanel.getInstance().getTabbedPane().setEnabledAt(1, true);
+						ApplicationPanel.getInstance().getTabbedPane().setSelectedIndex(1);
+					}
 				} else {
-					alias = new Alias(selectedAlias.getName());
-				}
-
-				boolean ok = false;
-				try {
-					PrivateKeyEntry privateKeyEntry = (PrivateKeyEntry) store.get(alias, StoreEntryType.PRIVATE_KEY);
-					if (privateKeyEntry != null) {
-						ok = true;
-					}
-				} catch (Exception ex) {
-					SignerLog.getLogger().info(ex.getMessage(), ex);
-				}
-
-				if (ok) {
-					if (KeyStorePanel.this.getTxKeyPassword().isEditable()) {
-						ApplicationHolder.getInstance().setPassword(new String(KeyStorePanel.this.getTxKeyPassword().getPassword()));
-					}
-
-					ApplicationPanel.getInstance().getTabbedPane().setEnabledAt(0, false);
-					ApplicationPanel.getInstance().getTabbedPane().setEnabledAt(1, true);
-					ApplicationPanel.getInstance().getTabbedPane().setSelectedIndex(1);
+					JOptionPane.showMessageDialog(KeyStorePanel.this, ApplicationHolder.getInstance().getMessage(Constants.MSG_ERROR_NO_KEYSTORE), ApplicationHolder.getInstance().getMessage(Constants.LABEL_ERROR), JOptionPane.ERROR_MESSAGE);
 				}
 			}
 

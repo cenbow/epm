@@ -36,7 +36,7 @@ public final class ConfirmPanel extends JPanel {
 	private static ConfirmPanel	instance			= new ConfirmPanel();
 
 	private JButton				btBack;
-	
+
 	private JButton				btSign;
 
 	private ConfirmPanel() {
@@ -57,10 +57,10 @@ public final class ConfirmPanel extends JPanel {
 		int line = 0;
 
 		// Buttons
-		this.btBack = new JButton(ApplicationHolder.getInstance().getMessage().getMessage(Constants.LABEL_BACK));
+		this.btBack = new JButton(ApplicationHolder.getInstance().getMessage(Constants.LABEL_BACK));
 		this.add(this.btBack, SwingUtils.getConstraints(line, 0, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.NONE));
-		
-		this.btSign = new JButton(ApplicationHolder.getInstance().getMessage().getMessage(Constants.LABEL_SIGN));
+
+		this.btSign = new JButton(ApplicationHolder.getInstance().getMessage(Constants.LABEL_SIGN));
 		this.add(this.btSign, SwingUtils.getConstraints(line, 1, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.NONE));
 	}
 
@@ -76,7 +76,7 @@ public final class ConfirmPanel extends JPanel {
 			}
 
 		});
-		
+
 		this.btSign.addActionListener(new ActionListener() {
 
 			@Override
@@ -144,9 +144,9 @@ public final class ConfirmPanel extends JPanel {
 			outputStream.write(signature);
 			outputStream.close();
 
-			JOptionPane.showMessageDialog(this, ApplicationHolder.getInstance().getMessage().getMessage(Constants.MSG_SUCCESS), ApplicationHolder.getInstance().getMessage().getMessage(Constants.LABEL_INFO), JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(this, ApplicationHolder.getInstance().getMessage(Constants.MSG_SUCCESS), ApplicationHolder.getInstance().getMessage(Constants.LABEL_INFO), JOptionPane.INFORMATION_MESSAGE);
 		} catch (Exception ex) {
-			JOptionPane.showMessageDialog(this, ex, ApplicationHolder.getInstance().getMessage().getMessage(Constants.LABEL_ERROR), JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this, ApplicationHolder.getInstance().getMessage(Constants.MSG_ERROR_SIGN), ApplicationHolder.getInstance().getMessage(Constants.LABEL_ERROR), JOptionPane.ERROR_MESSAGE);
 			SignerLog.getLogger().warn(ex.getMessage(), ex);
 		} finally {
 			if (inputStream != null) {
@@ -175,7 +175,7 @@ public final class ConfirmPanel extends JPanel {
 			newFileName = fileName + Constants.P7S_FILE_SUFFIX;
 		}
 
-		//File outputFile = new File(file.getParentFile(), newFileName);
+		// File outputFile = new File(file.getParentFile(), newFileName);
 		File outputFile = new File("/tmp/", newFileName);
 		return outputFile;
 	}

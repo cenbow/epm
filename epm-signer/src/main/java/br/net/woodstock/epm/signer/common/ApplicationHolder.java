@@ -32,8 +32,12 @@ public final class ApplicationHolder {
 		super();
 	}
 
-	public SignerMessage getMessage() {
-		return this.message;
+	public String getMessage(final String key) {
+		return this.message.getMessage(key);
+	}
+
+	public String getMessage(final String key, final Object... args) {
+		return this.message.getMessage(key, args);
 	}
 
 	public void setAlias(final Alias alias) {

@@ -51,8 +51,8 @@ public final class OptionPanel extends JPanel {
 		int line = 0;
 
 		// P7S
-		this.lbP7s = new JLabel(ApplicationHolder.getInstance().getMessage().getMessage(Constants.LABEL_P7S_OPTIONS) + Constants.LABEL_SUFFIX);
-		this.ckP7sDetached = new JCheckBox(ApplicationHolder.getInstance().getMessage().getMessage(Constants.LABEL_P7S_DETACHED));
+		this.lbP7s = new JLabel(ApplicationHolder.getInstance().getMessage(Constants.LABEL_P7S_OPTIONS) + Constants.LABEL_SUFFIX);
+		this.ckP7sDetached = new JCheckBox(ApplicationHolder.getInstance().getMessage(Constants.LABEL_P7S_DETACHED));
 		this.ckP7sDetached.setEnabled(false);
 
 		this.add(this.lbP7s, SwingUtils.getConstraints(line, 0, 1, 1, GridBagConstraints.EAST, GridBagConstraints.NONE));
@@ -60,8 +60,8 @@ public final class OptionPanel extends JPanel {
 		line++;
 
 		// PDF
-		this.lbPdf = new JLabel(ApplicationHolder.getInstance().getMessage().getMessage(Constants.LABEL_PDF_OPTIONS) + Constants.LABEL_SUFFIX);
-		this.ckPdfEmbedded = new JCheckBox(ApplicationHolder.getInstance().getMessage().getMessage(Constants.LABEL_PDF_EMBEDDED));
+		this.lbPdf = new JLabel(ApplicationHolder.getInstance().getMessage(Constants.LABEL_PDF_OPTIONS) + Constants.LABEL_SUFFIX);
+		this.ckPdfEmbedded = new JCheckBox(ApplicationHolder.getInstance().getMessage(Constants.LABEL_PDF_EMBEDDED));
 		this.ckPdfEmbedded.setEnabled(false);
 
 		this.add(this.lbPdf, SwingUtils.getConstraints(line, 0, 1, 1, GridBagConstraints.EAST, GridBagConstraints.NONE));
@@ -69,7 +69,7 @@ public final class OptionPanel extends JPanel {
 		line++;
 
 		// TimeStamp
-		this.lbTimeStampURL = new JLabel(ApplicationHolder.getInstance().getMessage().getMessage(Constants.LABEL_TIMESTAMP) + Constants.LABEL_SUFFIX);
+		this.lbTimeStampURL = new JLabel(ApplicationHolder.getInstance().getMessage(Constants.LABEL_TIMESTAMP) + Constants.LABEL_SUFFIX);
 		this.txTimeStampURL = new JTextField(30);
 
 		this.add(this.lbTimeStampURL, SwingUtils.getConstraints(line, 0, 1, 1, GridBagConstraints.EAST, GridBagConstraints.NONE));
@@ -77,11 +77,11 @@ public final class OptionPanel extends JPanel {
 		line++;
 
 		// Buttons
-		this.btBack = new JButton(ApplicationHolder.getInstance().getMessage().getMessage(Constants.LABEL_BACK));
+		this.btBack = new JButton(ApplicationHolder.getInstance().getMessage(Constants.LABEL_BACK));
 		// this.btBack.setEnabled(false);
 		this.add(this.btBack, SwingUtils.getConstraints(line, 0, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.NONE));
 
-		this.btNext = new JButton(ApplicationHolder.getInstance().getMessage().getMessage(Constants.LABEL_NEXT));
+		this.btNext = new JButton(ApplicationHolder.getInstance().getMessage(Constants.LABEL_NEXT));
 		// this.btNext.setEnabled(false);
 		this.add(this.btNext, SwingUtils.getConstraints(line, 1, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.NONE));
 	}

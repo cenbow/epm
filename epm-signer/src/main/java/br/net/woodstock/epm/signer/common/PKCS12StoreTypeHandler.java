@@ -21,17 +21,17 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 
-import br.net.woodstock.rockframework.security.ProviderType;
 import br.net.woodstock.rockframework.security.store.KeyStoreType;
 import br.net.woodstock.rockframework.security.store.Store;
 import br.net.woodstock.rockframework.security.store.impl.JCAStore;
+import br.net.woodstock.rockframework.security.util.BouncyCastleProviderHelper;
 import br.net.woodstock.rockframework.utils.ConditionUtils;
 
 public class PKCS12StoreTypeHandler implements StoreTypeHandler {
 
 	private static final String	TYPE_NAME	= "PKCS12 File";
 
-	private static final String	PROVIDER	= ProviderType.BOUNCY_CASTLE.getType();
+	private static final String	PROVIDER	= BouncyCastleProviderHelper.PROVIDER_NAME;
 
 	private JFrame				frame;
 
@@ -57,26 +57,26 @@ public class PKCS12StoreTypeHandler implements StoreTypeHandler {
 	protected void init() {
 		// Layout
 		this.frame = new JFrame();
-		this.frame.setTitle(ApplicationHolder.getInstance().getMessage().getMessage(Constants.LABEL_TYPE));
+		this.frame.setTitle(ApplicationHolder.getInstance().getMessage(Constants.LABEL_TYPE));
 		this.frame.setLayout(new GridBagLayout());
 
 		// Line
 		int line = 0;
 
 		// Store
-		this.lbStore = new JLabel(ApplicationHolder.getInstance().getMessage().getMessage(Constants.LABEL_FILE) + Constants.LABEL_SUFFIX);
+		this.lbStore = new JLabel(ApplicationHolder.getInstance().getMessage(Constants.LABEL_FILE) + Constants.LABEL_SUFFIX);
 
 		this.txStore = new JTextField(25);
 		this.txStore.setEditable(false);
 
-		this.btStore = new JButton(ApplicationHolder.getInstance().getMessage().getMessage(Constants.LABEL_SEARCH));
+		this.btStore = new JButton(ApplicationHolder.getInstance().getMessage(Constants.LABEL_SEARCH));
 		this.btStore.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(final ActionEvent e) {
 				JFileChooser fileChooser = new JFileChooser();
 				fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-				int result = fileChooser.showDialog(PKCS12StoreTypeHandler.this.getFrame(), ApplicationHolder.getInstance().getMessage().getMessage(Constants.LABEL_OK));
+				int result = fileChooser.showDialog(PKCS12StoreTypeHandler.this.getFrame(), ApplicationHolder.getInstance().getMessage(Constants.LABEL_OK));
 				if (result == JFileChooser.APPROVE_OPTION) {
 					File file = fileChooser.getSelectedFile();
 					PKCS12StoreTypeHandler.this.onSelectFile(file);
@@ -91,7 +91,7 @@ public class PKCS12StoreTypeHandler implements StoreTypeHandler {
 		line++;
 
 		// Password
-		this.lbStorePassword = new JLabel(ApplicationHolder.getInstance().getMessage().getMessage(Constants.LABEL_PASSWORD) + Constants.LABEL_SUFFIX);
+		this.lbStorePassword = new JLabel(ApplicationHolder.getInstance().getMessage(Constants.LABEL_PASSWORD) + Constants.LABEL_SUFFIX);
 		this.txStorePassword = new JPasswordField(20);
 		this.txStorePassword.addKeyListener(new KeyAdapter() {
 
@@ -107,7 +107,7 @@ public class PKCS12StoreTypeHandler implements StoreTypeHandler {
 		line++;
 
 		// Buttons
-		this.btOpen = new JButton(ApplicationHolder.getInstance().getMessage().getMessage(Constants.LABEL_OPEN));
+		this.btOpen = new JButton(ApplicationHolder.getInstance().getMessage(Constants.LABEL_OPEN));
 		this.btOpen.setEnabled(false);
 		this.btOpen.addActionListener(new ActionListener() {
 
@@ -130,7 +130,7 @@ public class PKCS12StoreTypeHandler implements StoreTypeHandler {
 
 			@Override
 			public void windowClosing(final WindowEvent e) {
-				//ApplicationHolder.getInstance().onSelectStore();
+				// ApplicationHolder.getInstance().onSelectStore();
 			}
 
 		});
@@ -169,7 +169,7 @@ public class PKCS12StoreTypeHandler implements StoreTypeHandler {
 			ApplicationHolder.getInstance().onSelectStore();
 			this.frame.setVisible(false);
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(this.frame, e, ApplicationHolder.getInstance().getMessage().getMessage(Constants.LABEL_ERROR), JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this.frame, ApplicationHolder.getInstance().getMessage(Constants.MSG_ERROR_OPEN_KEYSTORE), ApplicationHolder.getInstance().getMessage(Constants.LABEL_ERROR), JOptionPane.ERROR_MESSAGE);
 			SignerLog.getLogger().debug(e.getMessage(), e);
 		} finally {
 			if (inputStream != null) {
