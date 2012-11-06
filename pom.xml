@@ -17,18 +17,26 @@
 		<activiti.version>5.10</activiti.version>
 		<antlr.version>3.4</antlr.version>
 		<bouncycastle.version>1.47</bouncycastle.version>
+		<ehcache.version>2.6.0</ehcache.version>
 		<groovy.version>1.8.6</groovy.version>
+		<hibernate.cache.version>4.1.8.Final</hibernate.cache.version>
+		<hibernate.core.version>4.1.8.Final</hibernate.core.version>
+		<hibernate.entityManager.version>4.1.8.Final</hibernate.entityManager.version>
+		<hibernate.jpa.version>1.0.1.Final</hibernate.jpa.version>
+		<hibernate.validator.version>4.2.0.Final</hibernate.validator.version>
 		<itext.version>5.3.2</itext.version>
 		<jackrabbit.version>2.5.2</jackrabbit.version>
 		<jcr.version>2.0</jcr.version>
 		<junit.version>4.10</junit.version>
 		<jdbc.mysql.version>5.1.21</jdbc.mysql.version>
-		<jdbc.pgsql.version>9.1-901-1.jdbc4</jdbc.pgsql.version>
 		<lucene.version>3.6.1</lucene.version>
 		<rockframework.version>2.0.7</rockframework.version>
 		<slf4j.version>1.7.1</slf4j.version>
-		<spring.version>3.1.2.RELEASE</spring.version>
+		<spring.version>3.1.3.RELEASE</spring.version>
+		<spring.security.version>3.1.3.RELEASE</spring.security.version>
+		<spring.webflow.version>2.3.1.RELEASE</spring.webflow.version>
 		<tika.version>1.2</tika.version>
+		<validation.version>1.0.0.GA</validation.version>
 		<!-- Plugins -->
 		<plugin.assembly.version>2.3</plugin.assembly.version>
 		<plugin.compiler.version>2.3.2</plugin.compiler.version>
@@ -45,6 +53,7 @@
 		<module>epm-api</module>
 		<module>epm-client</module>
 		<module>epm-impl</module>
+		<module>epm-orm</module>
 		<module>epm-signer</module>
 		<module>epm-web</module>
 	</modules>
@@ -148,6 +157,12 @@
 			</dependency>
 			<dependency>
 				<groupId>br.net.woodstock.epm</groupId>
+				<artifactId>epm-orm</artifactId>
+				<version>${project.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>br.net.woodstock.epm</groupId>
 				<artifactId>epm-web</artifactId>
 				<version>${project.version}</version>
 				<scope>provided</scope>
@@ -166,6 +181,12 @@
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
+				<groupId>javax.validation</groupId>
+				<artifactId>validation-api</artifactId>
+				<version>${validation.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>
 				<version>${junit.version}</version>
@@ -175,6 +196,12 @@
 				<groupId>mysql</groupId>
 				<artifactId>mysql-connector-java</artifactId>
 				<version>${jdbc.mysql.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>net.sf.ehcache</groupId>
+				<artifactId>ehcache-core</artifactId>
+				<version>${ehcache.version}</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
@@ -316,6 +343,42 @@
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-core</artifactId>
+				<version>${hibernate.core.version}</version>
+				<scope>provided</scope>
+				<exclusions>
+					<exclusion>
+						<groupId>xml-apis</groupId>
+						<artifactId>xml-apis</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-ehcache</artifactId>
+				<version>${hibernate.cache.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-entitymanager</artifactId>
+				<version>${hibernate.entityManager.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-validator</artifactId>
+				<version>${hibernate.validator.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.hibernate.javax.persistence</groupId>
+				<artifactId>hibernate-jpa-2.0-api</artifactId>
+				<version>${hibernate.jpa.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
 				<groupId>org.slf4j</groupId>
 				<artifactId>slf4j-api</artifactId>
 				<version>${slf4j.version}</version>
@@ -379,6 +442,48 @@
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-web</artifactId>
 				<version>${spring.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.security</groupId>
+				<artifactId>spring-security-core</artifactId>
+				<version>${spring.security.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.security</groupId>
+				<artifactId>spring-security-config</artifactId>
+				<version>${spring.security.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.security</groupId>
+				<artifactId>spring-security-taglibs</artifactId>
+				<version>${spring.security.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.security</groupId>
+				<artifactId>spring-security-web</artifactId>
+				<version>${spring.security.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.webflow</groupId>
+				<artifactId>spring-binding</artifactId>
+				<version>${spring.webflow.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.webflow</groupId>
+				<artifactId>spring-faces</artifactId>
+				<version>${spring.webflow.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.webflow</groupId>
+				<artifactId>spring-webflow</artifactId>
+				<version>${spring.webflow.version}</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>

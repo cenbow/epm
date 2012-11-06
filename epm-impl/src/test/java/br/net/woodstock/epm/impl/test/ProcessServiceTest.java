@@ -26,7 +26,7 @@ import br.net.woodstock.rockframework.utils.ConditionUtils;
 import br.net.woodstock.rockframework.utils.IOUtils;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:applicationContext.xml" })
+@ContextConfiguration(locations = { "classpath:applicationContext-test.xml" })
 public class ProcessServiceTest {
 
 	@Autowired(required = true)

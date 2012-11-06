@@ -9,9 +9,12 @@
 	
 	<context:component-scan base-package="br.net.woodstock.epm" />
 
+	<!-- Impl -->
 	<import resource="classpath:applicationContext-activiti.xml" />
 	<import resource="classpath:applicationContext-resource.xml" />
 	<import resource="classpath:applicationContext-service.xml" />
-	<import resource="classpath:applicationContext-ws.xml" />
+	
+	<!-- Web -->
+	<import resource="classpath:applicationContext-security.xml" />
 	
 </beans>
