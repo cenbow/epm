@@ -10,11 +10,18 @@
 	<context:component-scan base-package="br.net.woodstock.epm" />
 
 	<!-- Impl -->
-	<import resource="classpath:applicationContext-activiti.xml" />
-	<import resource="classpath:applicationContext-resource.xml" />
-	<import resource="classpath:applicationContext-service.xml" />
+	<import resource="classpath*:applicationContext-activiti.xml" />
+	<import resource="classpath*:applicationContext-persistence.xml" />
+	<import resource="classpath*:applicationContext-resource.xml" />
+	<import resource="classpath*:applicationContext-service.xml" />
+	
+	<!-- Extra -->
+	<import resource="classpath*:applicationContext-extra-*.xml" />
 	
 	<!-- Web -->
+	<import resource="classpath:applicationContext-flows.xml" />
 	<import resource="classpath:applicationContext-security.xml" />
+	
+	
 	
 </beans>

@@ -1,13 +1,10 @@
 package br.net.woodstock.epm.orm;
 
-import java.io.Serializable;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,13 +12,24 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.hibernate.search.annotations.Analyze;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Index;
+import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.IndexedEmbedded;
+import org.hibernate.search.annotations.Store;
+
+import br.net.woodstock.rockframework.persistence.AbstractIntegerEntity;
+
 @Entity
 @Table(name = "epm_user")
-public class User implements Serializable {
+@Indexed
+public class User extends AbstractIntegerEntity {
 
 	private static final long	serialVersionUID	= -1932408409262519409L;
 
@@ -30,19 +38,22 @@ public class User implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer				id;
 
-	@Column(name = "user_login", length = 50, nullable = false)
+	@Column(name = "user_login", length = 50, nullable = false, unique = true)
 	@NotNull
 	@Size(min = 1, max = 100)
+	@Field(index = Index.YES, analyze = Analyze.YES, store = Store.NO)
 	private String				login;
 
 	@Column(name = "user_name", length = 100, nullable = false)
 	@NotNull
 	@Size(min = 1, max = 100)
+	@Field(index = Index.YES, analyze = Analyze.YES, store = Store.NO)
 	private String				name;
 
-	@Column(name = "user_email", length = 100, nullable = false)
+	@Column(name = "user_email", length = 100, nullable = false, unique = true)
 	@NotNull
 	@Size(min = 1, max = 100)
+	@Field(index = Index.YES, analyze = Analyze.YES, store = Store.NO)
 	private String				email;
 
 	@Column(name = "user_password", length = 100, nullable = false)
@@ -50,16 +61,21 @@ public class User implements Serializable {
 	@Size(min = 1, max = 100)
 	private String				password;
 
-	@Column(name = "user_status", nullable = false)
-	@Enumerated(EnumType.ORDINAL)
+	@Column(name = "user_status", nullable = false, columnDefinition = "BIT")
 	@NotNull
 	private Boolean				active;
 
 	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.REFRESH })
 	@JoinTable(name = "epm_user_role", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "role_id"))
+	@IndexedEmbedded
 	private Set<Role>			roles;
 
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = { CascadeType.REFRESH })
+	@IndexedEmbedded
 	private Set<Certificate>	certificates;
+
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = { CascadeType.REFRESH })
+	private Set<Document>		documents;
 
 	public User() {
 		super();
@@ -70,10 +86,12 @@ public class User implements Serializable {
 		this.id = id;
 	}
 
+	@Override
 	public Integer getId() {
 		return this.id;
 	}
 
+	@Override
 	public void setId(final Integer id) {
 		this.id = id;
 	}
@@ -132,6 +150,14 @@ public class User implements Serializable {
 
 	public void setCertificates(final Set<Certificate> certificates) {
 		this.certificates = certificates;
+	}
+
+	public Set<Document> getDocuments() {
+		return this.documents;
+	}
+
+	public void setDocuments(final Set<Document> documents) {
+		this.documents = documents;
 	}
 
 }

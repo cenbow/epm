@@ -14,7 +14,7 @@
 		<property name="jobExecutorActivate" value="true" />
 	</bean>
 
-	<bean id="processEngine" class="org.activiti.spring.ProcessEngineFactoryBean" destroy-method="destroy">
+	<bean id="processEngine" class="org.activiti.spring.ProcessEngineFactoryBean" destroy-method="destroy" autowire-candidate="true" autowire="byType">
 		<property name="processEngineConfiguration" ref="processEngineConfiguration" />
 	</bean>
 

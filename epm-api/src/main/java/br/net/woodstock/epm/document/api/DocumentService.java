@@ -1,19 +1,20 @@
 package br.net.woodstock.epm.document.api;
 
-import java.io.Serializable;
+import br.net.woodstock.epm.orm.Document;
+import br.net.woodstock.rockframework.domain.service.Service;
+import br.net.woodstock.rockframework.persistence.orm.Page;
+import br.net.woodstock.rockframework.persistence.orm.QueryResult;
 
-import br.net.woodstock.epm.util.Page;
+public interface DocumentService extends Service {
 
-public interface DocumentService extends Serializable {
+	Document getDocumentById(Integer id);
 
-	Document get(String id);
+	byte[] getContentById(Integer id);
 
-	boolean remove(String id);
+	void saveDocument(Document document, byte[] content);
 
-	void save(Document document);
+	void updateDocument(Document document, byte[] content);
 
-	boolean update(Document document);
-
-	DocumentResultContainer search(String filter, Page page);
+	QueryResult listDocumentsByName(String name, Page page);
 
 }

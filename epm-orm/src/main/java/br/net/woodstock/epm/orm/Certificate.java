@@ -1,14 +1,11 @@
 package br.net.woodstock.epm.orm;
 
-import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -22,9 +19,20 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.hibernate.search.annotations.Analyze;
+import org.hibernate.search.annotations.DateBridge;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Index;
+import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.Resolution;
+import org.hibernate.search.annotations.Store;
+
+import br.net.woodstock.rockframework.persistence.AbstractIntegerEntity;
+
 @Entity
 @Table(name = "epm_certificate")
-public class Certificate implements Serializable {
+@Indexed
+public class Certificate extends AbstractIntegerEntity {
 
 	private static final long	serialVersionUID	= 8906036120025996121L;
 
@@ -33,34 +41,39 @@ public class Certificate implements Serializable {
 	@Column(name = "certificate_id", unique = true)
 	private Integer				id;
 
-	@Column(name = "certificate_alias", length = 45, nullable = false)
+	@Column(name = "certificate_alias", length = 50, nullable = false)
 	@NotNull
-	@Size(min = 1, max = 45)
+	@Size(min = 1, max = 50)
+	@Field(index = Index.YES, analyze = Analyze.YES, store = Store.NO)
 	private String				alias;
 
-	@Column(name = "certificate_serial_number", length = 255, nullable = false)
+	@Column(name = "certificate_serial_number", length = 250, nullable = false)
 	@NotNull
-	@Size(min = 1, max = 255)
+	@Size(min = 1, max = 250)
+	@Field(index = Index.YES, analyze = Analyze.YES, store = Store.NO)
 	private String				serialNumber;
 
-	@Column(name = "certificate_hash", length = 255, nullable = false)
+	@Column(name = "certificate_hash", length = 250, nullable = false)
 	@NotNull
-	@Size(min = 1, max = 255)
+	@Size(min = 1, max = 250)
+	@Field(index = Index.YES, analyze = Analyze.YES, store = Store.NO)
 	private String				hash;
 
-	@Column(name = "certificate_subject", length = 255, nullable = false)
+	@Column(name = "certificate_subject", length = 250, nullable = false)
 	@NotNull
-	@Size(min = 1, max = 255)
+	@Size(min = 1, max = 250)
+	@Field(index = Index.YES, analyze = Analyze.YES, store = Store.NO)
 	private String				subject;
 
-	@Column(name = "certificate_issuer", length = 255, nullable = false)
+	@Column(name = "certificate_issuer", length = 250, nullable = false)
 	@NotNull
-	@Size(min = 1, max = 255)
+	@Size(min = 1, max = 250)
+	@Field(index = Index.YES, analyze = Analyze.YES, store = Store.NO)
 	private String				issuer;
 
-	@Column(name = "certificate_algorithm", length = 45, nullable = false)
+	@Column(name = "certificate_algorithm", length = 50, nullable = false)
 	@NotNull
-	@Size(min = 1, max = 45)
+	@Size(min = 1, max = 50)
 	private String				algorithm;
 
 	@Column(name = "certificate_data", nullable = false)
@@ -77,15 +90,18 @@ public class Certificate implements Serializable {
 	@Column(name = "certificate_not_before", nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	@NotNull
+	@Field(index = Index.YES, analyze = Analyze.NO, store = Store.YES)
+	@DateBridge(resolution = Resolution.DAY)
 	private Date				notBefore;
 
 	@Column(name = "certificate_not_after", nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	@NotNull
+	@Field(index = Index.YES, analyze = Analyze.NO, store = Store.YES)
+	@DateBridge(resolution = Resolution.DAY)
 	private Date				notAfter;
 
-	@Column(name = "certificate_status", nullable = false)
-	@Enumerated(EnumType.ORDINAL)
+	@Column(name = "certificate_status", nullable = false, columnDefinition = "BIT")
 	@NotNull
 	private Boolean				active;
 
@@ -99,14 +115,15 @@ public class Certificate implements Serializable {
 	}
 
 	public Certificate(final Integer id) {
-		super();
-		this.id = id;
+		super(id);
 	}
 
+	@Override
 	public Integer getId() {
 		return this.id;
 	}
 
+	@Override
 	public void setId(final Integer id) {
 		this.id = id;
 	}

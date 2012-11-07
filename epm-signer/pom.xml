@@ -41,17 +41,14 @@
 		<dependency>
 			<groupId>br.net.woodstock.rockframework</groupId>
 			<artifactId>rockframework-core</artifactId>
-			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>br.net.woodstock.rockframework</groupId>
 			<artifactId>rockframework-security</artifactId>
-			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.itextpdf</groupId>
 			<artifactId>itextpdf</artifactId>
-			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
@@ -60,27 +57,22 @@
 		<dependency>
 			<groupId>org.bouncycastle</groupId>
 			<artifactId>bcmail-jdk15on</artifactId>
-			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.bouncycastle</groupId>
 			<artifactId>bcpkix-jdk15on</artifactId>
-			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.bouncycastle</groupId>
 			<artifactId>bcprov-jdk15on</artifactId>
-			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
-			<scope>compile</scope>
 		</dependency>
 	</dependencies>
 </project>

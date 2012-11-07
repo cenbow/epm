@@ -5,26 +5,23 @@
            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
            http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 
-	<security:http auto-config="true" access-denied-page="/sem-acesso.xhtml">
+	<security:http auto-config="true" access-denied-page="/no-access.xhtml">
 		<security:form-login login-page="/login.xhtml" default-target-url="/index.xhtml"
-			always-use-default-target="true" authentication-failure-url="/erro.xhtml" />
+			always-use-default-target="true" authentication-failure-url="/error.xhtml" />
 		<security:logout logout-success-url="/login.xhtml" />
 		<security:intercept-url pattern="/login.xhtml" access="IS_AUTHENTICATED_ANONYMOUSLY" />
-		<security:intercept-url pattern="/sem-acesso.xhtml" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+		<security:intercept-url pattern="/no-access.xhtml" access="IS_AUTHENTICATED_ANONYMOUSLY" />
 		<security:intercept-url pattern="/javax.faces.resource/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
 		<security:intercept-url pattern="/resources/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
-		<security:intercept-url pattern="/rfRes/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
-		<security:intercept-url pattern="/candidato/*" access="IS_AUTHENTICATED_ANONYMOUSLY" />
-		<security:intercept-url pattern="/UploadImagemZIPServlet" access="IS_AUTHENTICATED_ANONYMOUSLY" />
 		<security:intercept-url pattern="/**" access="IS_AUTHENTICATED_FULLY" />
-		<security:intercept-url pattern="/acesso/*" access="ROLE_ADMINISTRADOR" />
+		<security:intercept-url pattern="/security/*" access="ROLE_ADMINISTRATOR" />
 	</security:http>
 
-	<bean id="WebdocAuthenticationProvider" class="br.com.leadersys.webdoc.api.seguranca.impl.WebdocAuthenticationProvider">
+	<bean id="LocalAuthenticationProvider" class="br.net.woodstock.epm.web.security.LocalAuthenticationProvider">
 	</bean>
 
 	<security:authentication-manager>
-		<security:authentication-provider ref="WebdocAuthenticationProvider" />
+		<security:authentication-provider ref="LocalAuthenticationProvider" />
 	</security:authentication-manager>
 
 </beans>

@@ -36,14 +36,13 @@
 		<param-value>server</param-value>
 	</context-param>
 
-
 	<!-- Spring -->
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>classpath*:applicationContext.xml</param-value>
+		<param-value>classpath:applicationContext-web.xml</param-value>
 	</context-param>
 	<filter>
 		<filter-name>spring</filter-name>
@@ -69,7 +68,5 @@
 		<filter-name>springSecurityFilterChain</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
-
-
 
 </web-app>

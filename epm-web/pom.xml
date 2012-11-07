@@ -36,43 +36,64 @@
 			<artifactId>epm-impl</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>com.sun.faces</groupId>
+			<artifactId>jsf-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.faces</groupId>
+			<artifactId>jsf-impl</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet.jsp</groupId>
+			<artifactId>jsp-api</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.primefaces</groupId>
+			<artifactId>primefaces</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.primefaces.themes</groupId>
+			<artifactId>smoothness</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-core</artifactId>
-			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-config</artifactId>
-			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-taglibs</artifactId>
-			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-web</artifactId>
-			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.webflow</groupId>
 			<artifactId>spring-binding</artifactId>
-			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.webflow</groupId>
 			<artifactId>spring-faces</artifactId>
-			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.webflow</groupId>
 			<artifactId>spring-webflow</artifactId>
-			<scope>compile</scope>
 		</dependency>
 	</dependencies>
 </project>

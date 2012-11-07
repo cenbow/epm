@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui">
+	<h:head>
+		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+		<title>
+			EPM - <ui:insert name="title">Index</ui:insert>
+		</title>
+		<h:outputStylesheet name="default.css" library="css" />
+	</h:head>
+	<h:body>
+		<header>
+			<ui:insert name="header">
+				<h:form id="_formHeader">
+					<p:menubar rendered="#{sessaoBean.isLogado()}">
+						<p:submenu label="Menu Principal">
+							<p:submenu label="Acesso">
+								<p:menuitem value="User" action="/flows/user" />
+							</p:submenu>
+							<p:separator />
+							<p:menuitem value="Logout" action="#{loginBean.logout()}" ajax="false" icon="ui-icon-close" />
+						</p:submenu>
+					</p:menubar>
+				</h:form>
+			</ui:insert>
+		</header>
+		
+		<aside>
+			<br />
+			<p:dialog id="globalMessagesPopup" header="Mensagem" width="300" height="200" modal="true" resizeable="false" visible="true" rendered="#{not empty facesContext.messageList}">
+				<p:messages />
+			</p:dialog>
+			<ui:insert name="content"></ui:insert>
+			<br />
+		</aside>
+	
+		<footer>
+			<ui:insert name="footer">
+				<h:form id="formFooter">
+					<div style="text-align: center;">Woodstock Tecnologia</div>
+				</h:form>
+			</ui:insert>
+		</footer>
+	</h:body>
+</html>

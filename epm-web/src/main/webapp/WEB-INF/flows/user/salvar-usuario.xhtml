@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui" template="/templates/default.xhtml">
+	<ui:define name="title">
+		Usuário
+	</ui:define>
+	<ui:define name="content">
+		<h:form id="formEdit" prependId="false">
+			<div>
+				<p:panel header="Usuário" style="width: 400px; margin: auto;">
+					<table style="width: 100%;">
+						<tr>
+							<td style="width: 25%;">Login : </td>
+							<td style="width: 75%;">
+								<p:inputText id="login" value="#{usuarioBean.login}" size="15" maxlength="45" required="true">
+									<f:validateLength minimum="3" maximum="45" />
+								</p:inputText>
+							</td>
+						</tr>
+						<tr>
+							<td>Nome : </td>
+							<td>
+								<p:inputText id="nome" value="#{usuarioBean.nome}" size="30" maxlength="100" required="true">
+									<f:validateLength minimum="3" maximum="100" />
+								</p:inputText>
+							</td>
+						</tr>
+						<tr>
+							<td>E-Mail : </td>
+							<td>
+								<p:inputText id="email" value="#{usuarioBean.email}" size="30" maxlength="100" required="true">
+									<f:validateLength minimum="5" maximum="100" />
+								</p:inputText>
+							</td>
+						</tr>
+						<h:panelGroup rendered="#{not usuarioBean.atualizacao}">
+							<tr>
+								<td>Senha : </td>
+								<td>
+									<p:password id="senha" value="#{usuarioBean.senha}" size="15" maxlength="20" required="#{not usuarioBean.atualizacao}" feedback="false">
+										<f:validateLength minimum="3" maximum="20" disabled="#{not usuarioBean.atualizacao}" />
+										<f:validateRequired disabled="#{not usuarioBean.atualizacao}" />
+									</p:password>
+								</td>
+							</tr>
+						</h:panelGroup>
+						<tr>
+							<td>Papel : </td>
+							<td>
+								<p:selectOneMenu id="papel" value="#{usuarioBean.papel}" required="true" style="width: 100px;">
+									<f:selectItems value="#{usuarioBean.papelList}" />
+								</p:selectOneMenu>
+							</td>
+						</tr>
+						<h:panelGroup rendered="#{usuarioBean.atualizacao}">
+							<tr>
+								<td>Situação : </td>
+								<td>
+									<p:selectOneMenu id="situacao" value="#{usuarioBean.status}" required="true" style="width: 100px;">
+										<f:selectItems value="#{usuarioBean.statusList}" />
+									</p:selectOneMenu>
+								</td>
+							</tr>
+						</h:panelGroup>
+						<tr>
+							<td colspan="2" style="text-align: center;">
+								<p:commandButton value="Salvar" action="#{usuarioBean.salvar}" ajax="false" />
+								<p:commandButton value="Voltar" action="#{usuarioBean.cancelar}" immediate="true" ajax="false"/>			
+							</td>
+						</tr>
+					</table>					
+				</p:panel>
+			</div>
+		</h:form>
+	</ui:define>
+</ui:composition>

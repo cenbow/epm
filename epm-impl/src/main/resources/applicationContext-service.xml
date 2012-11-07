@@ -3,12 +3,8 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
 	
-	<bean id="ProcessService" class="br.net.woodstock.epm.process.activiti.ProcessServiceImpl">
-		<constructor-arg name="engine" ref="processEngine" />
-	</bean>
-	
-	<bean id="DocumentService" class="br.net.woodstock.epm.document.lucene.LuceneDocumentService" destroy-method="close" >
-		<constructor-arg name="home" value="/home/lourival/tmp/epm" />
+	<bean id="ContentRepository" class="br.net.woodstock.epm.document.impl.FileSystemRepository">
+		<constructor-arg name="path" value="/home/lourival/tmp/fsrepo" />
 	</bean>
 
 </beans>

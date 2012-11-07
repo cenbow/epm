@@ -1,13 +1,10 @@
 package br.net.woodstock.epm.orm;
 
-import java.io.Serializable;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -17,9 +14,18 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.hibernate.search.annotations.Analyze;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Index;
+import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.Store;
+
+import br.net.woodstock.rockframework.persistence.AbstractIntegerEntity;
+
 @Entity
 @Table(name = "epm_resource")
-public class Resource implements Serializable {
+@Indexed
+public class Resource extends AbstractIntegerEntity {
 
 	private static final long	serialVersionUID	= -4698111874290305730L;
 
@@ -28,13 +34,13 @@ public class Resource implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer				id;
 
-	@Column(name = "resource_name", length = 100, nullable = false)
+	@Column(name = "resource_name", length = 100, nullable = false, unique = true)
 	@NotNull
 	@Size(min = 1, max = 100)
+	@Field(index = Index.YES, analyze = Analyze.YES, store = Store.NO)
 	private String				name;
 
-	@Column(name = "resource_status", nullable = false)
-	@Enumerated(EnumType.ORDINAL)
+	@Column(name = "resource_status", nullable = false, columnDefinition = "BIT")
 	@NotNull
 	private Boolean				active;
 
@@ -50,10 +56,12 @@ public class Resource implements Serializable {
 		this.id = id;
 	}
 
+	@Override
 	public Integer getId() {
 		return this.id;
 	}
 
+	@Override
 	public void setId(final Integer id) {
 		this.id = id;
 	}
