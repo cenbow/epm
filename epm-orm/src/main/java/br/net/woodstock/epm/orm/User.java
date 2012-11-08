@@ -65,7 +65,7 @@ public class User extends AbstractIntegerEntity {
 	@NotNull
 	private Boolean				active;
 
-	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.REFRESH })
+	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
 	@JoinTable(name = "epm_user_role", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "role_id"))
 	@IndexedEmbedded
 	private Set<Role>			roles;

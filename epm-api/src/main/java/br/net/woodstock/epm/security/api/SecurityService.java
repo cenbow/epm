@@ -21,6 +21,8 @@ public interface SecurityService extends Service {
 
 	QueryResult listUsersByName(String name, Page page);
 
+	void saveUserRoles(User user, Role... roles);
+
 	// Role
 	Role getRoleById(Integer id);
 

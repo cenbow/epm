@@ -1,6 +1,8 @@
 package br.net.woodstock.epm.security.impl;
 
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +32,7 @@ public class SecurityServiceImpl implements SecurityService {
 	private static final long	serialVersionUID				= 7929971241857912337L;
 
 	// USER
-	private static final String	JPQL_GET_USER_BY_LOGIN_PASSWORD	= "SELECT u FROM User AS u WHERE u.login = :login AND u.password = :password";
+	private static final String	JPQL_GET_USER_BY_LOGIN_PASSWORD	= "SELECT u FROM User AS u LEFT OUTER JOIN FETCH u.roles AS r LEFT OUTER JOIN FETCH r.resources AS rr LEFT OUTER JOIN FETCH u.certificates AS c WHERE u.login = :login AND u.password = :password";
 
 	private static final String	JPQL_LIST_USER_BY_NAME			= "SELECT u FROM User AS u WHERE to_ascii(lower(u.name)) LIKE to_ascii(lower(:name)) ORDER BY u.name";
 
@@ -126,6 +128,43 @@ public class SecurityServiceImpl implements SecurityService {
 
 			QueryMetadata metadata = RepositoryHelper.toQueryMetadata(SecurityServiceImpl.JPQL_LIST_USER_BY_NAME, SecurityServiceImpl.JPQL_COUNT_USER_BY_NAME, page, parameters);
 			return this.queryableRepository.getCollection(metadata);
+		} catch (Exception e) {
+			throw new ServiceException(e);
+		}
+	}
+
+	@Override
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	public void saveUserRoles(final User user, final Role... roles) {
+		try {
+			User u = this.genericRepository.get(user);
+			if (u != null) {
+				if (u.getRoles() == null) {
+					u.setRoles(new HashSet<Role>());
+				}
+
+				Iterator<Role> it = u.getRoles().iterator();
+				while (it.hasNext()) {
+					Role r = it.next();
+					boolean delete = true;
+					for (Role tmp : roles) {
+						if (r.getId().equals(tmp.getId())) {
+							delete = false;
+							break;
+						}
+					}
+					if (delete) {
+						it.remove();
+					}
+				}
+				for (Role r : roles) {
+					Role tmp = this.genericRepository.get(r);
+					if (tmp != null) {
+						u.getRoles().add(tmp);
+					}
+				}
+				this.genericRepository.update(u);
+			}
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		}

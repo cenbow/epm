@@ -12,13 +12,13 @@
 		<header>
 			<ui:insert name="header">
 				<h:form id="_formHeader">
-					<p:menubar rendered="#{sessaoBean.isLogado()}">
-						<p:submenu label="Menu Principal">
-							<p:submenu label="Acesso">
-								<p:menuitem value="User" action="/flows/user" />
+					<p:menubar rendered="#{currentUser.authenticated}">
+						<p:submenu label="Main Menu">
+							<p:submenu label="Security">
+								<p:menuitem value="User" action="/spring/user" />
 							</p:submenu>
 							<p:separator />
-							<p:menuitem value="Logout" action="#{loginBean.logout()}" ajax="false" icon="ui-icon-close" />
+							<p:menuitem value="Logoff" action="logoff" ajax="false" icon="ui-icon-close" />
 						</p:submenu>
 					</p:menubar>
 				</h:form>

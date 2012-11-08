@@ -46,7 +46,7 @@ public class Role extends AbstractIntegerEntity {
 	@NotNull
 	private Boolean				active;
 
-	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.REFRESH })
+	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
 	@JoinTable(name = "epm_resource_role", joinColumns = @JoinColumn(name = "role_id", referencedColumnName = "role_id"), inverseJoinColumns = @JoinColumn(name = "resource_id", referencedColumnName = "resource_id"))
 	private Set<Resource>		resources;
 

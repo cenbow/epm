@@ -2,8 +2,7 @@ body {
 	background: #F7F7F7;
 	color: #444444;
     font-family: verdana;
-    font-size: 10px;
-	font-style: normal;
+    font-style: normal;
     font-weight: normal;
     margin: 0px;
     padding: 0px;
@@ -26,6 +25,10 @@ footer {
 	color: #FFFFFF; 
 	margin: auto;
 	width: 770px;
+}
+
+body, p, div, td, th, span, input, select {
+	font-size: 11px;
 }
 
 .error {
