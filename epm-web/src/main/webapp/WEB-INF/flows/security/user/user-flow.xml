@@ -3,17 +3,12 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/webflow http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
 	
-	<view-state id="logoff" view="/" redirect="true" />
-
 	<var name="userForm" class="br.net.woodstock.epm.web.security.UserForm"/>
 	<var name="userSearch" class="br.net.woodstock.epm.web.security.UserSearch"/>
 
 	<view-state id="start" view="user-list.xhtml">
-		<on-entry>
-			<evaluate expression="userAction.search(userSearch)" result="users" result-type="org.springframework.faces.model.ManySelectionTrackingListDataModel" />
-		</on-entry>
 		<transition on="search">
-			<evaluate expression="userAction.search(userSearch)" result="users" result-type="org.springframework.faces.model.ManySelectionTrackingListDataModel" />
+			<evaluate expression="userAction.search(userSearch)" result="flowScope.userList" result-type="org.springframework.faces.model.OneSelectionTrackingListDataModel" />
 		</transition>
 	</view-state>
 	

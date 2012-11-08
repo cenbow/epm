@@ -1,5 +1,7 @@
 package br.net.woodstock.epm.impl.test;
 
+import java.util.Collection;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import br.net.woodstock.epm.orm.Role;
 import br.net.woodstock.epm.orm.User;
 import br.net.woodstock.epm.security.api.SecurityService;
+import br.net.woodstock.rockframework.persistence.orm.QueryResult;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:applicationContext-test.xml" })
@@ -47,10 +50,19 @@ public class InsertAdminTest {
 		this.securityService.saveUserRoles(new User(Integer.valueOf(3)), new Role(Integer.valueOf(1)));
 	}
 
-	@Test
+	// @Test
 	public void testGetUser() throws Exception {
 		User user = this.securityService.getUserByLoginPassword("admin", "admin");
 		System.out.println(user.getName());
+	}
+
+	@Test
+	public void testListUser() throws Exception {
+		QueryResult result = this.securityService.listUsersByName("admin", null);
+		Collection<User> users = result.getResult();
+		for (User user : users) {
+			System.out.println(user.getName());
+		}
 	}
 
 }

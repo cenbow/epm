@@ -34,19 +34,19 @@ public class SecurityServiceImpl implements SecurityService {
 	// USER
 	private static final String	JPQL_GET_USER_BY_LOGIN_PASSWORD	= "SELECT u FROM User AS u LEFT OUTER JOIN FETCH u.roles AS r LEFT OUTER JOIN FETCH r.resources AS rr LEFT OUTER JOIN FETCH u.certificates AS c WHERE u.login = :login AND u.password = :password";
 
-	private static final String	JPQL_LIST_USER_BY_NAME			= "SELECT u FROM User AS u WHERE to_ascii(lower(u.name)) LIKE to_ascii(lower(:name)) ORDER BY u.name";
+	private static final String	JPQL_LIST_USER_BY_NAME			= "SELECT u FROM User AS u WHERE lower(u.name) LIKE lower(:name) ORDER BY u.name";
 
-	private static final String	JPQL_COUNT_USER_BY_NAME			= "SELECT COUNT(*) FROM User AS u WHERE to_ascii(lower(u.name)) LIKE to_ascii(lower(:name))";
+	private static final String	JPQL_COUNT_USER_BY_NAME			= "SELECT COUNT(*) FROM User AS u WHERE lower(u.name) LIKE lower(:name)";
 
 	// ROLE
-	private static final String	JPQL_LIST_ROLE_BY_NAME			= "SELECT r FROM Role AS r WHERE to_ascii(lower(r.name)) LIKE to_ascii(lower(:name)) ORDER BY r.name";
+	private static final String	JPQL_LIST_ROLE_BY_NAME			= "SELECT r FROM Role AS r WHERE lower(r.name) LIKE lower(:name) ORDER BY r.name";
 
-	private static final String	JPQL_COUNT_ROLE_BY_NAME			= "SELECT COUNT(*) FROM Role AS r WHERE to_ascii(lower(r.name)) LIKE to_ascii(lower(:name))";
+	private static final String	JPQL_COUNT_ROLE_BY_NAME			= "SELECT COUNT(*) FROM Role AS r WHERE lower(r.name) LIKE lower(:name)";
 
 	// RESOURCE
-	private static final String	JPQL_LIST_RESOURCE_BY_NAME		= "SELECT r FROM Resource AS r WHERE to_ascii(lower(r.name)) LIKE to_ascii(lower(:name)) ORDER BY r.name";
+	private static final String	JPQL_LIST_RESOURCE_BY_NAME		= "SELECT r FROM Resource AS r WHERE lower(r.name) LIKE lower(:name) ORDER BY r.name";
 
-	private static final String	JPQL_COUNT_RESOURCE_BY_NAME		= "SELECT COUNT(*) FROM Resource AS r WHERE to_ascii(lower(r.name)) LIKE to_ascii(lower(:name))";
+	private static final String	JPQL_COUNT_RESOURCE_BY_NAME		= "SELECT COUNT(*) FROM Resource AS r WHERE lower(r.name) LIKE lower(:name)";
 
 	@Autowired(required = true)
 	private GenericRepository	genericRepository;
