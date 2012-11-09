@@ -23,7 +23,7 @@
 					</table>					
 				</p:panel>
 				<br />
-				<p:dataTable rows="#{webConstants.pageSize}" paginator="true" value="#{userList}" var="user" style="width: 500px; margin: auto;" rendered="#{not empty userList}" first="0" emptyMessage="Na Data Found" lazy="true">
+				<p:dataTable value="#{userList}" var="user" rows="#{webConstants.pageSize}" paginator="true" style="width: 500px; margin: auto;" rendered="#{not empty userList}" emptyMessage="Na Data Found" lazy="true">
 					<p:column>
 						<f:facet name="header">
 							<h:outputText value="Login" />

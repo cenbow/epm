@@ -8,7 +8,7 @@
 
 	<view-state id="start" view="user-list.xhtml">
 		<transition on="search">
-			<evaluate expression="userAction.search(userSearch)" result="flowScope.userList" result-type="org.springframework.faces.model.OneSelectionTrackingListDataModel" />
+			<evaluate expression="userAction.search(userSearch)" result="flowScope.userList" />
 		</transition>
 	</view-state>
 	

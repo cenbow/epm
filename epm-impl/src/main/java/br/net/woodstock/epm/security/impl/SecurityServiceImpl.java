@@ -16,14 +16,13 @@ import br.net.woodstock.epm.orm.Role;
 import br.net.woodstock.epm.orm.User;
 import br.net.woodstock.epm.repository.util.RepositoryHelper;
 import br.net.woodstock.epm.security.api.SecurityService;
+import br.net.woodstock.epm.security.util.PasswordHelper;
 import br.net.woodstock.rockframework.domain.service.ServiceException;
 import br.net.woodstock.rockframework.persistence.orm.GenericRepository;
 import br.net.woodstock.rockframework.persistence.orm.Page;
 import br.net.woodstock.rockframework.persistence.orm.QueryMetadata;
 import br.net.woodstock.rockframework.persistence.orm.QueryResult;
 import br.net.woodstock.rockframework.persistence.orm.QueryableRepository;
-import br.net.woodstock.rockframework.security.util.PasswordEncoder;
-import br.net.woodstock.rockframework.security.util.SHA1PasswordEncoder;
 import br.net.woodstock.rockframework.utils.ConditionUtils;
 
 @Service
@@ -54,11 +53,8 @@ public class SecurityServiceImpl implements SecurityService {
 	@Autowired(required = true)
 	private QueryableRepository	queryableRepository;
 
-	private PasswordEncoder		encoder;
-
 	public SecurityServiceImpl() {
 		super();
-		this.encoder = new SHA1PasswordEncoder();
 	}
 
 	// User
@@ -78,7 +74,7 @@ public class SecurityServiceImpl implements SecurityService {
 		try {
 			Map<String, Object> parameters = new HashMap<String, Object>();
 			parameters.put("login", login);
-			parameters.put("password", this.encoder.encode(password));
+			parameters.put("password", PasswordHelper.encode(password));
 			QueryMetadata metadata = RepositoryHelper.toQueryMetadata(SecurityServiceImpl.JPQL_GET_USER_BY_LOGIN_PASSWORD, parameters);
 			User user = this.queryableRepository.getSingle(metadata);
 			return user;
@@ -92,7 +88,7 @@ public class SecurityServiceImpl implements SecurityService {
 	public void saveUser(final User user) {
 		try {
 			user.setActive(Boolean.TRUE);
-			user.setPassword(this.encoder.encode(user.getPassword()));
+			user.setPassword(PasswordHelper.encode(user.getPassword()));
 			this.genericRepository.save(user);
 		} catch (Exception e) {
 			throw new ServiceException(e);
@@ -110,7 +106,7 @@ public class SecurityServiceImpl implements SecurityService {
 			u.setName(user.getName());
 
 			if (ConditionUtils.isNotEmpty(user.getPassword())) {
-				user.setPassword(this.encoder.encode(user.getPassword()));
+				user.setPassword(PasswordHelper.encode(user.getPassword()));
 			}
 
 			this.genericRepository.update(u);
