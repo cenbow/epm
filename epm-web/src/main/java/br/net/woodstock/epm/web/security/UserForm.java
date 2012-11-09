@@ -1,8 +1,8 @@
 package br.net.woodstock.epm.web.security;
 
-import java.io.Serializable;
+import br.net.woodstock.epm.web.AbstractForm;
 
-public class UserForm implements Serializable {
+public class UserForm extends AbstractForm {
 
 	private static final long	serialVersionUID	= -1245674591920940776L;
 
@@ -20,6 +20,16 @@ public class UserForm implements Serializable {
 
 	public UserForm() {
 		super();
+	}
+
+	@Override
+	public void reset() {
+		this.setActive(null);
+		this.setEmail(null);
+		this.setId(null);
+		this.setLogin(null);
+		this.setName(null);
+		this.setPassword(null);
 	}
 
 	public Integer getId() {

@@ -1,8 +1,8 @@
 package br.net.woodstock.epm.web.security;
 
-import java.io.Serializable;
+import br.net.woodstock.epm.web.AbstractForm;
 
-public class LogonForm implements Serializable {
+public class LogonForm extends AbstractForm {
 
 	private static final long	serialVersionUID	= 2089949524511461866L;
 
@@ -12,6 +12,12 @@ public class LogonForm implements Serializable {
 
 	public LogonForm() {
 		super();
+	}
+
+	@Override
+	public void reset() {
+		this.setLogin(null);
+		this.setPassword(null);
 	}
 
 	public String getLogin() {

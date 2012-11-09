@@ -6,20 +6,28 @@
 	<var name="userForm" class="br.net.woodstock.epm.web.security.UserForm"/>
 	<var name="userSearch" class="br.net.woodstock.epm.web.security.UserSearch"/>
 
-	<view-state id="start" view="user-list.xhtml">
+	<view-state id="list" view="user-list.xhtml">
 		<transition on="search">
 			<evaluate expression="userAction.search(userSearch)" result="flowScope.userList" />
 		</transition>
-	</view-state>
-	
-	<view-state id="search" parent="#start">
-	</view-state>
-
-	<view-state id="new" view="user-save.xhtml">
-		<transition on="save">
-			<evaluate expression="userAction.save(userSearch)" result="users" result-type="org.springframework.faces.model.ManySelectionTrackingListDataModel" />
+		<transition on="edit" to="edit"> 
+			<evaluate expression="userAction.edit(userList.rowData, userForm)" />
 		</transition>
 	</view-state>
+	
+	<view-state id="save" view="user-save.xhtml">
+		<transition on="save">
+			<evaluate expression="userAction.search(userSearch)" result="flowScope.userList" />
+		</transition>
+		<transition on="cancel" to="search">
+		</transition>
+	</view-state>
+	
+	<view-state id="search" parent="#list" />
+	
+	<view-state id="new" parent="#save" />
+	
+	<view-state id="edit" parent="#save" />
 
 	<end-state id="end">
 	</end-state>

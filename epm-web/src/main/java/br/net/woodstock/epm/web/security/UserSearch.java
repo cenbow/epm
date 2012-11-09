@@ -1,8 +1,8 @@
 package br.net.woodstock.epm.web.security;
 
-import java.io.Serializable;
+import br.net.woodstock.epm.web.AbstractSearch;
 
-public class UserSearch implements Serializable {
+public class UserSearch extends AbstractSearch {
 
 	private static final long	serialVersionUID	= 3794876725206200806L;
 

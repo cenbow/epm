@@ -1,7 +1,5 @@
 package br.net.woodstock.epm.web.security;
 
-import java.io.Serializable;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
@@ -10,10 +8,11 @@ import org.springframework.stereotype.Controller;
 
 import br.net.woodstock.epm.orm.User;
 import br.net.woodstock.epm.security.api.SecurityService;
+import br.net.woodstock.epm.web.AbstractAction;
 
 @Controller
 @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
-public class LogonAction implements Serializable {
+public class LogonAction extends AbstractAction {
 
 	private static final long	serialVersionUID	= -3154468176965938956L;
 
