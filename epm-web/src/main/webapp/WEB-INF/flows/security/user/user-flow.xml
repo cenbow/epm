@@ -11,7 +11,7 @@
 			<evaluate expression="userAction.search(userSearch)" result="flowScope.userList" />
 		</transition>
 		<transition on="edit" to="edit"> 
-			<evaluate expression="userAction.edit(userList.rowData, userForm)" />
+			<evaluate expression="userAction.edit(selectedUser, userForm)" />
 		</transition>
 	</view-state>
 	

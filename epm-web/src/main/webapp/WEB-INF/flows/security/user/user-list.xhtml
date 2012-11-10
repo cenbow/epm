@@ -23,12 +23,14 @@
 					</table>					
 				</p:panel>
 				<br />
-				<p:dataTable value="#{userList}" var="user" rows="#{webConstants.pageSize}" paginator="true" style="width: 500px; margin: auto;" rendered="#{not empty userList}" emptyMessage="Na Data Found" lazy="true">
+				<p:dataTable value="#{userList}" var="user" rows="#{webConstants.pageSize}" paginator="true" style="width: 500px; margin: auto;" rendered="#{not empty userList}" first="#{userSearch.firstRow}" emptyMessage="Na Data Found" lazy="true" selectionMode="single" selection="#{flowScope.selectedUser}">
 					<p:column>
 						<f:facet name="header">
 							<h:outputText value="Login" />
 						</f:facet>
-						<h:outputText value="#{user.login}" />
+						<h:outputText value="#{userList.rowIndex}" />
+						-
+						<h:outputText value="#{user.login}" />						
 					</p:column>
 					<p:column>
 						<f:facet name="header">
