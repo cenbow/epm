@@ -30,11 +30,14 @@
 		<jackrabbit.version>2.5.2</jackrabbit.version>
 		<jcr.version>2.0</jcr.version>
 		<jdbc.mysql.version>5.1.21</jdbc.mysql.version>
+		<jopendocument.version>1.2</jopendocument.version>
 		<jsf.version>2.1.14</jsf.version>
 		<jsp.version>2.1</jsp.version>
 		<jstl.version>1.2</jstl.version>
 		<junit.version>4.10</junit.version>
 		<lucene.version>3.6.1</lucene.version>
+		<openoffice.version>3.2.1</openoffice.version>
+		<poi.version>3.8</poi.version>
 		<primefaces.version>3.4</primefaces.version>
 		<primefaces.theme.version>1.0.8</primefaces.theme.version>
 		<rockframework.version>2.0.8-SNAPSHOT</rockframework.version>
@@ -61,6 +64,7 @@
 		<module>epm-api</module>
 		<module>epm-client</module>
 		<module>epm-impl</module>
+		<module>epm-office</module>
 		<module>epm-orm</module>
 		<module>epm-signer</module>
 		<module>epm-web</module>
@@ -339,6 +343,36 @@
 				<scope>compile</scope>
 			</dependency>
 			<dependency>
+				<groupId>org.apache.poi</groupId>
+				<artifactId>poi</artifactId>
+				<version>${poi.version}</version>
+				<scope>compile</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.poi</groupId>
+				<artifactId>poi-excelant</artifactId>
+				<version>${poi.version}</version>
+				<scope>compile</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.poi</groupId>
+				<artifactId>poi-ooxml</artifactId>
+				<version>${poi.version}</version>
+				<scope>compile</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.poi</groupId>
+				<artifactId>poi-ooxml-schemas</artifactId>
+				<version>${poi.version}</version>
+				<scope>compile</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.poi</groupId>
+				<artifactId>poi-scratchpad</artifactId>
+				<version>${poi.version}</version>
+				<scope>compile</scope>
+			</dependency>
+			<dependency>
 				<groupId>org.apache.tika</groupId>
 				<artifactId>tika-core</artifactId>
 				<version>${tika.version}</version>
@@ -426,6 +460,36 @@
 				<groupId>org.hibernate.javax.persistence</groupId>
 				<artifactId>hibernate-jpa-2.0-api</artifactId>
 				<version>${hibernate.jpa.version}</version>
+				<scope>compile</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.jopendocument</groupId>
+				<artifactId>jOpenDocument</artifactId>
+				<version>${jopendocument.version}</version>
+				<scope>compile</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.openoffice</groupId>
+				<artifactId>juh</artifactId>
+				<version>${openoffice.version}</version>
+				<scope>compile</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.openoffice</groupId>
+				<artifactId>jurt</artifactId>
+				<version>${openoffice.version}</version>
+				<scope>compile</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.openoffice</groupId>
+				<artifactId>unoil</artifactId>
+				<version>${openoffice.version}</version>
+				<scope>compile</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.openoffice</groupId>
+				<artifactId>jurt</artifactId>
+				<version>${openoffice.version}</version>
 				<scope>compile</scope>
 			</dependency>
 			<dependency>
