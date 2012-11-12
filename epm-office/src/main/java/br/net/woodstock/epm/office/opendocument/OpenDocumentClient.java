@@ -5,9 +5,15 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
+import org.jdom.Element;
+import org.jdom.Namespace;
+import org.jdom.filter.ElementFilter;
 import org.jopendocument.dom.ContentTypeVersioned;
 import org.jopendocument.dom.ODPackage;
 import org.jopendocument.dom.ODXMLDocument;
@@ -33,6 +39,26 @@ public class OpenDocumentClient implements Serializable {
 		try {
 			// ODPackage pack = new ODPackage(new ByteArrayInputStream(bytes));
 			return null;
+		} catch (Exception e) {
+			throw new OfficeException(e);
+		}
+	}
+	
+	public Set<String> getFields(final byte[] bytes) {
+		try {
+			ODPackage pack = new ODPackage(new ByteArrayInputStream(bytes));
+			ODXMLDocument content = pack.getContent();
+			System.out.println(content.asString());
+			Namespace namespace = Namespace.getNamespace("urn:oasis:names:tc:opendocument:xmlns:text:1.0");
+			ElementFilter filter = new ElementFilter("text-input", namespace);
+			Set<String> set = new HashSet<String>();
+			Iterator i = content.getDocument().getDescendants(filter);
+			while (i.hasNext()) {
+				Element e = (Element) i.next();
+				String name = e.getAttributeValue("description", namespace);
+				set.add(name);
+			}
+			return set;
 		} catch (Exception e) {
 			throw new OfficeException(e);
 		}
