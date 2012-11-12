@@ -48,7 +48,9 @@
 						<f:facet name="header">
 							<h:outputText value="Action" />
 						</f:facet>
-						<p:commandButton alt="Edit" title="Edit" action="edit" ajax="false" icon="ui-icon-pencil" />
+						<p:commandButton alt="Edit" title="Edit" action="edit" ajax="false" icon="ui-icon-pencil">
+							<f:setPropertyActionListener target="#{userSearch.selectedIndex}" value="#{userList.rowIndex}" />
+						</p:commandButton>
 					</p:column>
 				</p:dataTable>
 			</div>
