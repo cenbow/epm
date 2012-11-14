@@ -9,7 +9,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.BlockJUnit4ClassRunner;
 
-import br.net.woodstock.epm.office.opendocument.OpenDocumentClient;
+import br.net.woodstock.epm.office.form.FieldManager;
 import br.net.woodstock.rockframework.utils.IOUtils;
 
 @RunWith(BlockJUnit4ClassRunner.class)
@@ -30,7 +30,7 @@ public class TemplateTest {
 		values.put("Endereco", "QNL 19 Bloco J Casa 8");
 		values.put("Telefone", "9825-9582");
 
-		byte[] outDoc = new OpenDocumentClient().populateTemplate(inDoc, values);
+		byte[] outDoc = new FieldManager().setValues(inDoc, values);
 
 		FileOutputStream outputStream = new FileOutputStream("/tmp/teste2.odt");
 		outputStream.write(outDoc);

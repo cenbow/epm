@@ -1,4 +1,4 @@
-package br.net.woodstock.epm.office.opendocument;
+package br.net.woodstock.epm.office.form;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -23,39 +23,36 @@ import br.net.woodstock.epm.office.OfficeDocument;
 import br.net.woodstock.epm.office.OfficeException;
 import br.net.woodstock.rockframework.utils.IOUtils;
 
-public class OpenDocumentClient implements Serializable {
+public class FieldManager implements Serializable {
 
-	private static final long	serialVersionUID	= -9115115136340597093L;
+	private static final long	serialVersionUID			= -9115115136340597093L;
 
-	private static final String	TMP_FILE_PREFIX		= "OOTMP_";
+	private static final String	NS_TEXT_10					= "urn:oasis:names:tc:opendocument:xmlns:text:1.0";
 
-	private static final String	TMP_FILE_SEPARATOR	= ".";
+	private static final String	TEXT_INPUT_ELEMENT			= "text-input";
 
-	public OpenDocumentClient() {
+	private static final String	TEXT_INPUT_NAME_ATTRIBUTE	= "description";
+
+	private static final String	TMP_FILE_PREFIX				= "OOTMP_";
+
+	private static final String	TMP_FILE_SEPARATOR			= ".";
+
+	public FieldManager() {
 		super();
 	}
 
-	public OfficeDocument openDocument(final byte[] bytes) {
+	@SuppressWarnings("rawtypes")
+	public Set<String> getFields(final OfficeDocument document) {
 		try {
-			// ODPackage pack = new ODPackage(new ByteArrayInputStream(bytes));
-			return null;
-		} catch (Exception e) {
-			throw new OfficeException(e);
-		}
-	}
-	
-	public Set<String> getFields(final byte[] bytes) {
-		try {
-			ODPackage pack = new ODPackage(new ByteArrayInputStream(bytes));
+			ODPackage pack = new ODPackage(new ByteArrayInputStream(document.getContent()));
 			ODXMLDocument content = pack.getContent();
-			System.out.println(content.asString());
-			Namespace namespace = Namespace.getNamespace("urn:oasis:names:tc:opendocument:xmlns:text:1.0");
-			ElementFilter filter = new ElementFilter("text-input", namespace);
+			Namespace namespace = Namespace.getNamespace(FieldManager.NS_TEXT_10);
+			ElementFilter filter = new ElementFilter(FieldManager.TEXT_INPUT_ELEMENT, namespace);
 			Set<String> set = new HashSet<String>();
 			Iterator i = content.getDocument().getDescendants(filter);
 			while (i.hasNext()) {
 				Element e = (Element) i.next();
-				String name = e.getAttributeValue("description", namespace);
+				String name = e.getAttributeValue(FieldManager.TEXT_INPUT_NAME_ATTRIBUTE, namespace);
 				set.add(name);
 			}
 			return set;
@@ -64,7 +61,7 @@ public class OpenDocumentClient implements Serializable {
 		}
 	}
 
-	public byte[] populateTemplate(final byte[] bytes, final Map<String, Object> values) {
+	public byte[] setValues(final byte[] bytes, final Map<String, Object> values) {
 		try {
 			ODPackage pack = new ODPackage(new ByteArrayInputStream(bytes));
 			ODXMLDocument content = pack.getContent();
@@ -75,10 +72,10 @@ public class OpenDocumentClient implements Serializable {
 					String outputExtension = null;
 					byte[] output = null;
 
-					if (contentType == ContentTypeVersioned.PRESENTATION_TEMPLATE) {
+					if ((contentType == ContentTypeVersioned.PRESENTATION) || (contentType == ContentTypeVersioned.PRESENTATION_TEMPLATE)) {
 						templateExtension = contentType.getExtension();
 						outputExtension = ContentTypeVersioned.PRESENTATION.getExtension();
-					} else if (contentType == ContentTypeVersioned.SPREADSHEET_TEMPLATE) {
+					} else if ((contentType == ContentTypeVersioned.SPREADSHEET) || (contentType == ContentTypeVersioned.SPREADSHEET_TEMPLATE)) {
 						templateExtension = contentType.getExtension();
 						outputExtension = ContentTypeVersioned.SPREADSHEET.getExtension();
 					} else if ((contentType == ContentTypeVersioned.TEXT) || (contentType == ContentTypeVersioned.TEXT_TEMPLATE)) {
@@ -87,8 +84,8 @@ public class OpenDocumentClient implements Serializable {
 					}
 
 					if (templateExtension != null) {
-						File tmpFileIn = File.createTempFile(OpenDocumentClient.TMP_FILE_PREFIX, OpenDocumentClient.TMP_FILE_SEPARATOR + templateExtension);
-						File tmpFileOut = File.createTempFile(OpenDocumentClient.TMP_FILE_PREFIX, OpenDocumentClient.TMP_FILE_SEPARATOR + outputExtension);
+						File tmpFileIn = File.createTempFile(FieldManager.TMP_FILE_PREFIX, FieldManager.TMP_FILE_SEPARATOR + templateExtension);
+						File tmpFileOut = File.createTempFile(FieldManager.TMP_FILE_PREFIX, FieldManager.TMP_FILE_SEPARATOR + outputExtension);
 
 						FileOutputStream outputStream = new FileOutputStream(tmpFileIn);
 						outputStream.write(bytes);
@@ -123,9 +120,5 @@ public class OpenDocumentClient implements Serializable {
 			throw new OfficeException(e);
 		}
 	}
-
-	/*
-	 * public OfficeDocument mergeDocuments() { }
-	 */
 
 }
