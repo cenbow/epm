@@ -14,8 +14,10 @@
 				<h:form id="_formHeader">
 					<p:menubar rendered="#{currentUser.authenticated}">
 						<p:submenu label="Main Menu">
+							<p:menuitem value="Home" action="index" ajax="false" icon="ui-icon-home" />
+							<p:separator />
 							<p:submenu label="Security">
-								<p:menuitem value="User" action="/spring/security/user" />
+								<p:menuitem value="User" action="security_user" ajax="false" />
 							</p:submenu>
 							<p:separator />
 							<p:menuitem value="Logoff" action="logoff" ajax="false" icon="ui-icon-close" />

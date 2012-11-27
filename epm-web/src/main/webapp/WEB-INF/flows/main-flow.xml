@@ -9,14 +9,14 @@
 	<view-state id="logoff" view="/" redirect="true" />
 	
 	<!-- Menu -->
-	<view-state id="spring_security_user" view="/spring/security/user" redirect="true" />
-
+	<view-state id="security_user" view="/spring/security/user" redirect="true" />
+	
 	<global-transitions>
-		<transition on="index" to="inded" />
+		<transition on="index" to="#index.index" />
 		<transition on="logoff" to="logoff">
 			<evaluate expression="logonAction.logoff()" />
 		</transition>
-		<transition on="/spring/security/user" to="spring_security_user" />
+		<transition on="security_user" to="security_user" />
 	</global-transitions>
 
 </flow>

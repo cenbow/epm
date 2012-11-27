@@ -45,9 +45,9 @@ public class InsertAdminTest {
 		this.securityService.saveUser(user);
 	}
 
-	// @Test
+	@Test
 	public void testUserRole() throws Exception {
-		this.securityService.saveUserRoles(new User(Integer.valueOf(3)), new Role(Integer.valueOf(1)));
+		this.securityService.saveUserRoles(new User(Integer.valueOf(1)), new Role(Integer.valueOf(1)));
 	}
 
 	// @Test
@@ -56,7 +56,7 @@ public class InsertAdminTest {
 		System.out.println(user.getName());
 	}
 
-	@Test
+	//@Test
 	public void testListUser() throws Exception {
 		QueryResult result = this.securityService.listUsersByName("admin", null);
 		Collection<User> users = result.getResult();

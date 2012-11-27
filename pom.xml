@@ -31,7 +31,6 @@
 		<jcr.version>2.0</jcr.version>
 		<jdbc.mysql.version>5.1.21</jdbc.mysql.version>
 		<jodconverter.version>2.2.1</jodconverter.version>
-		<jopendocument.version>1.2</jopendocument.version>
 		<jsf.version>2.1.14</jsf.version>
 		<jsp.version>2.1</jsp.version>
 		<jstl.version>1.2</jstl.version>
@@ -467,12 +466,6 @@
 				<groupId>org.hibernate.javax.persistence</groupId>
 				<artifactId>hibernate-jpa-2.0-api</artifactId>
 				<version>${hibernate.jpa.version}</version>
-				<scope>compile</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.jopendocument</groupId>
-				<artifactId>jOpenDocument</artifactId>
-				<version>${jopendocument.version}</version>
 				<scope>compile</scope>
 			</dependency>
 			<dependency>

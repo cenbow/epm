@@ -4,6 +4,7 @@ public enum OfficeDocumentType {
 
 	DOC("doc", "application/msword"), /**/
 	DOCX("docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document"), /**/
+	HTML("html", "text/html"), /**/
 	ODP("odp", "application/vnd.oasis.opendocument.presentation"), /**/
 	ODS("ods", "application/vnd.oasis.opendocument.spreadsheet"), /**/
 	ODT("odt", "application/vnd.oasis.opendocument.text"), /**/

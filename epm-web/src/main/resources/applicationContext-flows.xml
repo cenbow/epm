@@ -1,31 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:webflow="http://www.springframework.org/schema/webflow-config" xmlns:faces="http://www.springframework.org/schema/faces"
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:webflow="http://www.springframework.org/schema/webflow-config"
+	xmlns:faces="http://www.springframework.org/schema/faces"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
            http://www.springframework.org/schema/webflow-config http://www.springframework.org/schema/webflow-config/spring-webflow-config-2.3.xsd
            http://www.springframework.org/schema/faces http://www.springframework.org/schema/faces/spring-faces-2.2.xsd">
 
 	<webflow:flow-executor id="flowExecutor">
-		<webflow:flow-execution-repository max-executions="3" max-execution-snapshots="12" />
+		<webflow:flow-execution-repository
+			max-executions="3" max-execution-snapshots="12" />
 		<webflow:flow-execution-listeners>
 			<webflow:listener ref="facesContextListener" />
 			<webflow:listener ref="securityFlowExecutionListener" />
 		</webflow:flow-execution-listeners>
+		<webflow:flow-execution-attributes>
+			<webflow:redirect-in-same-state value="false" />
+		</webflow:flow-execution-attributes>
 	</webflow:flow-executor>
 
-	<webflow:flow-registry id="flowRegistry" flow-builder-services="facesFlowBuilderServices"
-		base-path="/WEB-INF/flows">
+	<webflow:flow-registry id="flowRegistry"
+		flow-builder-services="facesFlowBuilderServices" base-path="/WEB-INF/flows">
 		<webflow:flow-location path="main-flow.xml" id="main-flow" />
 		<webflow:flow-location-pattern value="/**/*-flow.xml" />
 	</webflow:flow-registry>
 
-	<faces:resources/>
-	
-	<faces:flow-builder-services id="facesFlowBuilderServices" development="true" />
+	<faces:resources />
 
-	<bean id="facesContextListener" class="org.springframework.faces.webflow.FlowFacesContextLifecycleListener" />
+	<faces:flow-builder-services id="facesFlowBuilderServices"
+		development="true" />
 
-	<bean id="securityFlowExecutionListener" class="org.springframework.webflow.security.SecurityFlowExecutionListener" />
+	<bean id="facesContextListener"
+		class="org.springframework.faces.webflow.FlowFacesContextLifecycleListener" />
+
+	<bean id="securityFlowExecutionListener"
+		class="org.springframework.webflow.security.SecurityFlowExecutionListener" />
 
 </beans>
