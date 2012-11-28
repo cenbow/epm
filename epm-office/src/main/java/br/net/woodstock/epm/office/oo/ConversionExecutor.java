@@ -6,6 +6,7 @@ import java.io.InputStream;
 
 import br.net.woodstock.epm.office.OfficeDocumentType;
 import br.net.woodstock.epm.office.OfficeException;
+import br.net.woodstock.epm.util.EPMLog;
 
 import com.sun.star.beans.PropertyValue;
 import com.sun.star.frame.XComponentLoader;
@@ -54,6 +55,7 @@ public class ConversionExecutor implements OpenOfficeExecutor {
 			xStorable.storeToURL(OpenOfficeHelper.PRIVATE_STREAM_URL, storeProps);
 			return (T) new ByteArrayInputStream(outputStream.toByteArray());
 		} catch (Exception e) {
+			EPMLog.getLogger().error(e.getMessage(), e);
 			throw new OfficeException(e);
 		}
 	}

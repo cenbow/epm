@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import br.net.woodstock.epm.office.OfficeException;
+import br.net.woodstock.epm.util.EPMLog;
 
 import com.sun.star.beans.PropertyValue;
 import com.sun.star.container.XNameAccess;
@@ -56,6 +57,7 @@ public class GetFieldNameExecutor implements OpenOfficeExecutor {
 			}
 			return (T) names;
 		} catch (Exception e) {
+			EPMLog.getLogger().error(e.getMessage(), e);
 			throw new OfficeException(e);
 		}
 	}
