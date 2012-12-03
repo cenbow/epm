@@ -5,32 +5,26 @@ import br.net.woodstock.epm.util.EPMLog;
 
 public class AbstractOpenOfficeManager {
 
-	private String	host;
+	private AbstractOpenOfficeConnection	connection;
 
-	private int		port;
-
-	public AbstractOpenOfficeManager(final String host, final int port) {
+	public AbstractOpenOfficeManager(final AbstractOpenOfficeConnection connection) {
 		super();
-		this.host = host;
-		this.port = port;
+		this.connection = connection;
 	}
 
 	public synchronized <T> T execute(final OpenOfficeExecutor executor) {
-		OpenOfficeConnection connection = null;
 		try {
-			connection = new OpenOfficeConnection(this.host, this.port);
-			T t = executor.doInConnection(connection.getComponentLoader());
+			this.connection.connect();
+			T t = executor.doInConnection(this.connection.getComponentLoader());
 			return t;
 		} catch (Exception e) {
 			EPMLog.getLogger().error(e.getMessage(), e);
 			throw new OfficeException(e);
 		} finally {
-			if (connection != null) {
-				try {
-					connection.close();
-				} catch (Exception e) {
-					//
-				}
+			try {
+				this.connection.close();
+			} catch (Exception e) {
+				//
 			}
 		}
 	}

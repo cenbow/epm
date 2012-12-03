@@ -30,7 +30,6 @@
 		<jackrabbit.version>2.5.2</jackrabbit.version>
 		<jcr.version>2.0</jcr.version>
 		<jdbc.mysql.version>5.1.21</jdbc.mysql.version>
-		<jodconverter.version>2.2.1</jodconverter.version>
 		<jsf.version>2.1.14</jsf.version>
 		<jsp.version>2.1</jsp.version>
 		<jstl.version>1.2</jstl.version>
@@ -179,12 +178,6 @@
 				<version>${project.version}</version>
 				<scope>compile</scope>
 				<type>war</type>
-			</dependency>
-			<dependency>
-				<groupId>com.artofsolving</groupId>
-				<artifactId>jodconverter</artifactId>
-				<version>${jodconverter.version}</version>
-				<scope>compile</scope>
 			</dependency>
 			<dependency>
 				<groupId>com.itextpdf</groupId>

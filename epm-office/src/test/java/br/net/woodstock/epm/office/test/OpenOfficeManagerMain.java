@@ -7,8 +7,10 @@ import java.io.InputStream;
 import java.util.Random;
 
 import br.net.woodstock.epm.office.OfficeDocumentType;
+import br.net.woodstock.epm.office.oo.AbstractOpenOfficeConnection;
 import br.net.woodstock.epm.office.oo.ConversionExecutor;
 import br.net.woodstock.epm.office.oo.OpenOfficeManager;
+import br.net.woodstock.epm.office.oo.SocketOpenOfficeConnection;
 import br.net.woodstock.rockframework.utils.IOUtils;
 
 public class OpenOfficeManagerMain {
@@ -21,8 +23,9 @@ public class OpenOfficeManagerMain {
 		try {
 			InputStream input = OpenOfficeManagerMain.class.getClassLoader().getResourceAsStream("teste.ott");
 			final byte[] bytes = IOUtils.toByteArray(input);
-			final OpenOfficeManager manager = new OpenOfficeManager(8100);
-			for (int j = 0; j < 16; j++) {
+			final AbstractOpenOfficeConnection connection = new SocketOpenOfficeConnection("localhost", 8100);
+			final OpenOfficeManager manager = new OpenOfficeManager(connection);
+			for (int j = 0; j < 1; j++) {
 				for (int i = 0; i < 16; i++) {
 
 					Runnable runnable = new Runnable() {
@@ -56,6 +59,8 @@ public class OpenOfficeManagerMain {
 					thread.start();
 
 				}
+				System.out.println("Esperando mais 60s");
+				Thread.sleep(60000);
 			}
 			input.close();
 		} catch (Exception e) {

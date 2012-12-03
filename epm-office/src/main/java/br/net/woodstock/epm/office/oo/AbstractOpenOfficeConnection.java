@@ -11,16 +11,12 @@ import com.sun.star.connection.XConnection;
 import com.sun.star.connection.XConnector;
 import com.sun.star.frame.XComponentLoader;
 import com.sun.star.frame.XDesktop;
-import com.sun.star.lang.EventObject;
 import com.sun.star.lang.XComponent;
-import com.sun.star.lang.XEventListener;
 import com.sun.star.lang.XMultiComponentFactory;
 import com.sun.star.uno.UnoRuntime;
 import com.sun.star.uno.XComponentContext;
 
-public class OpenOfficeConnection implements XEventListener {
-
-	private static final String		UNO_URL	= "socket,host=%s,port=%d,tcpNoDelay=1";
+public abstract class AbstractOpenOfficeConnection {
 
 	private XComponentContext		componentContext;
 
@@ -46,15 +42,13 @@ public class OpenOfficeConnection implements XEventListener {
 
 	private XComponentLoader		componentLoader;
 
-	private String					url;
-
-	public OpenOfficeConnection(final String host, final int port) {
+	public AbstractOpenOfficeConnection() {
 		super();
-		this.url = String.format(OpenOfficeConnection.UNO_URL, host, Integer.valueOf(port));
-		this.init();
 	}
 
-	private void init() {
+	public abstract String getConnectionURL();
+
+	public void connect() {
 		try {
 			this.componentContext = Bootstrap.createInitialComponentContext(null);
 			this.multiComponentFactory = this.componentContext.getServiceManager();
@@ -62,7 +56,7 @@ public class OpenOfficeConnection implements XEventListener {
 			this.bridgeInstance = this.componentContext.getServiceManager().createInstanceWithContext("com.sun.star.bridge.BridgeFactory", this.componentContext);
 			this.bridgeFactory = UnoRuntime.queryInterface(XBridgeFactory.class, this.bridgeInstance);
 			this.xConnector = UnoRuntime.queryInterface(XConnector.class, this.connector);
-			this.xConnection = this.xConnector.connect(this.url);
+			this.xConnection = this.xConnector.connect(this.getConnectionURL());
 			this.xbridge = this.bridgeFactory.createBridge("", "urp", this.xConnection, null);
 			this.xComponent = UnoRuntime.queryInterface(XComponent.class, this.xbridge);
 
@@ -81,11 +75,6 @@ public class OpenOfficeConnection implements XEventListener {
 
 	public XComponentLoader getComponentLoader() {
 		return this.componentLoader;
-	}
-
-	@Override
-	public void disposing(EventObject event) {
-		//
 	}
 
 	public void close() {
