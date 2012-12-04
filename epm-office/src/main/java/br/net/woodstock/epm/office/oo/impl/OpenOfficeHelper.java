@@ -36,17 +36,17 @@ public abstract class OpenOfficeHelper {
 		}
 		switch (targetType) {
 			case DOC:
-				return Filters.WORD_2003;
+				return OpenOfficeFilters.WORD_2003;
 			case DOCX:
-				return Filters.WORD_2007;
+				return OpenOfficeFilters.WORD_2007;
 			case HTML:
-				return Filters.ODT_XHTML;
+				return OpenOfficeFilters.ODT_XHTML;
 			case PDF:
-				return Filters.ODT_PDF;
+				return OpenOfficeFilters.ODT_PDF;
 			case RTF:
-				return Filters.RTF;
+				return OpenOfficeFilters.RTF;
 			default:
-				return Filters.ODT;
+				return OpenOfficeFilters.ODT;
 		}
 	}
 
@@ -60,5 +60,7 @@ public abstract class OpenOfficeHelper {
 	public static String getUserFieldName(final String name) {
 		return name.substring(OpenOfficeHelper.FIELD_NAME_PREFIX.length());
 	}
+	
+	
 
 }

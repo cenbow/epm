@@ -2,6 +2,7 @@ package br.net.woodstock.epm.office;
 
 public enum OfficeDocumentType {
 
+	CSV("csv", "text/comma-separated-values"), /**/
 	DOC("doc", "application/msword"), /**/
 	DOCX("docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document"), /**/
 	HTML("html", "text/html"), /**/
@@ -14,6 +15,9 @@ public enum OfficeDocumentType {
 	PPT("ppt", "application/vnd.ms-powerpoint"), /**/
 	PPTX("pptx", "application/vnd.openxmlformats-officedocument.presentationml.presentation"), /**/
 	RTF("rtf", "text/rtf"), /**/
+	SXC("sxc", "application/vnd.sun.xml.calc"), /**/
+	SXI("sxi", "application/vnd.sun.xml.impress"), /**/
+	SXW("sxw", "application/vnd.sun.xml.writer"), /**/
 	TXT("txt", "text/plain"), /**/
 	XLS("xls", "application/vnd.ms-excel"), /**/
 	XLSX("xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");

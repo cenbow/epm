@@ -3,6 +3,8 @@ package br.net.woodstock.epm.office.oo.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.net.woodstock.rockframework.utils.CollectionUtils;
+
 public class SocketOpenOfficeServer extends AbstractOpenOfficeServer {
 
 	private int	port;
@@ -24,7 +26,7 @@ public class SocketOpenOfficeServer extends AbstractOpenOfficeServer {
 		list.add("--nolockcheck");
 		list.add("--nologo");
 		list.add("--norestore");
-		return list.toArray(new String[list.size()]);
+		return CollectionUtils.toArray(list, String.class);
 	}
 
 }
