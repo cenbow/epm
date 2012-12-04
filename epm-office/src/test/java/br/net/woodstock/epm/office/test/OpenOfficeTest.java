@@ -8,7 +8,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.BlockJUnit4ClassRunner;
 
-import br.net.woodstock.epm.office.oo.OpenOfficeIO;
+import br.net.woodstock.epm.office.oo.impl.OpenOfficeIO;
 import br.net.woodstock.rockframework.utils.IOUtils;
 
 import com.sun.star.beans.PropertyValue;
@@ -114,7 +114,7 @@ public class OpenOfficeTest {
 		System.out.println(component);
 	}
 
-	//@Test
+	// @Test
 	public void test4() throws Exception {
 		InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("teste.ott");
 
@@ -147,6 +147,8 @@ public class OpenOfficeTest {
 		loadProps[2] = new PropertyValue();
 		loadProps[2].Name = "Hidden";
 		loadProps[2].Value = Boolean.valueOf(true);
+
+		inputStream.close();
 
 		// load
 		XComponent component = componentLoader.loadComponentFromURL("private:stream", "_blank", 0, loadProps);
@@ -196,7 +198,7 @@ public class OpenOfficeTest {
 		PropertyValue[] storeProps = new PropertyValue[2];
 		storeProps[0] = new PropertyValue();
 		storeProps[0].Name = "FilterName";
-		storeProps[0].Value = "writer8";//MS Word 2007 XML
+		storeProps[0].Value = "writer8";// MS Word 2007 XML
 		storeProps[1] = new PropertyValue();
 		storeProps[1].Name = "OutputStream";
 		storeProps[1].Value = OpenOfficeIO.toXOutputStream(outputStream);
@@ -204,7 +206,7 @@ public class OpenOfficeTest {
 
 		outputStream.close();
 	}
-	
+
 	@Test
 	public void test5() throws Exception {
 		InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("teste.docx");
@@ -236,9 +238,11 @@ public class OpenOfficeTest {
 		loadProps[1].Name = "Hidden";
 		loadProps[1].Value = Boolean.valueOf(true);
 
+		inputStream.close();
+
 		// load
 		XComponent component = componentLoader.loadComponentFromURL("private:stream", "_blank", 0, loadProps);
-		
+
 		System.out.println(component);
 		XModel model = UnoRuntime.queryInterface(XModel.class, component);
 
@@ -285,7 +289,7 @@ public class OpenOfficeTest {
 		PropertyValue[] storeProps = new PropertyValue[2];
 		storeProps[0] = new PropertyValue();
 		storeProps[0].Name = "FilterName";
-		storeProps[0].Value = "writer8";//MS Word 2007 XML
+		storeProps[0].Value = "writer8";// MS Word 2007 XML
 		storeProps[1] = new PropertyValue();
 		storeProps[1].Name = "OutputStream";
 		storeProps[1].Value = OpenOfficeIO.toXOutputStream(outputStream);

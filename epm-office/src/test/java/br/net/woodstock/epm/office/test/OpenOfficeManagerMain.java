@@ -4,13 +4,13 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
-import java.util.Random;
 
 import br.net.woodstock.epm.office.OfficeDocumentType;
-import br.net.woodstock.epm.office.oo.AbstractOpenOfficeConnection;
-import br.net.woodstock.epm.office.oo.ConversionExecutor;
+import br.net.woodstock.epm.office.oo.OpenOfficeConnection;
 import br.net.woodstock.epm.office.oo.OpenOfficeManager;
-import br.net.woodstock.epm.office.oo.SocketOpenOfficeConnection;
+import br.net.woodstock.epm.office.oo.impl.ConversionExecutor;
+import br.net.woodstock.epm.office.oo.impl.SingletonOpenOfficeManager;
+import br.net.woodstock.epm.office.oo.impl.SocketOpenOfficeConnection;
 import br.net.woodstock.rockframework.utils.IOUtils;
 
 public class OpenOfficeManagerMain {
@@ -23,17 +23,17 @@ public class OpenOfficeManagerMain {
 		try {
 			InputStream input = OpenOfficeManagerMain.class.getClassLoader().getResourceAsStream("teste.ott");
 			final byte[] bytes = IOUtils.toByteArray(input);
-			final AbstractOpenOfficeConnection connection = new SocketOpenOfficeConnection("localhost", 8100);
-			final OpenOfficeManager manager = new OpenOfficeManager(connection);
-			for (int j = 0; j < 1; j++) {
-				for (int i = 0; i < 16; i++) {
+			OpenOfficeConnection connection = new SocketOpenOfficeConnection("localhost", 8100);
+			final OpenOfficeManager manager = new SingletonOpenOfficeManager(connection);
+			for (int j = 0; j < 4; j++) {
+				for (int i = 0; i < 4; i++) {
 
 					Runnable runnable = new Runnable() {
 
 						@Override
 						public void run() {
 							try {
-								Thread.sleep((new Random().nextInt(10) + 1) * 1000);
+
 								long l = System.currentTimeMillis();
 								System.out.println("Executando " + Thread.currentThread().getName());
 								ConversionExecutor template = new ConversionExecutor(new ByteArrayInputStream(bytes), OfficeDocumentType.ODT);
@@ -55,12 +55,10 @@ public class OpenOfficeManagerMain {
 					};
 
 					Thread thread = new Thread(runnable);
-					thread.setName("Thread " + i);
+					thread.setName("Thread " + i + "." + j);
 					thread.start();
 
 				}
-				System.out.println("Esperando mais 60s");
-				Thread.sleep(60000);
 			}
 			input.close();
 		} catch (Exception e) {

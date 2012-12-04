@@ -41,58 +41,36 @@
 		<dependency>
 			<groupId>br.net.woodstock.rockframework</groupId>
 			<artifactId>rockframework-core</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>br.net.woodstock.epm</groupId>
-			<artifactId>epm-api</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>br.net.woodstock.epm</groupId>
-			<artifactId>epm-orm</artifactId>
+			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.apache.poi</groupId>
-			<artifactId>poi</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.poi</groupId>
-			<artifactId>poi-excelant</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.poi</groupId>
-			<artifactId>poi-ooxml</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.poi</groupId>
-			<artifactId>poi-ooxml-schemas</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.poi</groupId>
-			<artifactId>poi-scratchpad</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>org.openoffice</groupId>
 			<artifactId>juh</artifactId>
+			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.openoffice</groupId>
 			<artifactId>jurt</artifactId>
+			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.openoffice</groupId>
 			<artifactId>ridl</artifactId>
+			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.openoffice</groupId>
 			<artifactId>unoil</artifactId>
+			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
+			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>

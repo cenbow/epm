@@ -1,4 +1,4 @@
-package br.net.woodstock.epm.office.oo;
+package br.net.woodstock.epm.office.oo.impl;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -7,7 +7,9 @@ import java.util.Map;
 
 import br.net.woodstock.epm.office.OfficeDocumentType;
 import br.net.woodstock.epm.office.OfficeException;
-import br.net.woodstock.epm.util.EPMLog;
+import br.net.woodstock.epm.office.OfficeLog;
+import br.net.woodstock.epm.office.oo.OpenOfficeConnection;
+import br.net.woodstock.epm.office.oo.OpenOfficeExecutor;
 
 import com.sun.star.beans.PropertyValue;
 import com.sun.star.beans.XPropertySet;
@@ -37,8 +39,9 @@ public class PopulateTemplateExecutor implements OpenOfficeExecutor {
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public <T> T doInConnection(final XComponentLoader componentLoader) {
+	public <T> T doInConnection(final OpenOfficeConnection connection) {
 		try {
+			XComponentLoader componentLoader = (XComponentLoader) connection.getDelegate();
 			PropertyValue[] loadProps = new PropertyValue[3];
 			loadProps[0] = new PropertyValue();
 			loadProps[0].Name = OpenOfficeHelper.AS_TEMPLATE_PROPERTY;
@@ -89,7 +92,7 @@ public class PopulateTemplateExecutor implements OpenOfficeExecutor {
 			xStorable.storeToURL(OpenOfficeHelper.PRIVATE_STREAM_URL, storeProps);
 			return (T) new ByteArrayInputStream(outputStream.toByteArray());
 		} catch (Exception e) {
-			EPMLog.getLogger().error(e.getMessage(), e);
+			OfficeLog.getLogger().error(e.getMessage(), e);
 			throw new OfficeException(e);
 		}
 	}

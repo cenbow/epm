@@ -1,4 +1,4 @@
-package br.net.woodstock.epm.office.oo;
+package br.net.woodstock.epm.office.oo.impl;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -6,10 +6,13 @@ import java.io.InputStream;
 
 import br.net.woodstock.epm.office.OfficeDocumentType;
 import br.net.woodstock.epm.office.OfficeException;
-import br.net.woodstock.epm.util.EPMLog;
+import br.net.woodstock.epm.office.OfficeLog;
+import br.net.woodstock.epm.office.oo.OpenOfficeConnection;
+import br.net.woodstock.epm.office.oo.OpenOfficeExecutor;
 
 import com.sun.star.beans.PropertyValue;
 import com.sun.star.frame.XComponentLoader;
+import com.sun.star.frame.XModel;
 import com.sun.star.frame.XStorable;
 import com.sun.star.lang.XComponent;
 import com.sun.star.uno.UnoRuntime;
@@ -28,8 +31,9 @@ public class ConversionExecutor implements OpenOfficeExecutor {
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public <T> T doInConnection(final XComponentLoader componentLoader) {
+	public <T> T doInConnection(final OpenOfficeConnection connection) {
 		try {
+			XComponentLoader componentLoader = (XComponentLoader) connection.getDelegate();
 			PropertyValue[] loadProps = new PropertyValue[2];
 			loadProps[0] = new PropertyValue();
 			loadProps[0].Name = OpenOfficeHelper.INPUT_STREAM_PROPERTY;
@@ -40,7 +44,10 @@ public class ConversionExecutor implements OpenOfficeExecutor {
 			loadProps[1].Value = Boolean.valueOf(true);
 
 			XComponent component = componentLoader.loadComponentFromURL(OpenOfficeHelper.PRIVATE_STREAM_URL, OpenOfficeHelper.BLANK_TARGET, 0, loadProps);
-			String filterName = OpenOfficeHelper.getFilter(null, this.targetType);
+
+			String currentFilterName = this.getFilterName(component);
+
+			String filterName = OpenOfficeHelper.getFilter(currentFilterName, this.targetType);
 
 			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
@@ -55,9 +62,22 @@ public class ConversionExecutor implements OpenOfficeExecutor {
 			xStorable.storeToURL(OpenOfficeHelper.PRIVATE_STREAM_URL, storeProps);
 			return (T) new ByteArrayInputStream(outputStream.toByteArray());
 		} catch (Exception e) {
-			EPMLog.getLogger().error(e.getMessage(), e);
+			OfficeLog.getLogger().error(e.getMessage(), e);
 			throw new OfficeException(e);
 		}
+	}
+
+	private String getFilterName(final XComponent component) {
+		XModel model = UnoRuntime.queryInterface(XModel.class, component);
+		String filterName = null;
+		PropertyValue[] args = model.getArgs();
+		for (PropertyValue arg : args) {
+			if (arg.Name.equals(OpenOfficeHelper.FILTER_NAME_PROPERTY)) {
+				filterName = (String) arg.Value;
+				break;
+			}
+		}
+		return filterName;
 	}
 
 }

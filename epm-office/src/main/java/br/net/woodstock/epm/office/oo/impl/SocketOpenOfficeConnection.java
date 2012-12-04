@@ -1,4 +1,4 @@
-package br.net.woodstock.epm.office.oo;
+package br.net.woodstock.epm.office.oo.impl;
 
 public class SocketOpenOfficeConnection extends AbstractOpenOfficeConnection {
 

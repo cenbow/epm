@@ -1,6 +1,8 @@
-package br.net.woodstock.epm.office.oo;
+package br.net.woodstock.epm.office.oo.impl;
 
 import br.net.woodstock.epm.office.OfficeDocumentType;
+import br.net.woodstock.epm.office.OfficeLog;
+import br.net.woodstock.rockframework.utils.ConditionUtils;
 
 public abstract class OpenOfficeHelper {
 
@@ -28,7 +30,10 @@ public abstract class OpenOfficeHelper {
 		//
 	}
 
-	public static String getFilter(final String sourceType, final OfficeDocumentType targetType) {
+	public static String getFilter(final String currentFilterName, final OfficeDocumentType targetType) {
+		if(ConditionUtils.isNotEmpty(currentFilterName)) {
+			
+		}
 		switch (targetType) {
 			case DOC:
 				return Filters.WORD_2003;

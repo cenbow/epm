@@ -9,29 +9,25 @@ import org.junit.runner.RunWith;
 import org.junit.runners.BlockJUnit4ClassRunner;
 
 import br.net.woodstock.epm.office.OfficeDocumentType;
-import br.net.woodstock.epm.office.oo.impl.AbstractOpenOfficeConnection;
+import br.net.woodstock.epm.office.oo.OpenOfficeConnection;
 import br.net.woodstock.epm.office.oo.impl.ConversionExecutor;
 import br.net.woodstock.epm.office.oo.impl.SimpleOpenOfficeManager;
-import br.net.woodstock.epm.office.oo.impl.PipeOpenOfficeConnection;
+import br.net.woodstock.epm.office.oo.impl.SocketOpenOfficeConnection;
 import br.net.woodstock.rockframework.utils.IOUtils;
 
 @RunWith(BlockJUnit4ClassRunner.class)
-public class PipeOpenOfficeManagerTest {
+public class OpenOfficeManagerErrorTest {
 
-	static {
-		//System.setProperty("java.library.path", "/usr/lib64/libreoffice/ure-link/lib/");
-	}
-
-	public PipeOpenOfficeManagerTest() {
+	public OpenOfficeManagerErrorTest() {
 		super();
 	}
 
 	@Test
 	public void testConvert() throws Exception {
-		InputStream input = this.getClass().getClassLoader().getResourceAsStream("teste.ott");
-		AbstractOpenOfficeConnection connection = new PipeOpenOfficeConnection("teste");
+		InputStream input = this.getClass().getClassLoader().getResourceAsStream("teste.pdf");
+		OpenOfficeConnection connection = new SocketOpenOfficeConnection("localhost", 8100);
 		SimpleOpenOfficeManager manager = new SimpleOpenOfficeManager(connection);
-		ConversionExecutor template = new ConversionExecutor(input, OfficeDocumentType.DOCX);
+		ConversionExecutor template = new ConversionExecutor(input, OfficeDocumentType.HTML);
 		InputStream output = manager.execute(template);
 
 		File file = File.createTempFile("teste", ".docx");

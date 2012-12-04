@@ -1,7 +1,8 @@
-package br.net.woodstock.epm.office.oo;
+package br.net.woodstock.epm.office.oo.impl;
 
 import br.net.woodstock.epm.office.OfficeException;
-import br.net.woodstock.epm.util.EPMLog;
+import br.net.woodstock.epm.office.OfficeLog;
+import br.net.woodstock.epm.office.oo.OpenOfficeConnection;
 
 import com.sun.star.bridge.XBridge;
 import com.sun.star.bridge.XBridgeFactory;
@@ -16,7 +17,7 @@ import com.sun.star.lang.XMultiComponentFactory;
 import com.sun.star.uno.UnoRuntime;
 import com.sun.star.uno.XComponentContext;
 
-public abstract class AbstractOpenOfficeConnection {
+public abstract class AbstractOpenOfficeConnection implements OpenOfficeConnection {
 
 	private XComponentContext		componentContext;
 
@@ -42,12 +43,25 @@ public abstract class AbstractOpenOfficeConnection {
 
 	private XComponentLoader		componentLoader;
 
+	private boolean					connected;
+
 	public AbstractOpenOfficeConnection() {
 		super();
 	}
 
 	public abstract String getConnectionURL();
 
+	@Override
+	public Object getDelegate() {
+		return this.componentLoader;
+	}
+
+	@Override
+	public boolean isConnected() {
+		return this.connected;
+	}
+
+	@Override
 	public void connect() {
 		try {
 			this.componentContext = Bootstrap.createInitialComponentContext(null);
@@ -67,16 +81,14 @@ public abstract class AbstractOpenOfficeConnection {
 			this.xDesktop = UnoRuntime.queryInterface(XDesktop.class, this.localMultiComponentFactory.createInstanceWithContext("com.sun.star.frame.Desktop", this.componentContext));
 
 			this.componentLoader = UnoRuntime.queryInterface(XComponentLoader.class, this.xDesktop);
+			this.connected = true;
 		} catch (Exception e) {
-			EPMLog.getLogger().error(e.getMessage(), e);
+			OfficeLog.getLogger().error(e.getMessage(), e);
 			throw new OfficeException(e);
 		}
 	}
 
-	public XComponentLoader getComponentLoader() {
-		return this.componentLoader;
-	}
-
+	@Override
 	public void close() {
 		if (this.xComponent != null) {
 			try {
@@ -92,5 +104,6 @@ public abstract class AbstractOpenOfficeConnection {
 				//
 			}
 		}
+		this.connected = false;
 	}
 }

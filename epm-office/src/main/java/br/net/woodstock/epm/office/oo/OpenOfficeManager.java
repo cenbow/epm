@@ -1,9 +1,9 @@
 package br.net.woodstock.epm.office.oo;
 
-public class OpenOfficeManager extends AbstractOpenOfficeManager {
+public interface OpenOfficeManager {
 
-	public OpenOfficeManager(final AbstractOpenOfficeConnection connection) {
-		super(connection);
-	}
+	OpenOfficeConnection getConnection();
+
+	<T> T execute(OpenOfficeExecutor executor);
 
 }

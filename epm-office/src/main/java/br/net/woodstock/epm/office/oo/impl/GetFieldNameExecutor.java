@@ -1,11 +1,13 @@
-package br.net.woodstock.epm.office.oo;
+package br.net.woodstock.epm.office.oo.impl;
 
 import java.io.InputStream;
 import java.util.HashSet;
 import java.util.Set;
 
 import br.net.woodstock.epm.office.OfficeException;
-import br.net.woodstock.epm.util.EPMLog;
+import br.net.woodstock.epm.office.OfficeLog;
+import br.net.woodstock.epm.office.oo.OpenOfficeConnection;
+import br.net.woodstock.epm.office.oo.OpenOfficeExecutor;
 
 import com.sun.star.beans.PropertyValue;
 import com.sun.star.container.XNameAccess;
@@ -25,8 +27,9 @@ public class GetFieldNameExecutor implements OpenOfficeExecutor {
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public <T> T doInConnection(final XComponentLoader componentLoader) {
+	public <T> T doInConnection(final OpenOfficeConnection connection) {
 		try {
+			XComponentLoader componentLoader = (XComponentLoader) connection.getDelegate();
 			PropertyValue[] loadProps = new PropertyValue[3];
 			loadProps[0] = new PropertyValue();
 			loadProps[0].Name = OpenOfficeHelper.AS_TEMPLATE_PROPERTY;
@@ -57,7 +60,7 @@ public class GetFieldNameExecutor implements OpenOfficeExecutor {
 			}
 			return (T) names;
 		} catch (Exception e) {
-			EPMLog.getLogger().error(e.getMessage(), e);
+			OfficeLog.getLogger().error(e.getMessage(), e);
 			throw new OfficeException(e);
 		}
 	}
