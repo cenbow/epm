@@ -7,7 +7,9 @@ import java.io.InputStream;
 import br.net.woodstock.epm.office.OfficeDocumentType;
 import br.net.woodstock.epm.office.OfficeException;
 import br.net.woodstock.epm.office.OfficeLog;
+import br.net.woodstock.epm.office.oo.FilterMapping;
 import br.net.woodstock.epm.office.oo.OpenOfficeConnection;
+import br.net.woodstock.epm.office.oo.OpenOfficeException;
 import br.net.woodstock.epm.office.oo.OpenOfficeExecutor;
 
 import com.sun.star.beans.PropertyValue;
@@ -47,7 +49,12 @@ public class ConversionExecutor implements OpenOfficeExecutor {
 
 			String currentFilterName = this.getFilterName(component);
 
-			String filterName = OpenOfficeHelper.getFilter(currentFilterName, this.targetType);
+			FilterMappingResolver filterMappingResolver = FilterMappingResolver.getInstance();
+			FilterMapping filterMapping = filterMappingResolver.getFilterMapping(currentFilterName, this.targetType);
+
+			if (filterMapping == null) {
+				throw new OpenOfficeException("Cannot convert to " + this.targetType);
+			}
 
 			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
@@ -55,7 +62,7 @@ public class ConversionExecutor implements OpenOfficeExecutor {
 			PropertyValue[] storeProps = new PropertyValue[2];
 			storeProps[0] = new PropertyValue();
 			storeProps[0].Name = OpenOfficeHelper.FILTER_NAME_PROPERTY;
-			storeProps[0].Value = filterName;
+			storeProps[0].Value = filterMapping.getExportFilter(this.targetType);
 			storeProps[1] = new PropertyValue();
 			storeProps[1].Name = OpenOfficeHelper.OUTPUT_STREAM_PROPERTY;
 			storeProps[1].Value = OpenOfficeIO.toXOutputStream(outputStream);

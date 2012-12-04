@@ -1,9 +1,5 @@
 package br.net.woodstock.epm.office.oo.impl;
 
-import br.net.woodstock.epm.office.OfficeDocumentType;
-import br.net.woodstock.epm.office.OfficeLog;
-import br.net.woodstock.rockframework.utils.ConditionUtils;
-
 public abstract class OpenOfficeHelper {
 
 	public static final String	INPUT_STREAM_PROPERTY			= "InputStream";
@@ -30,26 +26,6 @@ public abstract class OpenOfficeHelper {
 		//
 	}
 
-	public static String getFilter(final String currentFilterName, final OfficeDocumentType targetType) {
-		if(ConditionUtils.isNotEmpty(currentFilterName)) {
-			
-		}
-		switch (targetType) {
-			case DOC:
-				return OpenOfficeFilters.WORD_2003;
-			case DOCX:
-				return OpenOfficeFilters.WORD_2007;
-			case HTML:
-				return OpenOfficeFilters.ODT_XHTML;
-			case PDF:
-				return OpenOfficeFilters.ODT_PDF;
-			case RTF:
-				return OpenOfficeFilters.RTF;
-			default:
-				return OpenOfficeFilters.ODT;
-		}
-	}
-
 	public static boolean isUserField(final String name) {
 		if (name.toLowerCase().startsWith(OpenOfficeHelper.FIELD_NAME_PREFIX)) {
 			return true;
@@ -60,7 +36,5 @@ public abstract class OpenOfficeHelper {
 	public static String getUserFieldName(final String name) {
 		return name.substring(OpenOfficeHelper.FIELD_NAME_PREFIX.length());
 	}
-	
-	
 
 }

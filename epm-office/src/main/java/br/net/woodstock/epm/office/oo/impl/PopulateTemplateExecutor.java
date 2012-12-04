@@ -8,13 +8,16 @@ import java.util.Map;
 import br.net.woodstock.epm.office.OfficeDocumentType;
 import br.net.woodstock.epm.office.OfficeException;
 import br.net.woodstock.epm.office.OfficeLog;
+import br.net.woodstock.epm.office.oo.FilterMapping;
 import br.net.woodstock.epm.office.oo.OpenOfficeConnection;
+import br.net.woodstock.epm.office.oo.OpenOfficeException;
 import br.net.woodstock.epm.office.oo.OpenOfficeExecutor;
 
 import com.sun.star.beans.PropertyValue;
 import com.sun.star.beans.XPropertySet;
 import com.sun.star.container.XNameAccess;
 import com.sun.star.frame.XComponentLoader;
+import com.sun.star.frame.XModel;
 import com.sun.star.frame.XStorable;
 import com.sun.star.lang.XComponent;
 import com.sun.star.text.XTextField;
@@ -57,6 +60,15 @@ public class PopulateTemplateExecutor implements OpenOfficeExecutor {
 
 			XComponent component = componentLoader.loadComponentFromURL(OpenOfficeHelper.PRIVATE_STREAM_URL, OpenOfficeHelper.BLANK_TARGET, 0, loadProps);
 
+			String currentFilterName = this.getFilterName(component);
+
+			FilterMappingResolver filterMappingResolver = FilterMappingResolver.getInstance();
+			FilterMapping filterMapping = filterMappingResolver.getFilterMapping(currentFilterName, this.targetType);
+
+			if (filterMapping == null) {
+				throw new OpenOfficeException("Cannot convert to " + this.targetType);
+			}
+
 			XTextFieldsSupplier xTextFieldsSupplier = UnoRuntime.queryInterface(XTextFieldsSupplier.class, component);
 
 			XNameAccess xNamedFieldMasters = xTextFieldsSupplier.getTextFieldMasters();
@@ -77,15 +89,13 @@ public class PopulateTemplateExecutor implements OpenOfficeExecutor {
 				}
 			}
 
-			String filterName = OpenOfficeHelper.getFilter(null, this.targetType);
-
 			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
 			XStorable xStorable = UnoRuntime.queryInterface(XStorable.class, component);
 			PropertyValue[] storeProps = new PropertyValue[2];
 			storeProps[0] = new PropertyValue();
 			storeProps[0].Name = OpenOfficeHelper.FILTER_NAME_PROPERTY;
-			storeProps[0].Value = filterName;
+			storeProps[0].Value = filterMapping.getExportFilter(this.targetType);
 			storeProps[1] = new PropertyValue();
 			storeProps[1].Name = OpenOfficeHelper.OUTPUT_STREAM_PROPERTY;
 			storeProps[1].Value = OpenOfficeIO.toXOutputStream(outputStream);
@@ -95,6 +105,19 @@ public class PopulateTemplateExecutor implements OpenOfficeExecutor {
 			OfficeLog.getLogger().error(e.getMessage(), e);
 			throw new OfficeException(e);
 		}
+	}
+
+	private String getFilterName(final XComponent component) {
+		XModel model = UnoRuntime.queryInterface(XModel.class, component);
+		String filterName = null;
+		PropertyValue[] args = model.getArgs();
+		for (PropertyValue arg : args) {
+			if (arg.Name.equals(OpenOfficeHelper.FILTER_NAME_PROPERTY)) {
+				filterName = (String) arg.Value;
+				break;
+			}
+		}
+		return filterName;
 	}
 
 }
