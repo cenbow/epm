@@ -1,12 +1,12 @@
 package br.net.woodstock.epm.office.oo.impl;
 
-public class Main {
+public final class Main {
 
-	public Main() {
+	private Main() {
 		super();
 	}
 
-	public static void main(String[] args) {
+	public static void main(final String[] args) {
 		AbstractOpenOfficeServer server = null;
 		try {
 			int port = Integer.parseInt(args[0]);

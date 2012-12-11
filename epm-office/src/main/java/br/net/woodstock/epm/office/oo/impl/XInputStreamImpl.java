@@ -6,8 +6,6 @@ import java.io.InputStream;
 
 import br.net.woodstock.rockframework.utils.IOUtils;
 
-import com.sun.star.io.BufferSizeExceededException;
-import com.sun.star.io.NotConnectedException;
 import com.sun.star.io.XInputStream;
 import com.sun.star.io.XSeekable;
 import com.sun.star.lang.IllegalArgumentException;
@@ -27,7 +25,7 @@ class XInputStreamImpl extends ByteArrayInputStream implements XInputStream, XSe
 	//
 
 	@Override
-	public int readBytes(final byte[][] buffer, final int bufferSize) throws NotConnectedException, BufferSizeExceededException, com.sun.star.io.IOException {
+	public int readBytes(final byte[][] buffer, final int bufferSize) throws com.sun.star.io.IOException {
 		int numberOfReadBytes;
 		try {
 			byte[] bytes = new byte[bufferSize];
@@ -46,26 +44,26 @@ class XInputStreamImpl extends ByteArrayInputStream implements XInputStream, XSe
 			buffer[0] = bytes;
 			return numberOfReadBytes;
 		} catch (java.io.IOException e) {
-			throw new com.sun.star.io.IOException(e.getMessage(), this);
+			throw new com.sun.star.io.IOException(e.getMessage(), e);
 		}
 	}
 
 	@Override
-	public int readSomeBytes(final byte[][] buffer, final int bufferSize) throws NotConnectedException, BufferSizeExceededException, com.sun.star.io.IOException {
+	public int readSomeBytes(final byte[][] buffer, final int bufferSize) throws com.sun.star.io.IOException {
 		return this.readBytes(buffer, bufferSize);
 	}
 
 	@Override
-	public void skipBytes(final int skipLength) throws NotConnectedException, BufferSizeExceededException, com.sun.star.io.IOException {
+	public void skipBytes(final int skipLength) throws com.sun.star.io.IOException {
 		this.skip(skipLength);
 	}
 
 	@Override
-	public void closeInput() throws NotConnectedException, com.sun.star.io.IOException {
+	public void closeInput() throws com.sun.star.io.IOException {
 		try {
 			this.close();
 		} catch (java.io.IOException e) {
-			throw new com.sun.star.io.IOException(e.getMessage(), this);
+			throw new com.sun.star.io.IOException(e.getMessage(), e);
 		}
 	}
 

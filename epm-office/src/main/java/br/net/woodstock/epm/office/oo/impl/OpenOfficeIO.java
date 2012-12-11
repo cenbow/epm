@@ -7,7 +7,11 @@ import java.io.OutputStream;
 import com.sun.star.io.XInputStream;
 import com.sun.star.io.XOutputStream;
 
-public class OpenOfficeIO {
+public abstract class OpenOfficeIO {
+
+	private OpenOfficeIO() {
+		//
+	}
 
 	public static XInputStream toXInputStream(final byte[] bytes) {
 		return new XInputStreamImpl(bytes);

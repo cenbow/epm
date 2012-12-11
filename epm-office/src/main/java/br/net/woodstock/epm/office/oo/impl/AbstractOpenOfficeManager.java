@@ -45,7 +45,7 @@ public class AbstractOpenOfficeManager implements OpenOfficeManager {
 			try {
 				this.close();
 			} catch (Exception e) {
-				//
+				OfficeLog.getLogger().warn(e.getMessage(), e);
 			}
 		}
 	}

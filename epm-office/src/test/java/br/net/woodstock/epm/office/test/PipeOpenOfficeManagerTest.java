@@ -11,16 +11,12 @@ import org.junit.runners.BlockJUnit4ClassRunner;
 import br.net.woodstock.epm.office.OfficeDocumentType;
 import br.net.woodstock.epm.office.oo.impl.AbstractOpenOfficeConnection;
 import br.net.woodstock.epm.office.oo.impl.ConversionExecutor;
-import br.net.woodstock.epm.office.oo.impl.SimpleOpenOfficeManager;
 import br.net.woodstock.epm.office.oo.impl.PipeOpenOfficeConnection;
+import br.net.woodstock.epm.office.oo.impl.SimpleOpenOfficeManager;
 import br.net.woodstock.rockframework.utils.IOUtils;
 
 @RunWith(BlockJUnit4ClassRunner.class)
 public class PipeOpenOfficeManagerTest {
-
-	static {
-		//System.setProperty("java.library.path", "/usr/lib64/libreoffice/ure-link/lib/");
-	}
 
 	public PipeOpenOfficeManagerTest() {
 		super();

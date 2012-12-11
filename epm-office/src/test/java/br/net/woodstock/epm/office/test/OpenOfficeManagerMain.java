@@ -13,13 +13,13 @@ import br.net.woodstock.epm.office.oo.impl.SingletonOpenOfficeManager;
 import br.net.woodstock.epm.office.oo.impl.SocketOpenOfficeConnection;
 import br.net.woodstock.rockframework.utils.IOUtils;
 
-public class OpenOfficeManagerMain {
+public final class OpenOfficeManagerMain {
 
-	public OpenOfficeManagerMain() {
+	private OpenOfficeManagerMain() {
 		super();
 	}
 
-	public static void main(String[] args) {
+	public static void main(final String[] args) {
 		try {
 			InputStream input = OpenOfficeManagerMain.class.getClassLoader().getResourceAsStream("teste.ott");
 			final byte[] bytes = IOUtils.toByteArray(input);

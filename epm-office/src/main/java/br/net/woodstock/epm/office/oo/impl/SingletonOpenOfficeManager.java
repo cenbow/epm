@@ -10,7 +10,7 @@ public class SingletonOpenOfficeManager extends AbstractOpenOfficeManager {
 	}
 
 	@Override
-	public synchronized <T> T execute(OpenOfficeExecutor executor) {
+	public synchronized <T> T execute(final OpenOfficeExecutor executor) {
 		return super.execute(executor);
 	}
 

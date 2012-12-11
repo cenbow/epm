@@ -8,18 +8,18 @@ import br.net.woodstock.epm.office.OfficeDocumentType;
 import br.net.woodstock.epm.office.oo.impl.AbstractOpenOfficeConnection;
 import br.net.woodstock.epm.office.oo.impl.AbstractOpenOfficeServer;
 import br.net.woodstock.epm.office.oo.impl.ConversionExecutor;
-import br.net.woodstock.epm.office.oo.impl.SimpleOpenOfficeManager;
 import br.net.woodstock.epm.office.oo.impl.PipeOpenOfficeConnection;
 import br.net.woodstock.epm.office.oo.impl.PipeOpenOfficeServer;
+import br.net.woodstock.epm.office.oo.impl.SimpleOpenOfficeManager;
 import br.net.woodstock.rockframework.utils.IOUtils;
 
-public class PipeOpenOfficeServerTestMain {
+public final class PipeOpenOfficeServerTestMain {
 
-	public PipeOpenOfficeServerTestMain() {
+	private PipeOpenOfficeServerTestMain() {
 		super();
 	}
 
-	public static void main(String[] args) {
+	public static void main(final String[] args) {
 		AbstractOpenOfficeServer server = null;
 		try {
 			server = new PipeOpenOfficeServer("ooinstance1");

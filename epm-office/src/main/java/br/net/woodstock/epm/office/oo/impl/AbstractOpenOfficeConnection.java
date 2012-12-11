@@ -94,14 +94,14 @@ public abstract class AbstractOpenOfficeConnection implements OpenOfficeConnecti
 			try {
 				this.xComponent.dispose();
 			} catch (Exception e) {
-				//
+				OfficeLog.getLogger().warn(e.getMessage(), e);
 			}
 		}
 		if (this.xConnection != null) {
 			try {
 				this.xConnection.close();
 			} catch (Exception e) {
-				//
+				OfficeLog.getLogger().warn(e.getMessage(), e);
 			}
 		}
 		this.connected = false;

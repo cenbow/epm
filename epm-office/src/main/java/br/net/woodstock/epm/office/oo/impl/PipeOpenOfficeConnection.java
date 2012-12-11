@@ -2,7 +2,7 @@ package br.net.woodstock.epm.office.oo.impl;
 
 public class PipeOpenOfficeConnection extends AbstractOpenOfficeConnection {
 
-	private static final String	UNO_URL	= "pipe,name=%s;urp;StarOffice.ComponentContext";
+	private static final String	UNO_URL	= "pipe,name=%s;urp;StarOffice.ServiceManager";
 
 	private String				url;
 

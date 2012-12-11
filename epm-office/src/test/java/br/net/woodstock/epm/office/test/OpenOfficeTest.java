@@ -198,7 +198,7 @@ public class OpenOfficeTest {
 		PropertyValue[] storeProps = new PropertyValue[2];
 		storeProps[0] = new PropertyValue();
 		storeProps[0].Name = "FilterName";
-		storeProps[0].Value = "writer8";// MS Word 2007 XML
+		storeProps[0].Value = "writer8";
 		storeProps[1] = new PropertyValue();
 		storeProps[1].Name = "OutputStream";
 		storeProps[1].Value = OpenOfficeIO.toXOutputStream(outputStream);
@@ -289,7 +289,7 @@ public class OpenOfficeTest {
 		PropertyValue[] storeProps = new PropertyValue[2];
 		storeProps[0] = new PropertyValue();
 		storeProps[0].Name = "FilterName";
-		storeProps[0].Value = "writer8";// MS Word 2007 XML
+		storeProps[0].Value = "writer8";
 		storeProps[1] = new PropertyValue();
 		storeProps[1].Name = "OutputStream";
 		storeProps[1].Value = OpenOfficeIO.toXOutputStream(outputStream);

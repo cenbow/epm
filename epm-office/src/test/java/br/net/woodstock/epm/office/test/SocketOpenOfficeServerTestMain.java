@@ -3,13 +3,13 @@ package br.net.woodstock.epm.office.test;
 import br.net.woodstock.epm.office.oo.impl.AbstractOpenOfficeServer;
 import br.net.woodstock.epm.office.oo.impl.SocketOpenOfficeServer;
 
-public class SocketOpenOfficeServerTestMain {
+public final class SocketOpenOfficeServerTestMain {
 
 	public SocketOpenOfficeServerTestMain() {
 		super();
 	}
 
-	public static void main(String[] args) {
+	public static void main(final String[] args) {
 		AbstractOpenOfficeServer server = null;
 		try {
 			server = new SocketOpenOfficeServer(8100);

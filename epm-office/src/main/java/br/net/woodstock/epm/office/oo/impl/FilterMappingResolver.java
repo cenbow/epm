@@ -3,7 +3,7 @@ package br.net.woodstock.epm.office.oo.impl;
 import br.net.woodstock.epm.office.OfficeDocumentType;
 import br.net.woodstock.epm.office.oo.FilterMapping;
 
-public class FilterMappingResolver {
+public final class FilterMappingResolver {
 
 	private static FilterMappingResolver	instance			= new FilterMappingResolver();
 
