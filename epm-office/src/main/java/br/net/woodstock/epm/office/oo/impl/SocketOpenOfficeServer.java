@@ -31,7 +31,7 @@ public class SocketOpenOfficeServer extends AbstractOpenOfficeServer {
 	}
 
 	@Override
-	public OpenOfficeConnection getConnection() {
+	public OpenOfficeConnection newConnection() {
 		return new SocketOpenOfficeConnection("127.0.0.1", this.getPort());
 	}
 

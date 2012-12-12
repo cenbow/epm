@@ -1,30 +1,28 @@
 package br.net.woodstock.epm.office.oo.impl;
 
 import java.io.File;
-import java.io.InputStream;
-import java.io.PrintStream;
 import java.io.PrintWriter;
-import java.util.Scanner;
 
 import br.net.woodstock.epm.office.OfficeLog;
+import br.net.woodstock.epm.office.oo.OpenOfficeConnection;
 import br.net.woodstock.epm.office.oo.OpenOfficeException;
 import br.net.woodstock.epm.office.oo.OpenOfficeServer;
 
 public abstract class AbstractOpenOfficeServer implements OpenOfficeServer {
 
-	private static final String	FILE_PREFIX		= "soffice";
+	private static final String		FILE_PREFIX		= "soffice";
 
-	private static final String	FILE_SUFIX		= ".sh";
+	private static final String		FILE_SUFIX		= ".sh";
 
-	private static final String	CMD_START		= "/bin/sh";
+	private static final String		CMD_START		= "/bin/sh";
 
-	private static final String	CMD_SEPARATOR	= " \\";
+	private static final String		CMD_SEPARATOR	= " \\";
 
-	private Process				process;
+	private static final int		MAX_TRIES		= 10;
 
-	private Thread				thread;
+	private Process					process;
 
-	private OpenOfficeConsole	console;
+	private OpenOfficeConnection	connection;
 
 	public AbstractOpenOfficeServer() {
 		super();
@@ -48,10 +46,19 @@ public abstract class AbstractOpenOfficeServer implements OpenOfficeServer {
 
 			ProcessBuilder builder = new ProcessBuilder(AbstractOpenOfficeServer.CMD_START, file.getAbsolutePath());
 			this.process = builder.start();
-			Thread.sleep(1000);
-			this.pipe(this.process.getInputStream(), System.out, "STDOUT > ");
-			this.pipe(this.process.getErrorStream(), System.out, "STDERR > ");
 			OfficeLog.getLogger().info("Server Started");
+
+			for (int i = 0; i < AbstractOpenOfficeServer.MAX_TRIES; i++) {
+				try {
+					Thread.sleep(500);
+					OfficeLog.getLogger().info("Starting Connection(" + i + ")");
+					this.connection = this.newConnection();
+					this.connection.connect();
+					break;
+				} catch (Exception e) {
+					OfficeLog.getLogger().debug(e.getMessage(), e);
+				}
+			}
 		} catch (Exception e) {
 			throw new OpenOfficeException(e);
 		}
@@ -59,14 +66,17 @@ public abstract class AbstractOpenOfficeServer implements OpenOfficeServer {
 
 	@Override
 	public void stop() {
-		OfficeLog.getLogger().info("Starting Server");
+		try {
+			OpenOfficeConnection connection = this.getConnection();
+			connection.close();
+		} catch (Exception e) {
+			OfficeLog.getLogger().info(e.getMessage(), e);
+		}
+
+		OfficeLog.getLogger().info("Stopping Server");
 		if (this.process != null) {
 			this.process.destroy();
 			this.process = null;
-		}
-
-		if (this.console != null) {
-			this.console.stop();
 		}
 		OfficeLog.getLogger().info("Server Stoped");
 	}
@@ -79,54 +89,18 @@ public abstract class AbstractOpenOfficeServer implements OpenOfficeServer {
 		return false;
 	}
 
-	private void pipe(final InputStream source, final PrintStream out, final String name) {
-		this.console = new OpenOfficeConsole(source, out, name);
-		this.thread = new Thread(this.console);
-		// this.thread.setDaemon(true);
-		this.thread.start();
+	@Override
+	public final OpenOfficeConnection getConnection() {
+		if (this.connection == null) {
+			synchronized (this.connection) {
+				this.connection = this.newConnection();
+			}
+		}
+		return this.connection;
 	}
 
 	public abstract String[] getCommand();
 
-	public static class OpenOfficeConsole implements Runnable {
-
-		private InputStream	source;
-
-		private PrintStream	out;
-
-		private String		name;
-
-		private boolean		run;
-
-		public OpenOfficeConsole(final InputStream source, final PrintStream out, final String name) {
-			super();
-			OfficeLog.getLogger().info("Creating Console");
-			this.source = source;
-			this.out = out;
-			this.name = name;
-			this.run = true;
-		}
-
-		@Override
-		public void run() {
-			OfficeLog.getLogger().info("Starting Console");
-			Scanner scanner = new Scanner(this.source);
-			while (this.run) {
-				if (scanner.hasNextLine()) {
-					String s = scanner.nextLine();
-					if (s == null) {
-						break;
-					}
-					this.out.println(this.name + s);
-				}
-			}
-			OfficeLog.getLogger().info("Console Stopped");
-		}
-
-		public void stop() {
-			this.run = false;
-		}
-
-	}
+	protected abstract OpenOfficeConnection newConnection();
 
 }

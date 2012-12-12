@@ -6,7 +6,6 @@ import java.io.InputStream;
 import java.util.Map;
 
 import br.net.woodstock.epm.office.OfficeDocumentType;
-import br.net.woodstock.epm.office.OfficeException;
 import br.net.woodstock.epm.office.OfficeLog;
 import br.net.woodstock.epm.office.oo.FilterMapping;
 import br.net.woodstock.epm.office.oo.OpenOfficeConnection;
@@ -103,7 +102,7 @@ public class PopulateTemplateExecutor implements OpenOfficeExecutor {
 			return (T) new ByteArrayInputStream(outputStream.toByteArray());
 		} catch (Exception e) {
 			OfficeLog.getLogger().error(e.getMessage(), e);
-			throw new OfficeException(e);
+			throw new OpenOfficeException(e);
 		}
 	}
 

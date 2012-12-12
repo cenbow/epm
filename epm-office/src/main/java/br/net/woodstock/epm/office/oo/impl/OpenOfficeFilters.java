@@ -2,7 +2,22 @@ package br.net.woodstock.epm.office.oo.impl;
 
 abstract class OpenOfficeFilters {
 
-	// PDF
+	// Image
+	public static final String	DRAW_PDF					= "draw_pdf_import";
+
+	public static final String	ODG							= "draw8";
+
+	public static final String	ODG_TEMPLATE				= "draw8_template";
+
+	public static final String	SXD							= "StarOffice XML (Draw)";
+
+	public static final String	SXD_TEMPLATE				= "draw_StarOffice_XML_Draw_Template";
+
+	// Export
+	public static final String	DRAW_TO_PDF					= "draw_pdf_Export";
+
+	public static final String	DRAW_TO_XHTML				= "XHTML Draw File";
+
 	public static final String	PRESENTATION_TO_PDF			= "impress_pdf_Export";
 
 	public static final String	PRESENTATION_TO_XHTML		= "XHTML Impress File";

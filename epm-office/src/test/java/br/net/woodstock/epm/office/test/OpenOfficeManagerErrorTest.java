@@ -11,7 +11,7 @@ import org.junit.runners.BlockJUnit4ClassRunner;
 import br.net.woodstock.epm.office.OfficeDocumentType;
 import br.net.woodstock.epm.office.oo.OpenOfficeConnection;
 import br.net.woodstock.epm.office.oo.impl.ConversionExecutor;
-import br.net.woodstock.epm.office.oo.impl.SimpleOpenOfficeManager;
+import br.net.woodstock.epm.office.oo.impl.DefaultOpenOfficeManager;
 import br.net.woodstock.epm.office.oo.impl.SocketOpenOfficeConnection;
 import br.net.woodstock.rockframework.utils.IOUtils;
 
@@ -26,7 +26,7 @@ public class OpenOfficeManagerErrorTest {
 	public void testConvert() throws Exception {
 		InputStream input = this.getClass().getClassLoader().getResourceAsStream("teste.pdf");
 		OpenOfficeConnection connection = new SocketOpenOfficeConnection("localhost", 8100);
-		SimpleOpenOfficeManager manager = new SimpleOpenOfficeManager(connection);
+		DefaultOpenOfficeManager manager = new DefaultOpenOfficeManager(connection);
 		ConversionExecutor template = new ConversionExecutor(input, OfficeDocumentType.HTML);
 		InputStream output = manager.execute(template);
 

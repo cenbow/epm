@@ -4,9 +4,9 @@ import java.io.InputStream;
 import java.util.HashSet;
 import java.util.Set;
 
-import br.net.woodstock.epm.office.OfficeException;
 import br.net.woodstock.epm.office.OfficeLog;
 import br.net.woodstock.epm.office.oo.OpenOfficeConnection;
+import br.net.woodstock.epm.office.oo.OpenOfficeException;
 import br.net.woodstock.epm.office.oo.OpenOfficeExecutor;
 
 import com.sun.star.beans.PropertyValue;
@@ -61,7 +61,7 @@ public class GetFieldNameExecutor implements OpenOfficeExecutor {
 			return (T) names;
 		} catch (Exception e) {
 			OfficeLog.getLogger().error(e.getMessage(), e);
-			throw new OfficeException(e);
+			throw new OpenOfficeException(e);
 		}
 	}
 

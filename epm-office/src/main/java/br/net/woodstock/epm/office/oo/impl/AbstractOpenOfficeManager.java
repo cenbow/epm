@@ -1,8 +1,8 @@
 package br.net.woodstock.epm.office.oo.impl;
 
-import br.net.woodstock.epm.office.OfficeException;
 import br.net.woodstock.epm.office.OfficeLog;
 import br.net.woodstock.epm.office.oo.OpenOfficeConnection;
+import br.net.woodstock.epm.office.oo.OpenOfficeException;
 import br.net.woodstock.epm.office.oo.OpenOfficeExecutor;
 import br.net.woodstock.epm.office.oo.OpenOfficeManager;
 
@@ -15,32 +15,19 @@ public class AbstractOpenOfficeManager implements OpenOfficeManager {
 		this.connection = connection;
 	}
 
-	protected void connect() {
-		this.connection.connect();
-	}
-
-	protected void close() {
-		this.connection.close();
-	}
-
 	@Override
 	public OpenOfficeConnection getConnection() {
 		return this.connection;
 	}
 
-	protected void setConnection(final OpenOfficeConnection connection) {
-		this.connection = connection;
-	}
-
 	@Override
 	public <T> T execute(final OpenOfficeExecutor executor) {
 		try {
-			this.connect();
 			OfficeLog.getLogger().info("Executing " + executor.getClass().getName());
 
 			long l = System.currentTimeMillis();
 
-			T t = executor.doInConnection(this.connection);
+			T t = executor.doInConnection(this.getConnection());
 
 			l = System.currentTimeMillis() - l;
 			OfficeLog.getLogger().info("Executed in " + l + "ms");
@@ -48,13 +35,7 @@ public class AbstractOpenOfficeManager implements OpenOfficeManager {
 			return t;
 		} catch (Exception e) {
 			OfficeLog.getLogger().error(e.getMessage(), e);
-			throw new OfficeException(e);
-		} finally {
-			try {
-				this.close();
-			} catch (Exception e) {
-				OfficeLog.getLogger().warn(e.getMessage(), e);
-			}
+			throw new OpenOfficeException(e);
 		}
 	}
 }

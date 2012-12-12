@@ -31,7 +31,7 @@ public class PipeOpenOfficeServer extends AbstractOpenOfficeServer {
 	}
 
 	@Override
-	public OpenOfficeConnection getConnection() {
+	public OpenOfficeConnection newConnection() {
 		return new PipeOpenOfficeConnection(this.getName());
 	}
 

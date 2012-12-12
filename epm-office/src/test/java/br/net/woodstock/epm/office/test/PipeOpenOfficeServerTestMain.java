@@ -10,7 +10,7 @@ import br.net.woodstock.epm.office.oo.impl.AbstractOpenOfficeServer;
 import br.net.woodstock.epm.office.oo.impl.ConversionExecutor;
 import br.net.woodstock.epm.office.oo.impl.PipeOpenOfficeConnection;
 import br.net.woodstock.epm.office.oo.impl.PipeOpenOfficeServer;
-import br.net.woodstock.epm.office.oo.impl.SimpleOpenOfficeManager;
+import br.net.woodstock.epm.office.oo.impl.DefaultOpenOfficeManager;
 import br.net.woodstock.rockframework.utils.IOUtils;
 
 public final class PipeOpenOfficeServerTestMain {
@@ -27,7 +27,7 @@ public final class PipeOpenOfficeServerTestMain {
 
 			InputStream input = PipeOpenOfficeServerTestMain.class.getClassLoader().getResourceAsStream("teste.ott");
 			AbstractOpenOfficeConnection connection = new PipeOpenOfficeConnection("ooinstance1");
-			SimpleOpenOfficeManager manager = new SimpleOpenOfficeManager(connection);
+			DefaultOpenOfficeManager manager = new DefaultOpenOfficeManager(connection);
 			ConversionExecutor template = new ConversionExecutor(input, OfficeDocumentType.DOCX);
 			InputStream output = manager.execute(template);
 

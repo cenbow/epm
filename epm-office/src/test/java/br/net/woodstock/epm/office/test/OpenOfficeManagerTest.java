@@ -16,7 +16,7 @@ import br.net.woodstock.epm.office.oo.impl.AbstractOpenOfficeConnection;
 import br.net.woodstock.epm.office.oo.impl.ConversionExecutor;
 import br.net.woodstock.epm.office.oo.impl.GetFieldNameExecutor;
 import br.net.woodstock.epm.office.oo.impl.PopulateTemplateExecutor;
-import br.net.woodstock.epm.office.oo.impl.SimpleOpenOfficeManager;
+import br.net.woodstock.epm.office.oo.impl.DefaultOpenOfficeManager;
 import br.net.woodstock.epm.office.oo.impl.SocketOpenOfficeConnection;
 import br.net.woodstock.rockframework.utils.IOUtils;
 
@@ -31,7 +31,7 @@ public class OpenOfficeManagerTest {
 	public void testConvert() throws Exception {
 		InputStream input = this.getClass().getClassLoader().getResourceAsStream("teste.ott");
 		AbstractOpenOfficeConnection connection = new SocketOpenOfficeConnection("localhost", 8100);
-		SimpleOpenOfficeManager manager = new SimpleOpenOfficeManager(connection);
+		DefaultOpenOfficeManager manager = new DefaultOpenOfficeManager(connection);
 		ConversionExecutor template = new ConversionExecutor(input, OfficeDocumentType.DOCX);
 		InputStream output = manager.execute(template);
 
@@ -49,7 +49,7 @@ public class OpenOfficeManagerTest {
 	public void testGetNames() throws Exception {
 		InputStream input = this.getClass().getClassLoader().getResourceAsStream("teste.ott");
 		AbstractOpenOfficeConnection connection = new SocketOpenOfficeConnection("localhost", 8100);
-		SimpleOpenOfficeManager manager = new SimpleOpenOfficeManager(connection);
+		DefaultOpenOfficeManager manager = new DefaultOpenOfficeManager(connection);
 		GetFieldNameExecutor template = new GetFieldNameExecutor(input);
 		Set<String> names = manager.execute(template);
 
@@ -63,7 +63,7 @@ public class OpenOfficeManagerTest {
 	public void testSetValues() throws Exception {
 		InputStream input = this.getClass().getClassLoader().getResourceAsStream("teste.ott");
 		AbstractOpenOfficeConnection connection = new SocketOpenOfficeConnection("localhost", 8100);
-		SimpleOpenOfficeManager manager = new SimpleOpenOfficeManager(connection);
+		DefaultOpenOfficeManager manager = new DefaultOpenOfficeManager(connection);
 
 		Map<String, String> values = new HashMap<String, String>();
 		values.put("Nome", "Lourival Sabino");

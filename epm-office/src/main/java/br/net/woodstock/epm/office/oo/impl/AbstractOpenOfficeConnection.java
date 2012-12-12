@@ -1,8 +1,8 @@
 package br.net.woodstock.epm.office.oo.impl;
 
-import br.net.woodstock.epm.office.OfficeException;
 import br.net.woodstock.epm.office.OfficeLog;
 import br.net.woodstock.epm.office.oo.OpenOfficeConnection;
+import br.net.woodstock.epm.office.oo.OpenOfficeException;
 
 import com.sun.star.bridge.XBridge;
 import com.sun.star.bridge.XBridgeFactory;
@@ -83,25 +83,32 @@ public abstract class AbstractOpenOfficeConnection implements OpenOfficeConnecti
 			this.componentLoader = UnoRuntime.queryInterface(XComponentLoader.class, this.xDesktop);
 			this.connected = true;
 		} catch (Exception e) {
-			OfficeLog.getLogger().error(e.getMessage(), e);
-			throw new OfficeException(e);
+			throw new OpenOfficeException(e);
 		}
 	}
 
 	@Override
 	public void close() {
+		OfficeLog.getLogger().info("Closing connection " + this.getConnectionURL());
+		if (this.xDesktop != null) {
+			try {
+				this.xDesktop.terminate();
+			} catch (Exception e) {
+				OfficeLog.getLogger().debug(e.getMessage(), e);
+			}
+		}
 		if (this.xComponent != null) {
 			try {
 				this.xComponent.dispose();
 			} catch (Exception e) {
-				OfficeLog.getLogger().warn(e.getMessage(), e);
+				OfficeLog.getLogger().debug(e.getMessage(), e);
 			}
 		}
 		if (this.xConnection != null) {
 			try {
 				this.xConnection.close();
 			} catch (Exception e) {
-				OfficeLog.getLogger().warn(e.getMessage(), e);
+				OfficeLog.getLogger().debug(e.getMessage(), e);
 			}
 		}
 		this.connected = false;

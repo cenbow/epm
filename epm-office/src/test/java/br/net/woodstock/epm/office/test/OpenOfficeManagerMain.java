@@ -10,7 +10,7 @@ import br.net.woodstock.epm.office.oo.OpenOfficeConnection;
 import br.net.woodstock.epm.office.oo.OpenOfficeManager;
 import br.net.woodstock.epm.office.oo.OpenOfficeServer;
 import br.net.woodstock.epm.office.oo.impl.ConversionExecutor;
-import br.net.woodstock.epm.office.oo.impl.SingletonOpenOfficeManager;
+import br.net.woodstock.epm.office.oo.impl.DefaultOpenOfficeManager;
 import br.net.woodstock.epm.office.oo.impl.SocketOpenOfficeServer;
 import br.net.woodstock.rockframework.utils.IOUtils;
 
@@ -30,7 +30,7 @@ public final class OpenOfficeManagerMain {
 
 			OpenOfficeConnection connection = server.getConnection();
 
-			final OpenOfficeManager manager = new SingletonOpenOfficeManager(connection);
+			final OpenOfficeManager manager = new DefaultOpenOfficeManager(connection);
 			for (int j = 0; j < 4; j++) {
 				for (int i = 0; i < 4; i++) {
 

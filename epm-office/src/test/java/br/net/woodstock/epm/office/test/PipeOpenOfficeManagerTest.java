@@ -12,7 +12,7 @@ import br.net.woodstock.epm.office.OfficeDocumentType;
 import br.net.woodstock.epm.office.oo.impl.AbstractOpenOfficeConnection;
 import br.net.woodstock.epm.office.oo.impl.ConversionExecutor;
 import br.net.woodstock.epm.office.oo.impl.PipeOpenOfficeConnection;
-import br.net.woodstock.epm.office.oo.impl.SimpleOpenOfficeManager;
+import br.net.woodstock.epm.office.oo.impl.DefaultOpenOfficeManager;
 import br.net.woodstock.rockframework.utils.IOUtils;
 
 @RunWith(BlockJUnit4ClassRunner.class)
@@ -26,7 +26,7 @@ public class PipeOpenOfficeManagerTest {
 	public void testConvert() throws Exception {
 		InputStream input = this.getClass().getClassLoader().getResourceAsStream("teste.ott");
 		AbstractOpenOfficeConnection connection = new PipeOpenOfficeConnection("teste");
-		SimpleOpenOfficeManager manager = new SimpleOpenOfficeManager(connection);
+		DefaultOpenOfficeManager manager = new DefaultOpenOfficeManager(connection);
 		ConversionExecutor template = new ConversionExecutor(input, OfficeDocumentType.DOCX);
 		InputStream output = manager.execute(template);
 

@@ -7,6 +7,8 @@ public final class FilterMappingResolver {
 
 	private static FilterMappingResolver	instance			= new FilterMappingResolver();
 
+	private FilterMapping					imageMapping		= new ImageFilterMapping();
+
 	private FilterMapping					presentationMapping	= new PresentationFilterMapping();
 
 	private FilterMapping					spreadSheetMapping	= new SpreadSheetFilterMapping();
@@ -32,6 +34,9 @@ public final class FilterMappingResolver {
 	}
 
 	private FilterMapping getFilterMappingBySourceFilterName(final String filterName) {
+		if (this.imageMapping.acceptSource(filterName)) {
+			return this.imageMapping;
+		}
 		if (this.presentationMapping.acceptSource(filterName)) {
 			return this.presentationMapping;
 		}

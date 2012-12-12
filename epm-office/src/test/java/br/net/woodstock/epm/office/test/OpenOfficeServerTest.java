@@ -12,7 +12,7 @@ import br.net.woodstock.epm.office.OfficeDocumentType;
 import br.net.woodstock.epm.office.oo.OpenOfficeConnection;
 import br.net.woodstock.epm.office.oo.OpenOfficeServer;
 import br.net.woodstock.epm.office.oo.impl.ConversionExecutor;
-import br.net.woodstock.epm.office.oo.impl.SimpleOpenOfficeManager;
+import br.net.woodstock.epm.office.oo.impl.DefaultOpenOfficeManager;
 import br.net.woodstock.epm.office.oo.impl.SocketOpenOfficeServer;
 import br.net.woodstock.rockframework.utils.IOUtils;
 
@@ -31,7 +31,7 @@ public class OpenOfficeServerTest {
 		server.start();
 
 		OpenOfficeConnection connection = server.getConnection();
-		SimpleOpenOfficeManager manager = new SimpleOpenOfficeManager(connection);
+		DefaultOpenOfficeManager manager = new DefaultOpenOfficeManager(connection);
 		ConversionExecutor template = new ConversionExecutor(input, OfficeDocumentType.DOCX);
 		InputStream output = manager.execute(template);
 
