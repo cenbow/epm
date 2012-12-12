@@ -3,6 +3,7 @@ package br.net.woodstock.epm.office.oo.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.net.woodstock.epm.office.oo.OpenOfficeConnection;
 import br.net.woodstock.rockframework.utils.CollectionUtils;
 
 public class SocketOpenOfficeServer extends AbstractOpenOfficeServer {
@@ -18,7 +19,7 @@ public class SocketOpenOfficeServer extends AbstractOpenOfficeServer {
 	public String[] getCommand() {
 		List<String> list = new ArrayList<String>();
 		list.add("soffice");
-		list.add("--accept=\"socket,host=127.0.0.1,port=" + this.port + ";urp;\"");
+		list.add("--accept=\"socket,host=127.0.0.1,port=" + this.port + ";urp;StarOffice.ServiceManager\"");
 		list.add("--nofirststartwizard");
 		list.add("--headless");
 		list.add("--nocrashreport");
@@ -27,6 +28,15 @@ public class SocketOpenOfficeServer extends AbstractOpenOfficeServer {
 		list.add("--nologo");
 		list.add("--norestore");
 		return CollectionUtils.toArray(list, String.class);
+	}
+
+	@Override
+	public OpenOfficeConnection getConnection() {
+		return new SocketOpenOfficeConnection("127.0.0.1", this.getPort());
+	}
+
+	public int getPort() {
+		return this.port;
 	}
 
 }

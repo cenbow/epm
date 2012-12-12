@@ -8,9 +8,10 @@ import java.io.InputStream;
 import br.net.woodstock.epm.office.OfficeDocumentType;
 import br.net.woodstock.epm.office.oo.OpenOfficeConnection;
 import br.net.woodstock.epm.office.oo.OpenOfficeManager;
+import br.net.woodstock.epm.office.oo.OpenOfficeServer;
 import br.net.woodstock.epm.office.oo.impl.ConversionExecutor;
 import br.net.woodstock.epm.office.oo.impl.SingletonOpenOfficeManager;
-import br.net.woodstock.epm.office.oo.impl.SocketOpenOfficeConnection;
+import br.net.woodstock.epm.office.oo.impl.SocketOpenOfficeServer;
 import br.net.woodstock.rockframework.utils.IOUtils;
 
 public final class OpenOfficeManagerMain {
@@ -23,7 +24,12 @@ public final class OpenOfficeManagerMain {
 		try {
 			InputStream input = OpenOfficeManagerMain.class.getClassLoader().getResourceAsStream("teste.ott");
 			final byte[] bytes = IOUtils.toByteArray(input);
-			OpenOfficeConnection connection = new SocketOpenOfficeConnection("localhost", 8100);
+			OpenOfficeServer server = new SocketOpenOfficeServer(8100);
+
+			server.start();
+
+			OpenOfficeConnection connection = server.getConnection();
+
 			final OpenOfficeManager manager = new SingletonOpenOfficeManager(connection);
 			for (int j = 0; j < 4; j++) {
 				for (int i = 0; i < 4; i++) {

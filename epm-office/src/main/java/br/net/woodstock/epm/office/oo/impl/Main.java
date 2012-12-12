@@ -1,27 +1,28 @@
 package br.net.woodstock.epm.office.oo.impl;
 
-public final class Main {
+import br.net.woodstock.epm.office.oo.OpenOfficeServer;
 
-	private Main() {
+public final class Main implements Runnable {
+
+	private int	port;
+
+	private Main(final int port) {
 		super();
+		this.port = port;
+	}
+
+	@Override
+	public void run() {
+		System.out.println("Create server on port " + this.port);
+		OpenOfficeServer server = new SocketOpenOfficeServer(this.port);
+		System.out.println("Starting...");
+		server.start();
+		System.out.println("Server started");
 	}
 
 	public static void main(final String[] args) {
-		AbstractOpenOfficeServer server = null;
-		try {
-			int port = Integer.parseInt(args[0]);
-			System.out.println("Create server on port " + port);
-			server = new SocketOpenOfficeServer(port);
-			System.out.println("Starting...");
-			server.start();
-			System.out.println("Server started");
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			if (server != null) {
-				server.stop();
-			}
-		}
+		Thread thread = new Thread(new Main(Integer.parseInt(args[0])));
+		thread.start();
 	}
 
 }

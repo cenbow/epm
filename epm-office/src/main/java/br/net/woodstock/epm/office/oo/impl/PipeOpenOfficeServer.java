@@ -3,6 +3,7 @@ package br.net.woodstock.epm.office.oo.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.net.woodstock.epm.office.oo.OpenOfficeConnection;
 import br.net.woodstock.rockframework.utils.CollectionUtils;
 
 public class PipeOpenOfficeServer extends AbstractOpenOfficeServer {
@@ -27,6 +28,11 @@ public class PipeOpenOfficeServer extends AbstractOpenOfficeServer {
 		list.add("--nologo");
 		list.add("--norestore");
 		return CollectionUtils.toArray(list, String.class);
+	}
+
+	@Override
+	public OpenOfficeConnection getConnection() {
+		return new PipeOpenOfficeConnection(this.getName());
 	}
 
 	public String getName() {

@@ -20,7 +20,7 @@ public class AbstractOpenOfficeManager implements OpenOfficeManager {
 	}
 
 	protected void close() {
-		this.connection.connect();
+		this.connection.close();
 	}
 
 	@Override
@@ -36,7 +36,15 @@ public class AbstractOpenOfficeManager implements OpenOfficeManager {
 	public <T> T execute(final OpenOfficeExecutor executor) {
 		try {
 			this.connect();
+			OfficeLog.getLogger().info("Executing " + executor.getClass().getName());
+
+			long l = System.currentTimeMillis();
+
 			T t = executor.doInConnection(this.connection);
+
+			l = System.currentTimeMillis() - l;
+			OfficeLog.getLogger().info("Executed in " + l + "ms");
+
 			return t;
 		} catch (Exception e) {
 			OfficeLog.getLogger().error(e.getMessage(), e);
