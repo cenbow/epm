@@ -1,4 +1,4 @@
-package br.net.woodstock.epm.office.oo.impl;
+package br.net.woodstock.epm.office.oo.mapping;
 
 import br.net.woodstock.epm.office.OfficeDocumentType;
 import br.net.woodstock.epm.office.oo.FilterMapping;

@@ -1,6 +1,7 @@
 package br.net.woodstock.epm.office.oo.impl;
 
-import br.net.woodstock.epm.office.oo.OpenOfficeServer;
+import br.net.woodstock.epm.office.oo.OpenOfficeConfig;
+import br.net.woodstock.epm.office.oo.OpenOfficeManager;
 
 public final class Main implements Runnable {
 
@@ -14,10 +15,10 @@ public final class Main implements Runnable {
 	@Override
 	public void run() {
 		System.out.println("Create server on port " + this.port);
-		OpenOfficeServer server = new SocketOpenOfficeServer(this.port);
 		System.out.println("Starting...");
-		server.start();
-		System.out.println("Server started");
+		OpenOfficeConfig config = new SocketOpenOfficeConfig(this.port);
+		OpenOfficeManager manager = new SynchronizedOpenOfficeManager(config);
+		System.out.println("Server started " + manager);
 	}
 
 	public static void main(final String[] args) {

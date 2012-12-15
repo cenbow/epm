@@ -12,12 +12,11 @@ import com.sun.star.connection.XConnection;
 import com.sun.star.connection.XConnector;
 import com.sun.star.frame.XComponentLoader;
 import com.sun.star.frame.XDesktop;
-import com.sun.star.lang.XComponent;
 import com.sun.star.lang.XMultiComponentFactory;
 import com.sun.star.uno.UnoRuntime;
 import com.sun.star.uno.XComponentContext;
 
-public abstract class AbstractOpenOfficeConnection implements OpenOfficeConnection {
+public class DefaultOpenOfficeConnection implements OpenOfficeConnection {
 
 	private XComponentContext		componentContext;
 
@@ -35,8 +34,6 @@ public abstract class AbstractOpenOfficeConnection implements OpenOfficeConnecti
 
 	private XBridge					xbridge;
 
-	private XComponent				xComponent;
-
 	private XMultiComponentFactory	localMultiComponentFactory;
 
 	private XDesktop				xDesktop;
@@ -45,11 +42,12 @@ public abstract class AbstractOpenOfficeConnection implements OpenOfficeConnecti
 
 	private boolean					connected;
 
-	public AbstractOpenOfficeConnection() {
-		super();
-	}
+	private String					url;
 
-	public abstract String getConnectionURL();
+	public DefaultOpenOfficeConnection(final String url) {
+		super();
+		this.url = url;
+	}
 
 	@Override
 	public Object getDelegate() {
@@ -70,9 +68,8 @@ public abstract class AbstractOpenOfficeConnection implements OpenOfficeConnecti
 			this.bridgeInstance = this.componentContext.getServiceManager().createInstanceWithContext("com.sun.star.bridge.BridgeFactory", this.componentContext);
 			this.bridgeFactory = UnoRuntime.queryInterface(XBridgeFactory.class, this.bridgeInstance);
 			this.xConnector = UnoRuntime.queryInterface(XConnector.class, this.connector);
-			this.xConnection = this.xConnector.connect(this.getConnectionURL());
+			this.xConnection = this.xConnector.connect(this.url);
 			this.xbridge = this.bridgeFactory.createBridge("", "urp", this.xConnection, null);
-			this.xComponent = UnoRuntime.queryInterface(XComponent.class, this.xbridge);
 
 			Object serviceManager = this.xbridge.getInstance("StarOffice.ServiceManager");
 
@@ -82,6 +79,7 @@ public abstract class AbstractOpenOfficeConnection implements OpenOfficeConnecti
 
 			this.componentLoader = UnoRuntime.queryInterface(XComponentLoader.class, this.xDesktop);
 			this.connected = true;
+			OfficeLog.getLogger().info("Connected to " + this.url);
 		} catch (Exception e) {
 			throw new OpenOfficeException(e);
 		}
@@ -89,7 +87,12 @@ public abstract class AbstractOpenOfficeConnection implements OpenOfficeConnecti
 
 	@Override
 	public void close() {
-		OfficeLog.getLogger().info("Closing connection " + this.getConnectionURL());
+		OfficeLog.getLogger().info("Closing connection " + this.url);
+		this.closeConnection();
+		this.connected = false;
+	}
+
+	public void shutdownDesktop() {
 		if (this.xDesktop != null) {
 			try {
 				this.xDesktop.terminate();
@@ -97,13 +100,9 @@ public abstract class AbstractOpenOfficeConnection implements OpenOfficeConnecti
 				OfficeLog.getLogger().debug(e.getMessage(), e);
 			}
 		}
-		if (this.xComponent != null) {
-			try {
-				this.xComponent.dispose();
-			} catch (Exception e) {
-				OfficeLog.getLogger().debug(e.getMessage(), e);
-			}
-		}
+	}
+
+	public void closeConnection() {
 		if (this.xConnection != null) {
 			try {
 				this.xConnection.close();
@@ -111,6 +110,5 @@ public abstract class AbstractOpenOfficeConnection implements OpenOfficeConnecti
 				OfficeLog.getLogger().debug(e.getMessage(), e);
 			}
 		}
-		this.connected = false;
 	}
 }

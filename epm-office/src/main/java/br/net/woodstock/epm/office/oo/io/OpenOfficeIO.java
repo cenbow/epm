@@ -1,8 +1,9 @@
-package br.net.woodstock.epm.office.oo.impl;
+package br.net.woodstock.epm.office.oo.io;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+
 
 import com.sun.star.io.XInputStream;
 import com.sun.star.io.XOutputStream;

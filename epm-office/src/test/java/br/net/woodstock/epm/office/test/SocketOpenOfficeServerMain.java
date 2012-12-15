@@ -1,7 +1,18 @@
 package br.net.woodstock.epm.office.test;
 
-import br.net.woodstock.epm.office.oo.OpenOfficeServer;
-import br.net.woodstock.epm.office.oo.impl.SocketOpenOfficeServer;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+
+import org.junit.Test;
+
+import br.net.woodstock.epm.office.OfficeDocumentType;
+import br.net.woodstock.epm.office.oo.OpenOfficeConfig;
+import br.net.woodstock.epm.office.oo.OpenOfficeManager;
+import br.net.woodstock.epm.office.oo.callback.ConversionCallback;
+import br.net.woodstock.epm.office.oo.impl.SocketOpenOfficeConfig;
+import br.net.woodstock.epm.office.oo.impl.SynchronizedOpenOfficeManager;
+import br.net.woodstock.rockframework.utils.IOUtils;
 
 public final class SocketOpenOfficeServerMain {
 
@@ -9,17 +20,21 @@ public final class SocketOpenOfficeServerMain {
 		super();
 	}
 
-	public static void main(final String[] args) {
-		OpenOfficeServer server = null;
-		try {
-			server = new SocketOpenOfficeServer(8100);
-			server.start();
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			if (server != null) {
-				server.stop();
-			}
-		}
+	@Test
+	public void testConvert() throws Exception {
+		InputStream input = this.getClass().getClassLoader().getResourceAsStream("teste.ott");
+		OpenOfficeConfig config = new SocketOpenOfficeConfig(8100);
+		OpenOfficeManager manager = new SynchronizedOpenOfficeManager(config);
+		ConversionCallback template = new ConversionCallback(input, OfficeDocumentType.DOCX);
+		InputStream output = manager.execute(template);
+
+		File file = File.createTempFile("teste", ".docx");
+		FileOutputStream outputStream = new FileOutputStream(file);
+		IOUtils.copy(output, outputStream);
+
+		input.close();
+		output.close();
+		outputStream.close();
+		System.out.println("File: " + file.getAbsolutePath());
 	}
 }

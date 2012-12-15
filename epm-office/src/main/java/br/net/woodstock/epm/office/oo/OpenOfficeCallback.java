@@ -1,6 +1,6 @@
 package br.net.woodstock.epm.office.oo;
 
-public interface OpenOfficeExecutor {
+public interface OpenOfficeCallback {
 
 	<T> T doInConnection(OpenOfficeConnection connection);
 

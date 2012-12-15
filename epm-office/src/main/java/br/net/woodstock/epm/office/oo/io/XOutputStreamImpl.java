@@ -1,4 +1,4 @@
-package br.net.woodstock.epm.office.oo.impl;
+package br.net.woodstock.epm.office.oo.io;
 
 import java.io.IOException;
 import java.io.OutputStream;

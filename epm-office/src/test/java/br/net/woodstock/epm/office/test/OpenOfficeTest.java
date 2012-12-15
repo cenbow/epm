@@ -8,7 +8,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.BlockJUnit4ClassRunner;
 
-import br.net.woodstock.epm.office.oo.impl.OpenOfficeIO;
+import br.net.woodstock.epm.office.oo.io.OpenOfficeIO;
 import br.net.woodstock.rockframework.utils.IOUtils;
 
 import com.sun.star.beans.PropertyValue;
@@ -114,9 +114,15 @@ public class OpenOfficeTest {
 		System.out.println(component);
 	}
 
-	// @Test
+	@Test
 	public void test4() throws Exception {
 		InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("teste.ott");
+		
+		File file = File.createTempFile("xxx", ".ott");
+		FileOutputStream outputStream = new FileOutputStream(file);
+		
+		IOUtils.copy(inputStream, outputStream);
+		outputStream.close();
 
 		XComponentContext componentContext = Bootstrap.createInitialComponentContext(null);
 		XMultiComponentFactory multiComponentFactory = componentContext.getServiceManager();
@@ -135,23 +141,27 @@ public class OpenOfficeTest {
 
 		XComponentLoader componentLoader = UnoRuntime.queryInterface(XComponentLoader.class, xDesktop);
 
-		PropertyValue[] loadProps = new PropertyValue[3];
+		//PropertyValue[] loadProps = new PropertyValue[3];
+		PropertyValue[] loadProps = new PropertyValue[2];
 		loadProps[0] = new PropertyValue();
 		loadProps[0].Name = "AsTemplate";
 		loadProps[0].Value = Boolean.valueOf(true);
-
+		
 		loadProps[1] = new PropertyValue();
-		loadProps[1].Name = "InputStream";
-		loadProps[1].Value = OpenOfficeIO.toXInputStream(inputStream);
+		loadProps[1].Name = "Hidden";
+		loadProps[1].Value = Boolean.valueOf(true);
 
-		loadProps[2] = new PropertyValue();
-		loadProps[2].Name = "Hidden";
-		loadProps[2].Value = Boolean.valueOf(true);
+		/*loadProps[2] = new PropertyValue();
+		loadProps[2].Name = "InputStream";
+		loadProps[2].Value = OpenOfficeIO.toXInputStream(inputStream);*/
+
+		
 
 		inputStream.close();
 
 		// load
-		XComponent component = componentLoader.loadComponentFromURL("private:stream", "_blank", 0, loadProps);
+		//XComponent component = componentLoader.loadComponentFromURL("private:stream", "_blank", 0, loadProps);
+		XComponent component = componentLoader.loadComponentFromURL(file.toURI().toURL().toString(), "_blank", 0, loadProps);
 		System.out.println(component);
 		XModel model = UnoRuntime.queryInterface(XModel.class, component);
 
@@ -192,7 +202,7 @@ public class OpenOfficeTest {
 		XRefreshable xRefreshable = UnoRuntime.queryInterface(XRefreshable.class, xEnumeratedFields);
 		xRefreshable.refresh();
 
-		FileOutputStream outputStream = new FileOutputStream("/tmp/teste.odt");
+		outputStream = new FileOutputStream("/tmp/teste.odt");
 
 		XStorable xStorable = UnoRuntime.queryInterface(XStorable.class, component);
 		PropertyValue[] storeProps = new PropertyValue[2];
@@ -205,9 +215,12 @@ public class OpenOfficeTest {
 		xStorable.storeToURL("private:stream", storeProps);
 
 		outputStream.close();
+
+		xConnection.close();
+		
 	}
 
-	@Test
+	// @Test
 	public void test5() throws Exception {
 		InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("teste.docx");
 

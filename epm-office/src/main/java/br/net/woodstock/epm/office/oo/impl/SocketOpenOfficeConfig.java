@@ -3,20 +3,23 @@ package br.net.woodstock.epm.office.oo.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.net.woodstock.epm.office.oo.OpenOfficeConnection;
+import br.net.woodstock.epm.office.oo.OpenOfficeConfig;
 import br.net.woodstock.rockframework.utils.CollectionUtils;
 
-public class SocketOpenOfficeServer extends AbstractOpenOfficeServer {
+public class SocketOpenOfficeConfig implements OpenOfficeConfig {
 
-	private int	port;
+	private String[]	startupCommand;
 
-	public SocketOpenOfficeServer(final int port) {
+	private String		connectionUrl;
+
+	private int			port;
+
+	public SocketOpenOfficeConfig(final int port) {
 		super();
 		this.port = port;
-	}
 
-	@Override
-	public String[] getCommand() {
+		this.connectionUrl = String.format("socket,host=127.0.0.1,port=%d,tcpNoDelay=1", Integer.valueOf(port));
+
 		List<String> list = new ArrayList<String>();
 		list.add("soffice");
 		list.add("--accept=\"socket,host=127.0.0.1,port=" + this.port + ";urp;StarOffice.ServiceManager\"");
@@ -27,12 +30,17 @@ public class SocketOpenOfficeServer extends AbstractOpenOfficeServer {
 		list.add("--nolockcheck");
 		list.add("--nologo");
 		list.add("--norestore");
-		return CollectionUtils.toArray(list, String.class);
+		this.startupCommand = CollectionUtils.toArray(list, String.class);
 	}
 
 	@Override
-	public OpenOfficeConnection newConnection() {
-		return new SocketOpenOfficeConnection("127.0.0.1", this.getPort());
+	public String[] getStartupCommand() {
+		return this.startupCommand;
+	}
+
+	@Override
+	public String getConnectionUrl() {
+		return this.connectionUrl;
 	}
 
 	public int getPort() {

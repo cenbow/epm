@@ -1,9 +1,10 @@
-package br.net.woodstock.epm.office.oo.impl;
+package br.net.woodstock.epm.office.oo.io;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import br.net.woodstock.epm.office.OfficeLog;
 import br.net.woodstock.rockframework.utils.IOUtils;
 
 import com.sun.star.io.XInputStream;
@@ -42,6 +43,9 @@ class XInputStreamImpl extends ByteArrayInputStream implements XInputStream, XSe
 			}
 
 			buffer[0] = bytes;
+
+			OfficeLog.getLogger().info("Reading " + bufferSize + "/" + numberOfReadBytes);
+
 			return numberOfReadBytes;
 		} catch (java.io.IOException e) {
 			throw new com.sun.star.io.IOException(e.getMessage(), e);

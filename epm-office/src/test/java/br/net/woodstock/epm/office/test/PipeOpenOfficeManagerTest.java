@@ -9,10 +9,11 @@ import org.junit.runner.RunWith;
 import org.junit.runners.BlockJUnit4ClassRunner;
 
 import br.net.woodstock.epm.office.OfficeDocumentType;
-import br.net.woodstock.epm.office.oo.impl.AbstractOpenOfficeConnection;
-import br.net.woodstock.epm.office.oo.impl.ConversionExecutor;
-import br.net.woodstock.epm.office.oo.impl.PipeOpenOfficeConnection;
-import br.net.woodstock.epm.office.oo.impl.DefaultOpenOfficeManager;
+import br.net.woodstock.epm.office.oo.OpenOfficeConfig;
+import br.net.woodstock.epm.office.oo.OpenOfficeManager;
+import br.net.woodstock.epm.office.oo.callback.ConversionCallback;
+import br.net.woodstock.epm.office.oo.impl.PipeOpenOfficeConfig;
+import br.net.woodstock.epm.office.oo.impl.SynchronizedOpenOfficeManager;
 import br.net.woodstock.rockframework.utils.IOUtils;
 
 @RunWith(BlockJUnit4ClassRunner.class)
@@ -25,9 +26,9 @@ public class PipeOpenOfficeManagerTest {
 	@Test
 	public void testConvert() throws Exception {
 		InputStream input = this.getClass().getClassLoader().getResourceAsStream("teste.ott");
-		AbstractOpenOfficeConnection connection = new PipeOpenOfficeConnection("teste");
-		DefaultOpenOfficeManager manager = new DefaultOpenOfficeManager(connection);
-		ConversionExecutor template = new ConversionExecutor(input, OfficeDocumentType.DOCX);
+		OpenOfficeConfig config = new PipeOpenOfficeConfig("teste");
+		OpenOfficeManager manager = new SynchronizedOpenOfficeManager(config);
+		ConversionCallback template = new ConversionCallback(input, OfficeDocumentType.DOCX);
 		InputStream output = manager.execute(template);
 
 		File file = File.createTempFile("teste", ".docx");

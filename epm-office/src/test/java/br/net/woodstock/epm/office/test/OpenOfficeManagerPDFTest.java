@@ -9,11 +9,10 @@ import org.junit.runner.RunWith;
 import org.junit.runners.BlockJUnit4ClassRunner;
 
 import br.net.woodstock.epm.office.OfficeDocumentType;
-import br.net.woodstock.epm.office.oo.OpenOfficeConnection;
-import br.net.woodstock.epm.office.oo.OpenOfficeManager;
-import br.net.woodstock.epm.office.oo.impl.ConversionExecutor;
-import br.net.woodstock.epm.office.oo.impl.DefaultOpenOfficeManager;
-import br.net.woodstock.epm.office.oo.impl.SocketOpenOfficeConnection;
+import br.net.woodstock.epm.office.oo.OpenOfficeConfig;
+import br.net.woodstock.epm.office.oo.callback.ConversionCallback;
+import br.net.woodstock.epm.office.oo.impl.SocketOpenOfficeConfig;
+import br.net.woodstock.epm.office.oo.impl.SynchronizedOpenOfficeManager;
 import br.net.woodstock.rockframework.utils.IOUtils;
 
 @RunWith(BlockJUnit4ClassRunner.class)
@@ -26,9 +25,9 @@ public class OpenOfficeManagerPDFTest {
 	@Test
 	public void testConvert() throws Exception {
 		InputStream input = this.getClass().getClassLoader().getResourceAsStream("teste.pdf");
-		OpenOfficeConnection connection = new SocketOpenOfficeConnection("localhost", 8100);
-		OpenOfficeManager manager = new DefaultOpenOfficeManager(connection);
-		ConversionExecutor template = new ConversionExecutor(input, OfficeDocumentType.HTML);
+		OpenOfficeConfig config = new SocketOpenOfficeConfig(8100);
+		SynchronizedOpenOfficeManager manager = new SynchronizedOpenOfficeManager(config);
+		ConversionCallback template = new ConversionCallback(input, OfficeDocumentType.HTML);
 		InputStream output = manager.execute(template);
 
 		File file = File.createTempFile("teste", ".html");
@@ -39,6 +38,8 @@ public class OpenOfficeManagerPDFTest {
 		output.close();
 		outputStream.close();
 		System.out.println("File: " + file.getAbsolutePath());
+
+		manager.stop();
 	}
 
 }

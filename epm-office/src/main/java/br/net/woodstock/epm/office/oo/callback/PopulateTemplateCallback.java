@@ -1,4 +1,4 @@
-package br.net.woodstock.epm.office.oo.impl;
+package br.net.woodstock.epm.office.oo.callback;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -8,9 +8,12 @@ import java.util.Map;
 import br.net.woodstock.epm.office.OfficeDocumentType;
 import br.net.woodstock.epm.office.OfficeLog;
 import br.net.woodstock.epm.office.oo.FilterMapping;
+import br.net.woodstock.epm.office.oo.OpenOfficeCallback;
 import br.net.woodstock.epm.office.oo.OpenOfficeConnection;
 import br.net.woodstock.epm.office.oo.OpenOfficeException;
-import br.net.woodstock.epm.office.oo.OpenOfficeExecutor;
+import br.net.woodstock.epm.office.oo.impl.OpenOfficeHelper;
+import br.net.woodstock.epm.office.oo.io.OpenOfficeIO;
+import br.net.woodstock.epm.office.oo.mapping.FilterMappingResolver;
 
 import com.sun.star.beans.PropertyValue;
 import com.sun.star.beans.XPropertySet;
@@ -24,7 +27,7 @@ import com.sun.star.text.XTextFieldsSupplier;
 import com.sun.star.uno.UnoRuntime;
 import com.sun.star.util.XUpdatable;
 
-public class PopulateTemplateExecutor implements OpenOfficeExecutor {
+public class PopulateTemplateCallback implements OpenOfficeCallback {
 
 	private InputStream			source;
 
@@ -32,7 +35,7 @@ public class PopulateTemplateExecutor implements OpenOfficeExecutor {
 
 	private OfficeDocumentType	targetType;
 
-	public PopulateTemplateExecutor(final InputStream source, final Map<String, String> values, final OfficeDocumentType targetType) {
+	public PopulateTemplateCallback(final InputStream source, final Map<String, String> values, final OfficeDocumentType targetType) {
 		super();
 		this.source = source;
 		this.values = values;
@@ -44,20 +47,8 @@ public class PopulateTemplateExecutor implements OpenOfficeExecutor {
 	public <T> T doInConnection(final OpenOfficeConnection connection) {
 		try {
 			XComponentLoader componentLoader = (XComponentLoader) connection.getDelegate();
-			PropertyValue[] loadProps = new PropertyValue[3];
-			loadProps[0] = new PropertyValue();
-			loadProps[0].Name = OpenOfficeHelper.AS_TEMPLATE_PROPERTY;
-			loadProps[0].Value = Boolean.valueOf(true);
 
-			loadProps[1] = new PropertyValue();
-			loadProps[1].Name = OpenOfficeHelper.INPUT_STREAM_PROPERTY;
-			loadProps[1].Value = OpenOfficeIO.toXInputStream(this.source);
-
-			loadProps[2] = new PropertyValue();
-			loadProps[2].Name = OpenOfficeHelper.HIDDEN_PROPERTY;
-			loadProps[2].Value = Boolean.valueOf(true);
-
-			XComponent component = componentLoader.loadComponentFromURL(OpenOfficeHelper.PRIVATE_STREAM_URL, OpenOfficeHelper.BLANK_TARGET, 0, loadProps);
+			XComponent component = CallbackHelper.load(componentLoader, this.source, true);
 
 			String currentFilterName = this.getFilterName(component);
 
@@ -99,6 +90,9 @@ public class PopulateTemplateExecutor implements OpenOfficeExecutor {
 			storeProps[1].Name = OpenOfficeHelper.OUTPUT_STREAM_PROPERTY;
 			storeProps[1].Value = OpenOfficeIO.toXOutputStream(outputStream);
 			xStorable.storeToURL(OpenOfficeHelper.PRIVATE_STREAM_URL, storeProps);
+			
+			CallbackHelper.close(component);
+			
 			return (T) new ByteArrayInputStream(outputStream.toByteArray());
 		} catch (Exception e) {
 			OfficeLog.getLogger().error(e.getMessage(), e);

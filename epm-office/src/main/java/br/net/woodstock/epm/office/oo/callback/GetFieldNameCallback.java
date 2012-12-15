@@ -1,26 +1,26 @@
-package br.net.woodstock.epm.office.oo.impl;
+package br.net.woodstock.epm.office.oo.callback;
 
 import java.io.InputStream;
 import java.util.HashSet;
 import java.util.Set;
 
 import br.net.woodstock.epm.office.OfficeLog;
+import br.net.woodstock.epm.office.oo.OpenOfficeCallback;
 import br.net.woodstock.epm.office.oo.OpenOfficeConnection;
 import br.net.woodstock.epm.office.oo.OpenOfficeException;
-import br.net.woodstock.epm.office.oo.OpenOfficeExecutor;
+import br.net.woodstock.epm.office.oo.impl.OpenOfficeHelper;
 
-import com.sun.star.beans.PropertyValue;
 import com.sun.star.container.XNameAccess;
 import com.sun.star.frame.XComponentLoader;
 import com.sun.star.lang.XComponent;
 import com.sun.star.text.XTextFieldsSupplier;
 import com.sun.star.uno.UnoRuntime;
 
-public class GetFieldNameExecutor implements OpenOfficeExecutor {
+public class GetFieldNameCallback implements OpenOfficeCallback {
 
 	private InputStream	source;
 
-	public GetFieldNameExecutor(final InputStream source) {
+	public GetFieldNameCallback(final InputStream source) {
 		super();
 		this.source = source;
 	}
@@ -30,20 +30,8 @@ public class GetFieldNameExecutor implements OpenOfficeExecutor {
 	public <T> T doInConnection(final OpenOfficeConnection connection) {
 		try {
 			XComponentLoader componentLoader = (XComponentLoader) connection.getDelegate();
-			PropertyValue[] loadProps = new PropertyValue[3];
-			loadProps[0] = new PropertyValue();
-			loadProps[0].Name = OpenOfficeHelper.AS_TEMPLATE_PROPERTY;
-			loadProps[0].Value = Boolean.valueOf(true);
 
-			loadProps[1] = new PropertyValue();
-			loadProps[1].Name = OpenOfficeHelper.INPUT_STREAM_PROPERTY;
-			loadProps[1].Value = OpenOfficeIO.toXInputStream(this.source);
-
-			loadProps[2] = new PropertyValue();
-			loadProps[2].Name = OpenOfficeHelper.HIDDEN_PROPERTY;
-			loadProps[2].Value = Boolean.valueOf(true);
-
-			XComponent component = componentLoader.loadComponentFromURL(OpenOfficeHelper.PRIVATE_STREAM_URL, OpenOfficeHelper.BLANK_TARGET, 0, loadProps);
+			XComponent component = CallbackHelper.load(componentLoader, this.source, true);
 
 			XTextFieldsSupplier xTextFieldsSupplier = UnoRuntime.queryInterface(XTextFieldsSupplier.class, component);
 
@@ -58,6 +46,9 @@ public class GetFieldNameExecutor implements OpenOfficeExecutor {
 					}
 				}
 			}
+			
+			CallbackHelper.close(component);
+			
 			return (T) names;
 		} catch (Exception e) {
 			OfficeLog.getLogger().error(e.getMessage(), e);
