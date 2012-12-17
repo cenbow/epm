@@ -17,7 +17,7 @@ public final class Main implements Runnable {
 		System.out.println("Create server on port " + this.port);
 		System.out.println("Starting...");
 		OpenOfficeConfig config = new SocketOpenOfficeConfig(this.port);
-		OpenOfficeManager manager = new SynchronizedOpenOfficeManager(config);
+		OpenOfficeManager manager = new ExecutableOpenOfficeManager(config);
 		System.out.println("Server started " + manager);
 	}
 

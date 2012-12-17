@@ -10,7 +10,7 @@ import br.net.woodstock.epm.office.oo.OpenOfficeConnection;
 import br.net.woodstock.epm.office.oo.OpenOfficeException;
 import br.net.woodstock.epm.office.oo.OpenOfficeManager;
 
-public class SynchronizedOpenOfficeManager implements OpenOfficeManager {
+public class ExecutableOpenOfficeManager implements OpenOfficeManager {
 
 	private static final String	FILE_PREFIX			= "soffice";
 
@@ -30,7 +30,7 @@ public class SynchronizedOpenOfficeManager implements OpenOfficeManager {
 
 	private Process				process;
 
-	public SynchronizedOpenOfficeManager(final OpenOfficeConfig config) {
+	public ExecutableOpenOfficeManager(final OpenOfficeConfig config) {
 		super();
 		this.config = config;
 	}
@@ -39,18 +39,18 @@ public class SynchronizedOpenOfficeManager implements OpenOfficeManager {
 		try {
 			OfficeLog.getLogger().info("Starting Server");
 
-			File file = File.createTempFile(SynchronizedOpenOfficeManager.FILE_PREFIX, SynchronizedOpenOfficeManager.FILE_SUFIX);
+			File file = File.createTempFile(ExecutableOpenOfficeManager.FILE_PREFIX, ExecutableOpenOfficeManager.FILE_SUFIX);
 			PrintWriter writer = new PrintWriter(file);
 			String[] command = this.config.getStartupCommand();
 			for (String s : command) {
-				writer.println(s + SynchronizedOpenOfficeManager.CMD_SEPARATOR);
+				writer.println(s + ExecutableOpenOfficeManager.CMD_SEPARATOR);
 			}
 			writer.close();
 			file.setExecutable(true);
 
 			OfficeLog.getLogger().info("Server Script " + file.getAbsolutePath());
 
-			ProcessBuilder builder = new ProcessBuilder(SynchronizedOpenOfficeManager.CMD_START, file.getAbsolutePath());
+			ProcessBuilder builder = new ProcessBuilder(ExecutableOpenOfficeManager.CMD_START, file.getAbsolutePath());
 			this.process = builder.start();
 
 		} catch (Exception e) {
@@ -80,7 +80,7 @@ public class SynchronizedOpenOfficeManager implements OpenOfficeManager {
 		}
 
 		try {
-			ProcessBuilder builder = new ProcessBuilder(SynchronizedOpenOfficeManager.CMD_STOP);
+			ProcessBuilder builder = new ProcessBuilder(ExecutableOpenOfficeManager.CMD_STOP);
 			builder.start();
 		} catch (Exception e) {
 			OfficeLog.getLogger().debug(e.getMessage(), e);
@@ -130,8 +130,8 @@ public class SynchronizedOpenOfficeManager implements OpenOfficeManager {
 			}
 
 			OpenOfficeConnection connection = null;
-			outer: for (int ip = 0; ip < SynchronizedOpenOfficeManager.MAX_PROCESS_TRIES; ip++) {
-				for (int ic = 0; ic < SynchronizedOpenOfficeManager.MAX_CONNECT_TRIES; ic++) {
+			outer: for (int ip = 0; ip < ExecutableOpenOfficeManager.MAX_PROCESS_TRIES; ip++) {
+				for (int ic = 0; ic < ExecutableOpenOfficeManager.MAX_CONNECT_TRIES; ic++) {
 					try {
 						Thread.sleep(500);
 						OfficeLog.getLogger().debug("Starting Connection(" + ic + ")");

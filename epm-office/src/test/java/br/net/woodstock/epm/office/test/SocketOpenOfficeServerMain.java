@@ -11,7 +11,7 @@ import br.net.woodstock.epm.office.oo.OpenOfficeConfig;
 import br.net.woodstock.epm.office.oo.OpenOfficeManager;
 import br.net.woodstock.epm.office.oo.callback.ConversionCallback;
 import br.net.woodstock.epm.office.oo.impl.SocketOpenOfficeConfig;
-import br.net.woodstock.epm.office.oo.impl.SynchronizedOpenOfficeManager;
+import br.net.woodstock.epm.office.oo.impl.ExecutableOpenOfficeManager;
 import br.net.woodstock.rockframework.utils.IOUtils;
 
 public final class SocketOpenOfficeServerMain {
@@ -24,7 +24,7 @@ public final class SocketOpenOfficeServerMain {
 	public void testConvert() throws Exception {
 		InputStream input = this.getClass().getClassLoader().getResourceAsStream("teste.ott");
 		OpenOfficeConfig config = new SocketOpenOfficeConfig(8100);
-		OpenOfficeManager manager = new SynchronizedOpenOfficeManager(config);
+		OpenOfficeManager manager = new ExecutableOpenOfficeManager(config);
 		ConversionCallback template = new ConversionCallback(input, OfficeDocumentType.DOCX);
 		InputStream output = manager.execute(template);
 

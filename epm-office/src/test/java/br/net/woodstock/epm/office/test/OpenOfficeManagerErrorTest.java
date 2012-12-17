@@ -13,7 +13,7 @@ import br.net.woodstock.epm.office.oo.OpenOfficeConfig;
 import br.net.woodstock.epm.office.oo.OpenOfficeManager;
 import br.net.woodstock.epm.office.oo.callback.ConversionCallback;
 import br.net.woodstock.epm.office.oo.impl.SocketOpenOfficeConfig;
-import br.net.woodstock.epm.office.oo.impl.SynchronizedOpenOfficeManager;
+import br.net.woodstock.epm.office.oo.impl.ExecutableOpenOfficeManager;
 import br.net.woodstock.rockframework.utils.IOUtils;
 
 @RunWith(BlockJUnit4ClassRunner.class)
@@ -27,7 +27,7 @@ public class OpenOfficeManagerErrorTest {
 	public void testConvert() throws Exception {
 		InputStream input = this.getClass().getClassLoader().getResourceAsStream("teste.pdf");
 		OpenOfficeConfig config = new SocketOpenOfficeConfig(8100);
-		OpenOfficeManager manager = new SynchronizedOpenOfficeManager(config);
+		OpenOfficeManager manager = new ExecutableOpenOfficeManager(config);
 		ConversionCallback template = new ConversionCallback(input, OfficeDocumentType.HTML);
 		InputStream output = manager.execute(template);
 

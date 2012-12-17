@@ -19,7 +19,7 @@ import br.net.woodstock.epm.office.oo.callback.ConversionCallback;
 import br.net.woodstock.epm.office.oo.callback.GetFieldNameCallback;
 import br.net.woodstock.epm.office.oo.callback.PopulateTemplateCallback;
 import br.net.woodstock.epm.office.oo.impl.SocketOpenOfficeConfig;
-import br.net.woodstock.epm.office.oo.impl.SynchronizedOpenOfficeManager;
+import br.net.woodstock.epm.office.oo.impl.ExecutableOpenOfficeManager;
 import br.net.woodstock.rockframework.utils.IOUtils;
 
 @RunWith(BlockJUnit4ClassRunner.class)
@@ -33,7 +33,7 @@ public class OpenOfficeManagerTest {
 	public void testConvert() throws Exception {
 		InputStream input = this.getClass().getClassLoader().getResourceAsStream("teste.ott");
 		OpenOfficeConfig config = new SocketOpenOfficeConfig(8100);
-		OpenOfficeManager manager = new SynchronizedOpenOfficeManager(config);
+		OpenOfficeManager manager = new ExecutableOpenOfficeManager(config);
 		ConversionCallback template = new ConversionCallback(input, OfficeDocumentType.PDF);
 		InputStream output = manager.execute(template);
 
@@ -50,7 +50,7 @@ public class OpenOfficeManagerTest {
 	@Test
 	public void testConvertMultiples() throws Exception {
 		OpenOfficeConfig config = new SocketOpenOfficeConfig(8100);
-		SynchronizedOpenOfficeManager manager = new SynchronizedOpenOfficeManager(config);
+		ExecutableOpenOfficeManager manager = new ExecutableOpenOfficeManager(config);
 		manager.start();
 
 		InputStream input = this.getClass().getClassLoader().getResourceAsStream("teste.ott");
@@ -78,7 +78,7 @@ public class OpenOfficeManagerTest {
 	public void testGetNames() throws Exception {
 		InputStream input = this.getClass().getClassLoader().getResourceAsStream("teste.ott");
 		OpenOfficeConfig config = new SocketOpenOfficeConfig(8100);
-		OpenOfficeManager manager = new SynchronizedOpenOfficeManager(config);
+		OpenOfficeManager manager = new ExecutableOpenOfficeManager(config);
 		GetFieldNameCallback template = new GetFieldNameCallback(input);
 		Set<String> names = manager.execute(template);
 
@@ -92,7 +92,7 @@ public class OpenOfficeManagerTest {
 	public void testSetValues() throws Exception {
 		InputStream input = this.getClass().getClassLoader().getResourceAsStream("teste.ott");
 		OpenOfficeConfig config = new SocketOpenOfficeConfig(8100);
-		OpenOfficeManager manager = new SynchronizedOpenOfficeManager(config);
+		OpenOfficeManager manager = new ExecutableOpenOfficeManager(config);
 
 		Map<String, String> values = new HashMap<String, String>();
 		values.put("Nome", "Lourival Sabino");
