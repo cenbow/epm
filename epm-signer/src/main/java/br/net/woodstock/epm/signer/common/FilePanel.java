@@ -73,7 +73,7 @@ public final class FilePanel extends JPanel {
 		int line = 0;
 
 		// Tree
-		DefaultMutableTreeNode root = new DefaultMutableTreeNode(ApplicationHolder.getInstance().getMessage(Constants.LABEL_MY_COMPUTER));
+		DefaultMutableTreeNode root = new DefaultMutableTreeNode(SignerMessage.getMessage(Constants.LABEL_MY_COMPUTER));
 		for (File file : this.fileSystemView.getRoots()) {
 			if (this.fileSystemView.isTraversable(file).booleanValue()) {
 				FileObject fileObject = new FileObject(this.fileSystemView.getSystemDisplayName(file), file);
@@ -102,11 +102,11 @@ public final class FilePanel extends JPanel {
 		line++;
 
 		// Buttons
-		this.btBack = new JButton(ApplicationHolder.getInstance().getMessage(Constants.LABEL_BACK));
+		this.btBack = new JButton(SignerMessage.getMessage(Constants.LABEL_BACK));
 		// this.btBack.setEnabled(false);
 		this.add(this.btBack, SwingUtils.getConstraints(line, 0, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.NONE));
 
-		this.btNext = new JButton(ApplicationHolder.getInstance().getMessage(Constants.LABEL_NEXT));
+		this.btNext = new JButton(SignerMessage.getMessage(Constants.LABEL_NEXT));
 		// this.btNext.setEnabled(false);
 		this.add(this.btNext, SwingUtils.getConstraints(line, 1, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.NONE));
 
@@ -250,7 +250,7 @@ public final class FilePanel extends JPanel {
 					ApplicationPanel.getInstance().getTabbedPane().setEnabledAt(2, true);
 					ApplicationPanel.getInstance().getTabbedPane().setSelectedIndex(2);
 				} else {
-					JOptionPane.showMessageDialog(FilePanel.this, ApplicationHolder.getInstance().getMessage(Constants.MSG_ERROR_NO_FILE_SELECTED), ApplicationHolder.getInstance().getMessage(Constants.LABEL_ERROR), JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(FilePanel.this, SignerMessage.getMessage(Constants.MSG_ERROR_NO_FILE_SELECTED), SignerMessage.getMessage(Constants.LABEL_ERROR), JOptionPane.ERROR_MESSAGE);
 				}
 			}
 

@@ -2,18 +2,24 @@ package br.net.woodstock.epm.signer.common;
 
 import br.net.woodstock.rockframework.config.AbstractMessage;
 
-public final class SignerMessage extends AbstractMessage {
+public abstract class SignerMessage {
 
 	private static final String		BUNDLE_FILE	= "signer-messages";
 
-	private static SignerMessage	instance	= new SignerMessage();
+	private static AbstractMessage	message;
 
-	private SignerMessage() {
-		super(SignerMessage.BUNDLE_FILE);
+	static {
+		message = new AbstractMessage(SignerMessage.BUNDLE_FILE) {
+			//
+		};
 	}
 
-	public static SignerMessage getInstance() {
-		return SignerMessage.instance;
+	public static String getMessage(final String key) {
+		return SignerMessage.message.getMessage(key);
+	}
+
+	public static String getMessage(final String key, final Object... args) {
+		return SignerMessage.message.getMessage(key, args);
 	}
 
 }

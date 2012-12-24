@@ -23,6 +23,7 @@ import br.net.woodstock.rockframework.security.sign.impl.BouncyCastlePKCS7Signer
 import br.net.woodstock.rockframework.security.sign.impl.PDFSigner;
 import br.net.woodstock.rockframework.security.store.PasswordAlias;
 import br.net.woodstock.rockframework.security.store.Store;
+import br.net.woodstock.rockframework.security.store.StoreAlias;
 import br.net.woodstock.rockframework.security.timestamp.TimeStampClient;
 import br.net.woodstock.rockframework.security.timestamp.impl.URLTimeStampClient;
 import br.net.woodstock.rockframework.utils.ConditionUtils;
@@ -57,10 +58,10 @@ public final class ConfirmPanel extends JPanel {
 		int line = 0;
 
 		// Buttons
-		this.btBack = new JButton(ApplicationHolder.getInstance().getMessage(Constants.LABEL_BACK));
+		this.btBack = new JButton(SignerMessage.getMessage(Constants.LABEL_BACK));
 		this.add(this.btBack, SwingUtils.getConstraints(line, 0, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.NONE));
 
-		this.btSign = new JButton(ApplicationHolder.getInstance().getMessage(Constants.LABEL_SIGN));
+		this.btSign = new JButton(SignerMessage.getMessage(Constants.LABEL_SIGN));
 		this.add(this.btSign, SwingUtils.getConstraints(line, 1, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.NONE));
 	}
 
@@ -104,12 +105,12 @@ public final class ConfirmPanel extends JPanel {
 
 			inputStream = new FileInputStream(file);
 			Alias selectedAlias = ApplicationHolder.getInstance().getAlias();
-			Alias alias = null;
+			StoreAlias alias = null;
 
 			if ((ConditionUtils.isNotEmpty(ApplicationHolder.getInstance().getPassword()))) {
 				alias = new PasswordAlias(selectedAlias.getName(), new String(ApplicationHolder.getInstance().getPassword()));
 			} else {
-				alias = new Alias(selectedAlias.getName());
+				alias = new StoreAlias(selectedAlias.getName());
 			}
 
 			TimeStampClient timeStampClient = null;
@@ -144,9 +145,9 @@ public final class ConfirmPanel extends JPanel {
 			outputStream.write(signature);
 			outputStream.close();
 
-			JOptionPane.showMessageDialog(this, ApplicationHolder.getInstance().getMessage(Constants.MSG_SUCCESS), ApplicationHolder.getInstance().getMessage(Constants.LABEL_INFO), JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(this, SignerMessage.getMessage(Constants.MSG_SUCCESS), SignerMessage.getMessage(Constants.LABEL_INFO), JOptionPane.INFORMATION_MESSAGE);
 		} catch (Exception ex) {
-			JOptionPane.showMessageDialog(this, ApplicationHolder.getInstance().getMessage(Constants.MSG_ERROR_SIGN), ApplicationHolder.getInstance().getMessage(Constants.LABEL_ERROR), JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this, SignerMessage.getMessage(Constants.MSG_ERROR_SIGN), SignerMessage.getMessage(Constants.LABEL_ERROR), JOptionPane.ERROR_MESSAGE);
 			SignerLog.getLogger().warn(ex.getMessage(), ex);
 		} finally {
 			if (inputStream != null) {

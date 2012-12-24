@@ -3,6 +3,8 @@ package br.net.woodstock.epm.office.oo.callback;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import br.net.woodstock.epm.office.OfficeLog;
 import br.net.woodstock.epm.office.oo.impl.OpenOfficeHelper;
@@ -18,6 +20,10 @@ import com.sun.star.util.CloseVetoException;
 import com.sun.star.util.XCloseable;
 
 abstract class CallbackHelper {
+
+	private static final String	PROTOCOL_SEPARATOR	= ":";
+
+	private static final String	PATH_SEPARATOR		= "//";
 
 	private CallbackHelper() {
 		//
@@ -45,9 +51,12 @@ abstract class CallbackHelper {
 		IOUtils.copy(inputStream, outputStream);
 		outputStream.close();
 
+		String url = CallbackHelper.getFileURL(file);
+
 		long l = System.currentTimeMillis();
+
 		OfficeLog.getLogger().info("Loading component");
-		XComponent component = loader.loadComponentFromURL(file.toURI().toURL().toString(), OpenOfficeHelper.BLANK_TARGET, 0, loadProps);
+		XComponent component = loader.loadComponentFromURL(url, OpenOfficeHelper.BLANK_TARGET, 0, loadProps);
 		OfficeLog.getLogger().info("Component loaded in " + (System.currentTimeMillis() - l) + "ms");
 
 		file.delete();
@@ -68,6 +77,16 @@ abstract class CallbackHelper {
 		} else {
 			component.dispose();
 		}
+	}
+
+	private static String getFileURL(final File file) throws MalformedURLException {
+		URL url = file.toURI().toURL();
+		StringBuilder builder = new StringBuilder();
+		builder.append(url.getProtocol());
+		builder.append(CallbackHelper.PROTOCOL_SEPARATOR);
+		builder.append(CallbackHelper.PATH_SEPARATOR);
+		builder.append(url.getPath());
+		return builder.toString();
 	}
 
 }

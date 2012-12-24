@@ -31,7 +31,7 @@ public class WindowsMYStoreTypeHandler implements StoreTypeHandler {
 			ApplicationHolder.getInstance().setStore(this.store);
 			// ApplicationHolder.getInstance().onSelectStore();
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, ApplicationHolder.getInstance().getMessage(Constants.MSG_ERROR_OPEN_KEYSTORE), ApplicationHolder.getInstance().getMessage(Constants.LABEL_ERROR), JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, SignerMessage.getMessage(Constants.MSG_ERROR_OPEN_KEYSTORE), SignerMessage.getMessage(Constants.LABEL_ERROR), JOptionPane.ERROR_MESSAGE);
 			SignerLog.getLogger().debug(e.getMessage(), e);
 		}
 	}

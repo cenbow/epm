@@ -18,10 +18,9 @@ import br.net.woodstock.rockframework.security.Alias;
 import br.net.woodstock.rockframework.security.store.PasswordAlias;
 import br.net.woodstock.rockframework.security.store.PrivateKeyEntry;
 import br.net.woodstock.rockframework.security.store.Store;
-import br.net.woodstock.rockframework.security.store.StoreEntryType;
+import br.net.woodstock.rockframework.security.store.StoreAlias;
 import br.net.woodstock.rockframework.security.store.StoreException;
 import br.net.woodstock.rockframework.utils.ConditionUtils;
-import br.net.woodstock.rockframework.utils.SystemUtils;
 
 public final class KeyStorePanel extends JPanel {
 
@@ -51,6 +50,7 @@ public final class KeyStorePanel extends JPanel {
 	protected void init() {
 		this.buildGUI();
 		this.addGUIEvents();
+		this.restoreValues();
 	}
 
 	protected void buildGUI() {
@@ -61,13 +61,11 @@ public final class KeyStorePanel extends JPanel {
 		int line = 0;
 
 		// Type
-		this.lbType = new JLabel(ApplicationHolder.getInstance().getMessage(Constants.LABEL_TYPE) + Constants.LABEL_SUFFIX);
+		this.lbType = new JLabel(SignerMessage.getMessage(Constants.LABEL_TYPE) + Constants.LABEL_SUFFIX);
 		this.cbType = new JComboBox();
-		this.cbType.addItem(ApplicationHolder.getInstance().getMessage(Constants.LABEL_SELECT));
-		this.cbType.addItem(new PKCS12StoreTypeHandler());
-
-		if (System.getProperty(SystemUtils.OS_NAME_PROPERTY).startsWith(Constants.WINDOWS_OS_NAME)) {
-			this.cbType.addItem(new WindowsMYStoreTypeHandler());
+		this.cbType.addItem(SignerMessage.getMessage(Constants.LABEL_SELECT));
+		for (StoreTypeHandler handler : ApplicationHolder.getInstance().getHandlers()) {
+			this.cbType.addItem(handler);
 		}
 
 		this.add(this.lbType, SwingUtils.getConstraints(line, 0, 1, 1, GridBagConstraints.EAST, GridBagConstraints.NONE));
@@ -75,7 +73,7 @@ public final class KeyStorePanel extends JPanel {
 		line++;
 
 		// Certificate
-		this.lbCertificate = new JLabel(ApplicationHolder.getInstance().getMessage(Constants.LABEL_CERTIFICATE) + Constants.LABEL_SUFFIX);
+		this.lbCertificate = new JLabel(SignerMessage.getMessage(Constants.LABEL_CERTIFICATE) + Constants.LABEL_SUFFIX);
 		this.cbCertificate = new JComboBox();
 
 		this.add(this.lbCertificate, SwingUtils.getConstraints(line, 0, 1, 1, GridBagConstraints.EAST, GridBagConstraints.NONE));
@@ -83,7 +81,7 @@ public final class KeyStorePanel extends JPanel {
 		line++;
 
 		// Password
-		this.lbKeyPassword = new JLabel(ApplicationHolder.getInstance().getMessage(Constants.LABEL_PASSWORD) + Constants.LABEL_SUFFIX);
+		this.lbKeyPassword = new JLabel(SignerMessage.getMessage(Constants.LABEL_PASSWORD) + Constants.LABEL_SUFFIX);
 		this.txKeyPassword = new JPasswordField(20);
 		this.txKeyPassword.setEditable(false);
 
@@ -92,7 +90,7 @@ public final class KeyStorePanel extends JPanel {
 		line++;
 
 		// Buttons
-		this.btNext = new JButton(ApplicationHolder.getInstance().getMessage(Constants.LABEL_NEXT));
+		this.btNext = new JButton(SignerMessage.getMessage(Constants.LABEL_NEXT));
 		this.btNext.setEnabled(false);
 
 		this.add(this.btNext, SwingUtils.getConstraints(line, 0, 3, 1, GridBagConstraints.CENTER, GridBagConstraints.NONE));
@@ -106,6 +104,7 @@ public final class KeyStorePanel extends JPanel {
 				JComboBox cb = (JComboBox) e.getSource();
 				Object selectedItem = cb.getSelectedItem();
 				if (selectedItem instanceof StoreTypeHandler) {
+
 					StoreTypeHandler handler = (StoreTypeHandler) selectedItem;
 					handler.execute();
 				} else {
@@ -142,22 +141,22 @@ public final class KeyStorePanel extends JPanel {
 
 				if (store != null) {
 					Alias selectedAlias = ApplicationHolder.getInstance().getAlias();
-					Alias alias = null;
+					StoreAlias alias = null;
 
 					if ((ConditionUtils.isNotEmpty(KeyStorePanel.this.getTxKeyPassword().getPassword()))) {
 						alias = new PasswordAlias(selectedAlias.getName(), new String(KeyStorePanel.this.getTxKeyPassword().getPassword()));
 					} else {
-						alias = new Alias(selectedAlias.getName());
+						alias = new StoreAlias(selectedAlias.getName());
 					}
 
 					boolean ok = false;
 					try {
-						PrivateKeyEntry privateKeyEntry = (PrivateKeyEntry) store.get(alias, StoreEntryType.PRIVATE_KEY);
+						PrivateKeyEntry privateKeyEntry = (PrivateKeyEntry) store.get(alias);
 						if (privateKeyEntry != null) {
 							ok = true;
 						}
 					} catch (Exception ex) {
-						JOptionPane.showMessageDialog(KeyStorePanel.this, ApplicationHolder.getInstance().getMessage(Constants.MSG_ERROR_OPEN_PRIVATE_KEY), ApplicationHolder.getInstance().getMessage(Constants.LABEL_ERROR), JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(KeyStorePanel.this, SignerMessage.getMessage(Constants.MSG_ERROR_OPEN_PRIVATE_KEY), SignerMessage.getMessage(Constants.LABEL_ERROR), JOptionPane.ERROR_MESSAGE);
 						SignerLog.getLogger().info(ex.getMessage(), ex);
 					}
 
@@ -171,11 +170,18 @@ public final class KeyStorePanel extends JPanel {
 						ApplicationPanel.getInstance().getTabbedPane().setSelectedIndex(1);
 					}
 				} else {
-					JOptionPane.showMessageDialog(KeyStorePanel.this, ApplicationHolder.getInstance().getMessage(Constants.MSG_ERROR_NO_KEYSTORE), ApplicationHolder.getInstance().getMessage(Constants.LABEL_ERROR), JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(KeyStorePanel.this, SignerMessage.getMessage(Constants.MSG_ERROR_NO_KEYSTORE), SignerMessage.getMessage(Constants.LABEL_ERROR), JOptionPane.ERROR_MESSAGE);
 				}
 			}
 
 		});
+	}
+
+	protected void restoreValues() {
+		//StoreTypeHandler handler = ApplicationHolder.getInstance().getHandler();
+		//if (handler != null) {
+		//	this.cbType.setSelectedItem(handler);
+		//}
 	}
 
 	public void onSelectStore() {
@@ -219,8 +225,8 @@ public final class KeyStorePanel extends JPanel {
 			Alias selectedAlias = (Alias) this.cbCertificate.getSelectedItem();
 			ApplicationHolder.getInstance().setAlias(selectedAlias);
 			if (selectedAlias != null) {
-				Alias alias = new Alias(selectedAlias.getName());
-				store.get(alias, StoreEntryType.PRIVATE_KEY);
+				StoreAlias alias = new StoreAlias(selectedAlias.getName());
+				store.get(alias);
 				this.txKeyPassword.setText(null);
 				this.txKeyPassword.setEditable(false);
 			} else {

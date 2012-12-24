@@ -20,7 +20,6 @@ import br.net.woodstock.rockframework.security.store.KeyStoreType;
 import br.net.woodstock.rockframework.security.store.PasswordAlias;
 import br.net.woodstock.rockframework.security.store.PrivateKeyEntry;
 import br.net.woodstock.rockframework.security.store.Store;
-import br.net.woodstock.rockframework.security.store.StoreEntryType;
 import br.net.woodstock.rockframework.security.store.impl.JCAStore;
 import br.net.woodstock.rockframework.util.DateBuilder;
 
@@ -79,7 +78,7 @@ public class CertificateTest {
 		FileInputStream inputStream = new FileInputStream("/home/lourival/tmp/cert/woodstock.pfx");
 		Store caStore = new JCAStore(KeyStoreType.PKCS12);
 		caStore.read(inputStream, "woodstock");
-		PrivateKeyEntry entry = (PrivateKeyEntry) caStore.get(new PasswordAlias("woodstock", "woodstock"), StoreEntryType.PRIVATE_KEY);
+		PrivateKeyEntry entry = (PrivateKeyEntry) caStore.get(new PasswordAlias("woodstock", "woodstock"));
 		request.withIssuerKeyHolder(new PrivateKeyHolder(entry.getValue(), entry.getChain()));
 
 		PrivateKeyHolder holder = BouncyCastleCertificateBuilder.getInstance().build(request);

@@ -1,16 +1,33 @@
 package br.net.woodstock.epm.signer.common;
 
 import java.io.File;
+import java.util.HashSet;
 import java.util.Set;
+import java.util.prefs.BackingStoreException;
+import java.util.prefs.Preferences;
 
 import br.net.woodstock.rockframework.security.Alias;
 import br.net.woodstock.rockframework.security.store.Store;
+import br.net.woodstock.rockframework.utils.ConditionUtils;
+import br.net.woodstock.rockframework.utils.SystemUtils;
 
 public final class ApplicationHolder {
 
-	private static ApplicationHolder	instance	= new ApplicationHolder();
+	private static final String			PREF_STORE_HANDLER	= "STORE_HANDLER";
 
-	private SignerMessage				message		= SignerMessage.getInstance();
+	private static final String			PREF_STORE			= "STORE";
+
+	private static final String			PREF_ALIAS			= "ALIAS";
+
+	private static final String			PREF_TIMESTAMP_URL	= "TIMESTAMP_URL";
+
+	private static final String			PREF_P7S_DETACHED	= "P7S_DETACHED";
+
+	private static final String			PREF_PDF			= "PDF";
+
+	private static ApplicationHolder	instance			= new ApplicationHolder();
+
+	private Preferences					preferences;
 
 	private Alias						alias;
 
@@ -28,19 +45,44 @@ public final class ApplicationHolder {
 
 	private Set<File>					selectedFiles;
 
+	private Set<StoreTypeHandler>		handlers;
+
 	private ApplicationHolder() {
 		super();
-	}
+		this.handlers = new HashSet<StoreTypeHandler>();
+		this.handlers.add(new PKCS12StoreTypeHandler());
+		if (System.getProperty(SystemUtils.OS_NAME_PROPERTY).startsWith(Constants.WINDOWS_OS_NAME)) {
+			this.handlers.add(new WindowsMYStoreTypeHandler());
+		}
 
-	public String getMessage(final String key) {
-		return this.message.getMessage(key);
-	}
+		this.preferences = Preferences.userNodeForPackage(ApplicationHolder.class);
 
-	public String getMessage(final String key, final Object... args) {
-		return this.message.getMessage(key, args);
+		String className = this.preferences.get(ApplicationHolder.PREF_STORE_HANDLER, null);
+		if (ConditionUtils.isNotEmpty(className)) {
+			try {
+				Class<?> clazz = Class.forName(className);
+				for (StoreTypeHandler sth : this.handlers) {
+					if (sth.getClass().equals(clazz)) {
+						this.handler = sth;
+						break;
+					}
+				}
+			} catch (ClassNotFoundException e) {
+				SignerLog.getLogger().debug(e.getMessage(), e);
+			}
+		}
+
+		this.timeStampUrl = this.preferences.get(ApplicationHolder.PREF_TIMESTAMP_URL, "");
+		this.pdf = this.preferences.getBoolean(ApplicationHolder.PREF_PDF, false);
+		this.p7sDetached = this.preferences.getBoolean(ApplicationHolder.PREF_P7S_DETACHED, false);
 	}
 
 	public void setAlias(final Alias alias) {
+		if (alias != null) {
+			this.preferences.put(ApplicationHolder.PREF_ALIAS, alias.getName());
+		} else {
+			this.preferences.remove(ApplicationHolder.PREF_ALIAS);
+		}
 		this.alias = alias;
 	}
 
@@ -49,6 +91,11 @@ public final class ApplicationHolder {
 	}
 
 	public void setStore(final Store store) {
+		if (store != null) {
+			this.preferences.put(ApplicationHolder.PREF_STORE, store.toString());
+		} else {
+			this.preferences.remove(ApplicationHolder.PREF_STORE);
+		}
 		this.store = store;
 	}
 
@@ -61,6 +108,11 @@ public final class ApplicationHolder {
 	}
 
 	public void setHandler(final StoreTypeHandler handler) {
+		if (handler != null) {
+			this.preferences.put(ApplicationHolder.PREF_STORE_HANDLER, handler.getClass().getCanonicalName());
+		} else {
+			this.preferences.remove(ApplicationHolder.PREF_STORE_HANDLER);
+		}
 		this.handler = handler;
 	}
 
@@ -77,6 +129,11 @@ public final class ApplicationHolder {
 	}
 
 	public void setTimeStampUrl(final String timeStampUrl) {
+		if (ConditionUtils.isNotEmpty(timeStampUrl)) {
+			this.preferences.put(ApplicationHolder.PREF_TIMESTAMP_URL, timeStampUrl);
+		} else {
+			this.preferences.remove(ApplicationHolder.PREF_TIMESTAMP_URL);
+		}
 		this.timeStampUrl = timeStampUrl;
 	}
 
@@ -85,6 +142,7 @@ public final class ApplicationHolder {
 	}
 
 	public void setPdf(final boolean pdf) {
+		this.preferences.putBoolean(ApplicationHolder.PREF_PDF, pdf);
 		this.pdf = pdf;
 	}
 
@@ -93,6 +151,7 @@ public final class ApplicationHolder {
 	}
 
 	public void setP7sDetached(final boolean p7sDetached) {
+		this.preferences.putBoolean(ApplicationHolder.PREF_P7S_DETACHED, p7sDetached);
 		this.p7sDetached = p7sDetached;
 	}
 
@@ -104,7 +163,20 @@ public final class ApplicationHolder {
 		this.selectedFiles = selectedFiles;
 	}
 
-	// Evenets
+	public Set<StoreTypeHandler> getHandlers() {
+		return this.handlers;
+	}
+
+	public void setHandlers(final Set<StoreTypeHandler> handlers) {
+		this.handlers = handlers;
+	}
+
+	// Preferences
+	public void savePreferences() throws BackingStoreException {
+		this.preferences.flush();
+	}
+
+	// Events
 	public void onSelectStore() {
 		KeyStorePanel.getInstance().onSelectStore();
 	}
