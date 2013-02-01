@@ -13,8 +13,6 @@ import br.net.woodstock.rockframework.security.store.KeyStoreType;
 import br.net.woodstock.rockframework.security.store.PasswordAlias;
 import br.net.woodstock.rockframework.security.store.impl.JCAStore;
 import br.net.woodstock.rockframework.security.timestamp.TimeStamp;
-import br.net.woodstock.rockframework.security.timestamp.TimeStampClient;
-import br.net.woodstock.rockframework.security.timestamp.impl.URLTimeStampClient;
 import br.net.woodstock.rockframework.utils.IOUtils;
 
 public class SignerTest extends TestCase {
@@ -31,14 +29,14 @@ public class SignerTest extends TestCase {
 
 		FileInputStream fileInputStream = new FileInputStream("/home/lourival/Documents/output.pdf");
 
-		//TimeStampClient timeStampClient = new URLTimeStampClient("http://tsa.safelayer.com:8093");
+		// TimeStampClient timeStampClient = new URLTimeStampClient("http://tsa.safelayer.com:8093");
 		PKCS7SignatureParameters signatureParameters = new PKCS7SignatureParameters(new PasswordAlias("lourival", "lourival"), store);
 		SignatureInfo signatureInfo = new SignatureInfo();
 		signatureInfo.setContactInfo("ConcactInfo");
 		signatureInfo.setLocation("Location");
 		signatureInfo.setName("Lourival Sabino");
 		signatureInfo.setReason("Reason");
-		//signatureParameters.setTimeStampClient(timeStampClient);
+		// signatureParameters.setTimeStampClient(timeStampClient);
 		signatureParameters.setSignatureInfo(signatureInfo);
 
 		PDFSigner signer = new PDFSigner(signatureParameters);

@@ -16,13 +16,13 @@ public class SimpleOpenOfficeManager implements OpenOfficeManager {
 	}
 
 	@Override
-	public synchronized <T> T execute(final OpenOfficeCallback callback) {
+	public synchronized <T> T execute(final OpenOfficeCallback<T> callback) {
 		try {
 			OfficeLog.getLogger().info("Executing " + callback.getClass().getName());
 
 			long l = System.currentTimeMillis();
 
-			T t = callback.doInConnection(this.connection);
+			T t = (T) callback.doInConnection(this.connection);
 
 			l = System.currentTimeMillis() - l;
 			OfficeLog.getLogger().info("Executed in " + l + "ms");

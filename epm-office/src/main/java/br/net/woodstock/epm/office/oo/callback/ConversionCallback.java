@@ -21,7 +21,7 @@ import com.sun.star.frame.XStorable;
 import com.sun.star.lang.XComponent;
 import com.sun.star.uno.UnoRuntime;
 
-public class ConversionCallback implements OpenOfficeCallback {
+public class ConversionCallback implements OpenOfficeCallback<InputStream> {
 
 	private InputStream			source;
 
@@ -34,8 +34,7 @@ public class ConversionCallback implements OpenOfficeCallback {
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
-	public <T> T doInConnection(final OpenOfficeConnection connection) {
+	public InputStream doInConnection(final OpenOfficeConnection connection) {
 		try {
 			XComponentLoader componentLoader = (XComponentLoader) connection.getDelegate();
 
@@ -61,10 +60,10 @@ public class ConversionCallback implements OpenOfficeCallback {
 			storeProps[1].Name = OpenOfficeHelper.OUTPUT_STREAM_PROPERTY;
 			storeProps[1].Value = OpenOfficeIO.toXOutputStream(outputStream);
 			xStorable.storeToURL(OpenOfficeHelper.PRIVATE_STREAM_URL, storeProps);
-			
+
 			CallbackHelper.close(component);
-			
-			return (T) new ByteArrayInputStream(outputStream.toByteArray());
+
+			return new ByteArrayInputStream(outputStream.toByteArray());
 		} catch (Exception e) {
 			OfficeLog.getLogger().error(e.getMessage(), e);
 			throw new OpenOfficeException(e);

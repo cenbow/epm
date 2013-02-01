@@ -4,9 +4,9 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,8 +18,8 @@ import br.net.woodstock.epm.office.oo.OpenOfficeManager;
 import br.net.woodstock.epm.office.oo.callback.ConversionCallback;
 import br.net.woodstock.epm.office.oo.callback.GetFieldNameCallback;
 import br.net.woodstock.epm.office.oo.callback.PopulateTemplateCallback;
-import br.net.woodstock.epm.office.oo.impl.SocketOpenOfficeConfig;
 import br.net.woodstock.epm.office.oo.impl.ExecutableOpenOfficeManager;
+import br.net.woodstock.epm.office.oo.impl.SocketOpenOfficeConfig;
 import br.net.woodstock.rockframework.utils.IOUtils;
 
 @RunWith(BlockJUnit4ClassRunner.class)
@@ -80,7 +80,7 @@ public class OpenOfficeManagerTest {
 		OpenOfficeConfig config = new SocketOpenOfficeConfig(8100);
 		OpenOfficeManager manager = new ExecutableOpenOfficeManager(config);
 		GetFieldNameCallback template = new GetFieldNameCallback(input);
-		Set<String> names = manager.execute(template);
+		Collection<String> names = manager.execute(template);
 
 		input.close();
 		for (String name : names) {

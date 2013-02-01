@@ -21,6 +21,10 @@ import com.sun.star.util.XCloseable;
 
 abstract class CallbackHelper {
 
+	private static final String	TMP_FILE_PREFIX		= "tmp";
+
+	private static final String	TMP_FILE_SUFFIX		= ".tmp";
+
 	private static final String	PROTOCOL_SEPARATOR	= ":";
 
 	private static final String	PATH_SEPARATOR		= "//";
@@ -45,21 +49,13 @@ abstract class CallbackHelper {
 			loadProps[1].Value = Boolean.TRUE;
 		}
 
-		File file = File.createTempFile("tmp", ".tmp");
-		FileOutputStream outputStream = new FileOutputStream(file);
-
-		IOUtils.copy(inputStream, outputStream);
-		outputStream.close();
-
-		String url = CallbackHelper.getFileURL(file);
+		String url = CallbackHelper.createTempFile(inputStream);
 
 		long l = System.currentTimeMillis();
 
 		OfficeLog.getLogger().info("Loading component");
 		XComponent component = loader.loadComponentFromURL(url, OpenOfficeHelper.BLANK_TARGET, 0, loadProps);
 		OfficeLog.getLogger().info("Component loaded in " + (System.currentTimeMillis() - l) + "ms");
-
-		file.delete();
 
 		return component;
 	}
@@ -77,6 +73,19 @@ abstract class CallbackHelper {
 		} else {
 			component.dispose();
 		}
+	}
+
+	public static String createTempFile(final InputStream inputStream) throws java.io.IOException {
+		File file = File.createTempFile(CallbackHelper.TMP_FILE_PREFIX, CallbackHelper.TMP_FILE_SUFFIX);
+		file.deleteOnExit();
+		FileOutputStream outputStream = new FileOutputStream(file);
+
+		IOUtils.copy(inputStream, outputStream);
+		outputStream.close();
+
+		String url = CallbackHelper.getFileURL(file);
+
+		return url;
 	}
 
 	private static String getFileURL(final File file) throws MalformedURLException {

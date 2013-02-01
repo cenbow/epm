@@ -3,7 +3,6 @@ package br.net.woodstock.epm.office.oo.callback;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
-import java.util.Map;
 
 import br.net.woodstock.epm.office.OfficeDocumentType;
 import br.net.woodstock.epm.office.OfficeLog;
@@ -17,28 +16,29 @@ import br.net.woodstock.epm.office.oo.mapping.FilterMappingResolver;
 
 import com.sun.star.beans.PropertyValue;
 import com.sun.star.beans.XPropertySet;
-import com.sun.star.container.XNameAccess;
+import com.sun.star.document.XDocumentInsertable;
 import com.sun.star.frame.XComponentLoader;
+import com.sun.star.frame.XController;
 import com.sun.star.frame.XModel;
 import com.sun.star.frame.XStorable;
 import com.sun.star.lang.XComponent;
-import com.sun.star.text.XTextField;
-import com.sun.star.text.XTextFieldsSupplier;
+import com.sun.star.style.BreakType;
+import com.sun.star.text.ControlCharacter;
+import com.sun.star.text.XTextCursor;
+import com.sun.star.text.XTextDocument;
+import com.sun.star.text.XTextViewCursor;
+import com.sun.star.text.XTextViewCursorSupplier;
 import com.sun.star.uno.UnoRuntime;
-import com.sun.star.util.XUpdatable;
 
-public class PopulateTemplateCallback implements OpenOfficeCallback<InputStream> {
+public class MergeCallback implements OpenOfficeCallback<InputStream> {
 
-	private InputStream			source;
-
-	private Map<String, String>	values;
+	private InputStream[]		sources;
 
 	private OfficeDocumentType	targetType;
 
-	public PopulateTemplateCallback(final InputStream source, final Map<String, String> values, final OfficeDocumentType targetType) {
+	public MergeCallback(final InputStream[] sources, final OfficeDocumentType targetType) {
 		super();
-		this.source = source;
-		this.values = values;
+		this.sources = sources;
 		this.targetType = targetType;
 	}
 
@@ -47,7 +47,7 @@ public class PopulateTemplateCallback implements OpenOfficeCallback<InputStream>
 		try {
 			XComponentLoader componentLoader = (XComponentLoader) connection.getDelegate();
 
-			XComponent component = CallbackHelper.load(componentLoader, this.source, true);
+			XComponent component = CallbackHelper.load(componentLoader, this.sources[0], false);
 
 			String currentFilterName = this.getFilterName(component);
 
@@ -58,27 +58,25 @@ public class PopulateTemplateCallback implements OpenOfficeCallback<InputStream>
 				throw new OpenOfficeException("Cannot convert to " + this.targetType);
 			}
 
-			XTextFieldsSupplier xTextFieldsSupplier = UnoRuntime.queryInterface(XTextFieldsSupplier.class, component);
-
-			XNameAccess xNamedFieldMasters = xTextFieldsSupplier.getTextFieldMasters();
-			for (String s : xNamedFieldMasters.getElementNames()) {
-				if (OpenOfficeHelper.isUserField(s)) {
-					String name = OpenOfficeHelper.getUserFieldName(s);
-					if (this.values.containsKey(name)) {
-						Object fieldMaster = xNamedFieldMasters.getByName(s);
-						XPropertySet xPropertySet = UnoRuntime.queryInterface(XPropertySet.class, fieldMaster);
-						xPropertySet.setPropertyValue(OpenOfficeHelper.CONTENT_PROPERTY, this.values.get(name));
-
-						XTextField[] fields = ((XTextField[]) xPropertySet.getPropertyValue(OpenOfficeHelper.DEPENDENT_TEXT_FIELD_PROPERTY));
-
-						for (int i = 0; i < fields.length; i++) {
-							UnoRuntime.queryInterface(XUpdatable.class, fields[i]).update();
-						}
-					}
-				}
-			}
-
 			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
+			XTextDocument document = UnoRuntime.queryInterface(XTextDocument.class, component);
+			XController controller = document.getCurrentController();
+			XTextViewCursorSupplier textViewCursorSupplier = UnoRuntime.queryInterface(XTextViewCursorSupplier.class, controller);
+			XTextViewCursor textViewCursor = textViewCursorSupplier.getViewCursor();
+			XTextCursor textCursor = textViewCursor.getText().createTextCursor();
+
+			for (int i = 1; i < this.sources.length; i++) {
+				textCursor.gotoEnd(false);
+				document.getText().insertControlCharacter(textCursor, ControlCharacter.PARAGRAPH_BREAK, false);
+
+				XPropertySet propertySet = UnoRuntime.queryInterface(XPropertySet.class, textCursor);
+				propertySet.setPropertyValue(OpenOfficeHelper.PAGE_BREAK_PROPERTY, BreakType.PAGE_BEFORE);
+
+				XDocumentInsertable insertable = UnoRuntime.queryInterface(XDocumentInsertable.class, textCursor);
+				String url = CallbackHelper.createTempFile(this.sources[i]);
+				insertable.insertDocumentFromURL(url, new PropertyValue[0]);
+			}
 
 			XStorable xStorable = UnoRuntime.queryInterface(XStorable.class, component);
 			PropertyValue[] storeProps = new PropertyValue[2];

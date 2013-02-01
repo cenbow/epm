@@ -1,8 +1,8 @@
 package br.net.woodstock.epm.office.oo.callback;
 
 import java.io.InputStream;
+import java.util.Collection;
 import java.util.HashSet;
-import java.util.Set;
 
 import br.net.woodstock.epm.office.OfficeLog;
 import br.net.woodstock.epm.office.oo.OpenOfficeCallback;
@@ -16,7 +16,7 @@ import com.sun.star.lang.XComponent;
 import com.sun.star.text.XTextFieldsSupplier;
 import com.sun.star.uno.UnoRuntime;
 
-public class GetFieldNameCallback implements OpenOfficeCallback {
+public class GetFieldNameCallback implements OpenOfficeCallback<Collection<String>> {
 
 	private InputStream	source;
 
@@ -26,8 +26,7 @@ public class GetFieldNameCallback implements OpenOfficeCallback {
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
-	public <T> T doInConnection(final OpenOfficeConnection connection) {
+	public Collection<String> doInConnection(final OpenOfficeConnection connection) {
 		try {
 			XComponentLoader componentLoader = (XComponentLoader) connection.getDelegate();
 
@@ -37,7 +36,7 @@ public class GetFieldNameCallback implements OpenOfficeCallback {
 
 			XNameAccess xNamedFieldMasters = xTextFieldsSupplier.getTextFieldMasters();
 
-			Set<String> names = new HashSet<String>();
+			Collection<String> names = new HashSet<String>();
 			for (String s : xNamedFieldMasters.getElementNames()) {
 				if (OpenOfficeHelper.isUserField(s)) {
 					Object fieldMaster = xNamedFieldMasters.getByName(s);
@@ -46,10 +45,10 @@ public class GetFieldNameCallback implements OpenOfficeCallback {
 					}
 				}
 			}
-			
+
 			CallbackHelper.close(component);
-			
-			return (T) names;
+
+			return names;
 		} catch (Exception e) {
 			OfficeLog.getLogger().error(e.getMessage(), e);
 			throw new OpenOfficeException(e);

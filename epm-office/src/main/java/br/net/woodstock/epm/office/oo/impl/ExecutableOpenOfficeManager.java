@@ -94,7 +94,7 @@ public class ExecutableOpenOfficeManager implements OpenOfficeManager {
 	}
 
 	@Override
-	public synchronized <T> T execute(final OpenOfficeCallback callback) {
+	public synchronized <T> T execute(final OpenOfficeCallback<T> callback) {
 		OpenOfficeConnection connection = null;
 		try {
 			OfficeLog.getLogger().info("Executing " + callback.getClass().getName());

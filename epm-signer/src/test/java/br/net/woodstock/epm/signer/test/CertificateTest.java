@@ -15,7 +15,7 @@ import br.net.woodstock.rockframework.security.cert.PrivateKeyHolder;
 import br.net.woodstock.rockframework.security.cert.ext.icpbrasil.DadoPessoa;
 import br.net.woodstock.rockframework.security.cert.ext.icpbrasil.PessoaFisicaCertificateRequest;
 import br.net.woodstock.rockframework.security.cert.ext.icpbrasil.TipoFormato;
-import br.net.woodstock.rockframework.security.cert.impl.BouncyCastleCertificateBuilder;
+import br.net.woodstock.rockframework.security.cert.impl.BouncyCastleCertificateGenerator;
 import br.net.woodstock.rockframework.security.store.KeyStoreType;
 import br.net.woodstock.rockframework.security.store.PasswordAlias;
 import br.net.woodstock.rockframework.security.store.PrivateKeyEntry;
@@ -38,7 +38,7 @@ public class CertificateTest {
 		request.withEmail("ca@woodstock.net.br");
 		request.withKeySize(4096);
 
-		PrivateKeyHolder holder = BouncyCastleCertificateBuilder.getInstance().build(request);
+		PrivateKeyHolder holder = BouncyCastleCertificateGenerator.getInstance().generate(request);
 
 		Store store = new JCAStore(KeyStoreType.PKCS12);
 		store.add(new PrivateKeyEntry(new PasswordAlias("woodstock", "woodstock"), holder.getPrivateKey(), holder.getChain()));
@@ -81,7 +81,7 @@ public class CertificateTest {
 		PrivateKeyEntry entry = (PrivateKeyEntry) caStore.get(new PasswordAlias("woodstock", "woodstock"));
 		request.withIssuerKeyHolder(new PrivateKeyHolder(entry.getValue(), entry.getChain()));
 
-		PrivateKeyHolder holder = BouncyCastleCertificateBuilder.getInstance().build(request);
+		PrivateKeyHolder holder = BouncyCastleCertificateGenerator.getInstance().generate(request);
 
 		Store store = new JCAStore(KeyStoreType.PKCS12);
 		store.add(new PrivateKeyEntry(new PasswordAlias("lourival", "lourival"), holder.getPrivateKey(), holder.getChain()));

@@ -16,6 +16,8 @@ public abstract class OpenOfficeHelper {
 
 	public static final String	DEPENDENT_TEXT_FIELD_PROPERTY	= "DependentTextFields";
 
+	public static final String	PAGE_BREAK_PROPERTY				= "BreakType";
+
 	public static final String	PRIVATE_STREAM_URL				= "private:stream";
 
 	public static final String	BLANK_TARGET					= "_blank";
