@@ -23,7 +23,7 @@ public class MergeTest {
 		super();
 	}
 
-	@Test
+	//@Test
 	public void testMerge() throws Exception {
 		InputStream inputStream1 = this.getClass().getClassLoader().getResourceAsStream("teste1.odt");
 		InputStream inputStream2 = this.getClass().getClassLoader().getResourceAsStream("teste2.odt");
@@ -47,6 +47,29 @@ public class MergeTest {
 		inputStream1.close();
 		inputStream2.close();
 		inputStream3.close();
+		output.close();
+		outputStream.close();
+		System.out.println("File: " + file.getAbsolutePath());
+	}
+
+	@Test
+	public void testMerge2() throws Exception {
+		InputStream inputStream1 = this.getClass().getClassLoader().getResourceAsStream("teste1.odt");
+		OpenOfficeConnection connection = new SocketOpenOfficeConnection(8100);
+		connection.connect();
+		OpenOfficeManager manager = new SimpleOpenOfficeManager(connection);
+
+		InputStream[] sources = new InputStream[] { inputStream1 };
+
+		MergeCallback callback = new MergeCallback(sources, OfficeDocumentType.ODT);
+
+		InputStream output = manager.execute(callback);
+
+		File file = File.createTempFile("teste", ".odt");
+		FileOutputStream outputStream = new FileOutputStream(file);
+		IOUtils.copy(output, outputStream);
+
+		inputStream1.close();
 		output.close();
 		outputStream.close();
 		System.out.println("File: " + file.getAbsolutePath());
