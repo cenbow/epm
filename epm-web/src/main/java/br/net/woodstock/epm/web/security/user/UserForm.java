@@ -1,4 +1,4 @@
-package br.net.woodstock.epm.web.security;
+package br.net.woodstock.epm.web.security.user;
 
 import br.net.woodstock.epm.web.AbstractForm;
 

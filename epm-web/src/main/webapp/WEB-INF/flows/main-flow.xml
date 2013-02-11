@@ -4,18 +4,22 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/webflow http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd"
 	abstract="true">
 
-	<view-state id="index" view="/spring/index" redirect="true" />
-
-	<view-state id="logoff" view="/" redirect="true" />
+	<!-- Logoff -->
+	<end-state id="logoff" view="externalRedirect:contextRelative:/" />
 	
 	<!-- Menu -->
-	<view-state id="security_user" view="/spring/security/user" redirect="true" />
+	<end-state id="index" view="externalRedirect:contextRelative:/spring/index" />
+	<end-state id="security_resource" view="externalRedirect:contextRelative:/spring/security/resource" />
+	<end-state id="security_role" view="externalRedirect:contextRelative:/spring/security/role" />
+	<end-state id="security_user" view="externalRedirect:contextRelative:/spring/security/user" />
 	
 	<global-transitions>
-		<transition on="index" to="#index.index" />
+		<transition on="index" to="index" />
 		<transition on="logoff" to="logoff">
 			<evaluate expression="logonAction.logoff()" />
 		</transition>
+		<transition on="security_resource" to="security_resource" />
+		<transition on="security_role" to="security_role" />
 		<transition on="security_user" to="security_user" />
 	</global-transitions>
 

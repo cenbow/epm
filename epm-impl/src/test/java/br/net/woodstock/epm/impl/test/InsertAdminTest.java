@@ -24,7 +24,7 @@ public class InsertAdminTest {
 		super();
 	}
 
-	// @Test
+	@Test
 	public void testRole() throws Exception {
 		Role role = new Role();
 		role.setActive(Boolean.TRUE);
@@ -33,7 +33,7 @@ public class InsertAdminTest {
 		this.securityService.saveRole(role);
 	}
 
-	// @Test
+	@Test
 	public void testUser() throws Exception {
 		User user = new User();
 		user.setActive(Boolean.TRUE);

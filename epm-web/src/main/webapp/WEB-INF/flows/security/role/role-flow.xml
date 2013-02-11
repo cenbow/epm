@@ -4,24 +4,24 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/webflow http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd"
 	parent="main">
 	
-	<var name="userForm" class="br.net.woodstock.epm.web.security.user.UserForm"/>
-	<var name="userSearch" class="br.net.woodstock.epm.web.security.user.UserSearch"/>
+	<var name="roleForm" class="br.net.woodstock.epm.web.security.role.RoleForm"/>
+	<var name="roleSearch" class="br.net.woodstock.epm.web.security.role.RoleSearch"/>
 
-	<view-state id="list" view="user-list.xhtml">
+	<view-state id="list" view="role-list.xhtml">
 		<transition on="search">
-			<evaluate expression="userAction.search(userSearch)" result="flowScope.userList" />
+			<evaluate expression="roleAction.search(roleSearch)" result="flowScope.roleList" />
 		</transition>
 		<transition on="new" to="new">
-			<evaluate expression="userForm.reset()" />
+			<evaluate expression="roleForm.reset()" />
 		</transition> 
 		<transition on="edit" to="edit"> 
-			<evaluate expression="userAction.edit(selectedUser, userForm)" />
+			<evaluate expression="roleAction.edit(selectedRole, roleForm)" />
 		</transition>
 	</view-state>
 	
-	<view-state id="save" view="user-save.xhtml">
+	<view-state id="save" view="role-save.xhtml">
 		<transition on="save">
-			<evaluate expression="userAction.save(userForm)" />
+			<evaluate expression="roleAction.save(roleForm)" />
 		</transition>
 		<transition on="cancel" to="search">
 		</transition>

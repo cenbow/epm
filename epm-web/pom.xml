@@ -10,6 +10,37 @@
 		<relativePath>../</relativePath>
 		<version>1.0</version>
 	</parent>
+	<build>
+		<!--
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy</id>
+						<phase>package</phase>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+						<configuration>
+							<artifactItems>
+								<artifactItem>
+									<groupId>br.net.woodstock.epm</groupId>
+									<artifactId>epm-office</artifactId>
+									<type>jar</type>
+									<overWrite>true</overWrite>
+									<outputDirectory>${project.build.directory}/${project.build.finalName}/resources/jar</outputDirectory>
+									<destFileName>optional-new-name.jar</destFileName>
+								</artifactItem>
+							</artifactItems>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+		-->
+	</build>
 	<dependencies>
 		<dependency>
 			<groupId>br.net.woodstock.rockframework</groupId>
@@ -70,6 +101,10 @@
 		<dependency>
 			<groupId>org.primefaces.themes</groupId>
 			<artifactId>smoothness</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.security</groupId>

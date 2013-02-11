@@ -1,10 +1,11 @@
-package br.net.woodstock.epm.web.security;
+package br.net.woodstock.epm.web.security.role;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
+import br.net.woodstock.epm.orm.Role;
 import br.net.woodstock.epm.orm.User;
 import br.net.woodstock.epm.security.api.SecurityService;
 import br.net.woodstock.epm.web.AbstractAction;
@@ -16,60 +17,54 @@ import br.net.woodstock.rockframework.web.faces.primefaces.EntityRepository;
 
 @Controller
 @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
-public class UserAction extends AbstractAction {
+public class RoleAction extends AbstractAction {
 
-	private static final long	serialVersionUID	= -3154468176965938956L;
+	private static final long	serialVersionUID	= 8763250019756637129L;
 
 	@Autowired(required = true)
 	private SecurityService		securityService;
 
-	public UserAction() {
+	public RoleAction() {
 		super();
 	}
 
-	public boolean edit(final User user, final UserForm form) {
-		if (user != null) {
-			form.setActive(user.getActive());
-			form.setEmail(user.getEmail());
-			form.setId(user.getId());
-			form.setLogin(user.getLogin());
-			form.setName(user.getName());
-			form.setPassword(user.getPassword());
+	public boolean edit(final Role role, final RoleForm form) {
+		if (role != null) {
+			form.setActive(role.getActive());
+			form.setId(role.getId());
+			form.setName(role.getName());
 			return true;
 		}
 		return false;
 	}
 
-	public void save(final UserForm form) {
-		User user = new User();
-		user.setActive(form.getActive());
-		user.setEmail(form.getEmail());
-		user.setId(form.getId());
-		user.setLogin(form.getLogin());
-		user.setName(form.getName());
-		user.setPassword(form.getPassword());
+	public void save(final RoleForm form) {
+		Role role = new Role();
+		role.setActive(form.getActive());
+		role.setId(form.getId());
+		role.setName(form.getName());
 
-		if (user.getId() != null) {
-			this.securityService.updateUser(user);
+		if (role.getId() != null) {
+			this.securityService.updateRole(role);
 		} else {
-			this.securityService.saveUser(user);
+			this.securityService.saveRole(role);
 			form.reset();
 		}
 	}
 
-	public EntityDataModel<User> search(final UserSearch search) {
+	public EntityDataModel<User> search(final RoleSearch search) {
 		EntityRepository repository = new EntityRepository() {
 
 			private static final long	serialVersionUID	= -7098011024917168622L;
 
 			@Override
 			public QueryResult getResult(final Page page) {
-				return UserAction.this.getSecurityService().listUsersByName(search.getName(), page);
+				return RoleAction.this.getSecurityService().listRolesByName(search.getName(), page);
 			}
 
 			@Override
 			public Object getEntity(final Object id) {
-				return UserAction.this.getSecurityService().getUserById((Integer) id);
+				return RoleAction.this.getSecurityService().getRoleById((Integer) id);
 			}
 
 		};

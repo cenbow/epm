@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui" template="/WEB-INF/templates/default.xhtml">
 	<ui:define name="title">
-		User
+		Role
 	</ui:define>
 	<ui:define name="content">
 		<h:form id="formList" prependId="false">
 			<div>
-				<p:panel header="User" style="width: 400px; margin: auto;">
+				<p:panel header="Role" style="width: 400px; margin: auto;">
 					<table style="width: 100%;">
 						<tr>
 							<td style="width: 25%;">Name : </td>
 							<td style="width: 75%;">
-								<p:inputText value="#{userSearch.name}" size="30" maxlength="100" />
+								<p:inputText value="#{roleSearch.name}" size="30" maxlength="100" />
 							</td>
 						</tr>
 						<tr>
@@ -23,31 +23,19 @@
 					</table>					
 				</p:panel>
 				<br />
-				<p:dataTable value="#{userList}" var="user" rows="#{webConstants.pageSize}" paginator="true" style="width: 500px; margin: auto;" rendered="#{not empty userList}" first="#{userSearch.firstRow}" emptyMessage="Na Data Found" lazy="true" selectionMode="single" selection="#{flowScope.selectedUser}">
-					<p:column>
-						<f:facet name="header">
-							<h:outputText value="Login" />
-						</f:facet>
-						<h:outputText value="#{user.login}" />						
-					</p:column>
+				<p:dataTable value="#{roleList}" var="role" rows="#{webConstants.pageSize}" paginator="true" style="width: 300px; margin: auto;" rendered="#{not empty roleList}" first="#{roleSearch.firstRow}" emptyMessage="Na Data Found" lazy="true" selectionMode="single" selection="#{flowScope.selectedRole}">
 					<p:column>
 						<f:facet name="header">
 							<h:outputText value="Name" />
 						</f:facet>
-						<h:outputText value="#{user.name}" />						
-					</p:column>
-					<p:column>
-						<f:facet name="header">
-							<h:outputText value="E-Mail" />
-						</f:facet>						
-						<h:outputText value="#{user.email}" />
+						<h:outputText value="#{role.name}" />						
 					</p:column>
 					<p:column>
 						<f:facet name="header">
 							<h:outputText value="Action" />
 						</f:facet>
 						<p:commandButton alt="Edit" title="Edit" action="edit" ajax="false" icon="ui-icon-pencil">
-							<f:setPropertyActionListener target="#{userSearch.selectedIndex}" value="#{userList.rowIndex}" />
+							<f:setPropertyActionListener target="#{roleSearch.selectedIndex}" value="#{roleList.rowIndex}" />
 						</p:commandButton>
 					</p:column>
 				</p:dataTable>
