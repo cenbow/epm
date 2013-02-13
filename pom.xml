@@ -174,9 +174,21 @@
 			</dependency>
 			<dependency>
 				<groupId>br.net.woodstock.epm</groupId>
+				<artifactId>epm-office</artifactId>
+				<version>${project.version}</version>
+				<scope>compile</scope>
+			</dependency>
+			<dependency>
+				<groupId>br.net.woodstock.epm</groupId>
 				<artifactId>epm-orm</artifactId>
 				<version>${project.version}</version>
 				<scope>compile</scope>
+			</dependency>
+			<dependency>
+				<groupId>br.net.woodstock.epm</groupId>
+				<artifactId>epm-signer</artifactId>
+				<version>${project.version}</version>
+				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>br.net.woodstock.epm</groupId>

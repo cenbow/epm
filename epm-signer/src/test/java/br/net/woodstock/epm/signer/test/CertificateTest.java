@@ -8,12 +8,14 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.BlockJUnit4ClassRunner;
 
+import br.net.woodstock.rockframework.security.Identity;
 import br.net.woodstock.rockframework.security.cert.CertificateRequest;
+import br.net.woodstock.rockframework.security.cert.CertificateResponse;
 import br.net.woodstock.rockframework.security.cert.ExtendedKeyUsageType;
+import br.net.woodstock.rockframework.security.cert.KeySizeType;
 import br.net.woodstock.rockframework.security.cert.KeyUsageType;
-import br.net.woodstock.rockframework.security.cert.PrivateKeyHolder;
 import br.net.woodstock.rockframework.security.cert.ext.icpbrasil.DadoPessoa;
-import br.net.woodstock.rockframework.security.cert.ext.icpbrasil.PessoaFisicaCertificateRequest;
+import br.net.woodstock.rockframework.security.cert.ext.icpbrasil.PessoaFisicaCertificateExtension;
 import br.net.woodstock.rockframework.security.cert.ext.icpbrasil.TipoFormato;
 import br.net.woodstock.rockframework.security.cert.impl.BouncyCastleCertificateGenerator;
 import br.net.woodstock.rockframework.security.store.KeyStoreType;
@@ -33,26 +35,34 @@ public class CertificateTest {
 	// @Test
 	public void testCreateCA() throws Exception {
 		CertificateRequest request = new CertificateRequest("Woodstock Tecnologia CA");
-		request.withCa(true);
-		request.withComment("Woodstock Tecnologia CA");
-		request.withEmail("ca@woodstock.net.br");
-		request.withKeySize(4096);
+		request.setCa(true);
+		request.setComment("Woodstock Tecnologia CA");
+		request.setEmail("ca@woodstock.net.br");
+		request.setKeySize(KeySizeType.KEYSIZE_4K);
 
-		PrivateKeyHolder holder = BouncyCastleCertificateGenerator.getInstance().generate(request);
+		CertificateResponse response = BouncyCastleCertificateGenerator.getInstance().generate(request);
+		Identity identity = response.getIdentity();
 
 		Store store = new JCAStore(KeyStoreType.PKCS12);
-		store.add(new PrivateKeyEntry(new PasswordAlias("woodstock", "woodstock"), holder.getPrivateKey(), holder.getChain()));
+		store.add(new PrivateKeyEntry(new PasswordAlias("woodstock", "woodstock"), identity));
 		store.write(new FileOutputStream("/home/lourival/tmp/cert/woodstock.pfx"), "woodstock");
 	}
 
 	@Test
 	public void testCreate() throws Exception {
-		PessoaFisicaCertificateRequest request = new PessoaFisicaCertificateRequest("Lourival Sabino");
-		request.withEmail("lourival.sabino.junior@gmail.com");
+		CertificateRequest request = new CertificateRequest("Lourival Sabino");
+		request.setEmail("lourival.sabino.junior@gmail.com");
 		// request.withIssuer("Woodstock Tecnologia");
-		request.withKeySize(1024);
-		request.withKeyUsage(KeyUsageType.DIGITAL_SIGNATURE, KeyUsageType.NON_REPUDIATION, KeyUsageType.KEY_ENCIPHERMENT);
-		request.withExtendedKeyUsage(ExtendedKeyUsageType.CLIENT_AUTH, ExtendedKeyUsageType.EMAIL_PROTECTION);
+		request.setKeySize(KeySizeType.KEYSIZE_1K);
+		request.getKeyUsage().add(KeyUsageType.DIGITAL_SIGNATURE);
+		request.getKeyUsage().add(KeyUsageType.NON_REPUDIATION);
+		request.getKeyUsage().add(KeyUsageType.KEY_ENCIPHERMENT);
+		request.getExtendedKeyUsage().add(ExtendedKeyUsageType.CLIENT_AUTH);
+		request.getExtendedKeyUsage().add(ExtendedKeyUsageType.EMAIL_PROTECTION);
+
+		DateBuilder builder = new DateBuilder();
+		request.setNotBefore(builder.removeDays(1).getDate());
+		request.setNotAfter(builder.addYears(1).getDate());
 
 		// ICP Brasil
 		DadoPessoa dadoPessoa = new DadoPessoa();
@@ -62,34 +72,35 @@ public class CertificateTest {
 		dadoPessoa.setPis("33333333333");
 		dadoPessoa.setRg("2222222");
 
-		request.withTipoFormato(TipoFormato.A3);
-		request.withCei("111111111111");
-		request.withDadoTitular(dadoPessoa);
-		request.withRegistroOAB("DF123456-A");
-		request.withRegistroSINCOR("123456DF");
-		request.withRic("66666666666");
-		request.withTituloEleitor("7777777777777");
+		PessoaFisicaCertificateExtension extension = new PessoaFisicaCertificateExtension();
 
-		DateBuilder builder = new DateBuilder();
-		request.withNotBefore(builder.removeDays(1).getDate());
-		request.withNotAfter(builder.addYears(1).getDate());
+		extension.setTipoFormato(TipoFormato.A3);
+		extension.setCei("111111111111");
+		extension.setDadoTitular(dadoPessoa);
+		extension.setRegistroOAB("DF123456-A");
+		extension.setRegistroSINCOR("123456DF");
+		extension.setRic("66666666666");
+		extension.setTituloEleitor("7777777777777");
+
+		// extensions.process(request);
+		request.addExtension(extension);
 
 		// CA
 		FileInputStream inputStream = new FileInputStream("/home/lourival/tmp/cert/woodstock.pfx");
 		Store caStore = new JCAStore(KeyStoreType.PKCS12);
 		caStore.read(inputStream, "woodstock");
 		PrivateKeyEntry entry = (PrivateKeyEntry) caStore.get(new PasswordAlias("woodstock", "woodstock"));
-		request.withIssuerKeyHolder(new PrivateKeyHolder(entry.getValue(), entry.getChain()));
+		request.setIssuerIdentity(entry.toIdentity());
 
-		PrivateKeyHolder holder = BouncyCastleCertificateGenerator.getInstance().generate(request);
+		Identity identity = BouncyCastleCertificateGenerator.getInstance().generate(request).getIdentity();
 
 		Store store = new JCAStore(KeyStoreType.PKCS12);
-		store.add(new PrivateKeyEntry(new PasswordAlias("lourival", "lourival"), holder.getPrivateKey(), holder.getChain()));
-		store.write(new FileOutputStream("/tmp/lourival.pfx"), "lourival");
+		store.add(new PrivateKeyEntry(new PasswordAlias("lourival", "lourival"), identity));
+		store.write(new FileOutputStream("/home/lourival/tmp/cert/lourival-x.pfx"), "lourival");
 
-		// FileOutputStream outputStream = new FileOutputStream("/home/lourival/tmp/cert/lourival.cer");
-		// outputStream.write(holder.getChain()[0].getEncoded());
-		// outputStream.close();
+		FileOutputStream outputStream = new FileOutputStream("/home/lourival/tmp/cert/lourival.cer");
+		outputStream.write(identity.getChain()[0].getEncoded());
+		outputStream.close();
 
 		// X509Certificate certificate = (X509Certificate) holder.getChain()[0];
 		// X500Principal principal = certificate.getSubjectX500Principal();

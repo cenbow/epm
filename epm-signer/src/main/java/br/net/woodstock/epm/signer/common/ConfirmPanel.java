@@ -15,6 +15,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import br.net.woodstock.rockframework.security.Alias;
+import br.net.woodstock.rockframework.security.Identity;
 import br.net.woodstock.rockframework.security.sign.PKCS7SignatureMode;
 import br.net.woodstock.rockframework.security.sign.PKCS7SignatureParameters;
 import br.net.woodstock.rockframework.security.sign.SignatureInfo;
@@ -22,6 +23,7 @@ import br.net.woodstock.rockframework.security.sign.Signer;
 import br.net.woodstock.rockframework.security.sign.impl.BouncyCastlePKCS7Signer;
 import br.net.woodstock.rockframework.security.sign.impl.PDFSigner;
 import br.net.woodstock.rockframework.security.store.PasswordAlias;
+import br.net.woodstock.rockframework.security.store.PrivateKeyEntry;
 import br.net.woodstock.rockframework.security.store.Store;
 import br.net.woodstock.rockframework.security.store.StoreAlias;
 import br.net.woodstock.rockframework.security.timestamp.TimeStampClient;
@@ -128,8 +130,10 @@ public final class ConfirmPanel extends JPanel {
 			}
 
 			Store store = ApplicationHolder.getInstance().getStore();
+			PrivateKeyEntry privateKeyEntry = (PrivateKeyEntry) store.get(alias);
+			Identity identity = privateKeyEntry.toIdentity();
 			SignatureInfo signatureInfo = new SignatureInfo();
-			PKCS7SignatureParameters parameters = new PKCS7SignatureParameters(alias, store, signatureInfo, timeStampClient, mode);
+			PKCS7SignatureParameters parameters = new PKCS7SignatureParameters(identity, signatureInfo, timeStampClient, mode);
 			parameters.setProvider(ApplicationHolder.getInstance().getHandler().getProvider());
 
 			Signer signer = null;

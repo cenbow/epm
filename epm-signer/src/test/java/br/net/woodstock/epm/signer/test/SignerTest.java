@@ -11,6 +11,7 @@ import br.net.woodstock.rockframework.security.sign.SignatureInfo;
 import br.net.woodstock.rockframework.security.sign.impl.PDFSigner;
 import br.net.woodstock.rockframework.security.store.KeyStoreType;
 import br.net.woodstock.rockframework.security.store.PasswordAlias;
+import br.net.woodstock.rockframework.security.store.PrivateKeyEntry;
 import br.net.woodstock.rockframework.security.store.impl.JCAStore;
 import br.net.woodstock.rockframework.security.timestamp.TimeStamp;
 import br.net.woodstock.rockframework.utils.IOUtils;
@@ -29,8 +30,10 @@ public class SignerTest extends TestCase {
 
 		FileInputStream fileInputStream = new FileInputStream("/home/lourival/Documents/output.pdf");
 
+		PrivateKeyEntry entry = (PrivateKeyEntry) store.get(new PasswordAlias("lourival", "lourival"));
+
 		// TimeStampClient timeStampClient = new URLTimeStampClient("http://tsa.safelayer.com:8093");
-		PKCS7SignatureParameters signatureParameters = new PKCS7SignatureParameters(new PasswordAlias("lourival", "lourival"), store);
+		PKCS7SignatureParameters signatureParameters = new PKCS7SignatureParameters(entry.toIdentity());
 		SignatureInfo signatureInfo = new SignatureInfo();
 		signatureInfo.setContactInfo("ConcactInfo");
 		signatureInfo.setLocation("Location");
