@@ -43,6 +43,11 @@ public class SecurityServiceImpl implements SecurityService {
 
 	private static final String	JPQL_COUNT_ROLE_BY_NAME			= "SELECT COUNT(*) FROM Role AS r WHERE r.name LIKE :name";
 
+	// USERROLE
+	private static final String	JPQL_LIST_USERROLE_BY_USER		= "SELECT ur FROM UserRole AS ur JOIN ur.user AS u JOIN ur.role AS r WHERE u.id = :id ORDER BY r.name";
+
+	private static final String	JPQL_COUNT_USERROLE_BY_USER		= "SELECT COUNT(*) FROM UserRole AS ur JOIN ur.user AS u JOIN ur.role AS r WHERE u.id = :id";
+
 	// RESOURCE
 	private static final String	JPQL_LIST_RESOURCE_BY_NAME		= "SELECT r FROM Resource AS r WHERE r.name LIKE :name ORDER BY r.name";
 
@@ -251,6 +256,20 @@ public class SecurityServiceImpl implements SecurityService {
 			}
 
 			this.genericRepository.update(r);
+		} catch (Exception e) {
+			throw new ServiceException(e);
+		}
+	}
+
+	@Override
+	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+	public QueryResult listUserRolesByUser(final Integer id, final Page page) {
+		try {
+			Map<String, Object> parameters = new HashMap<String, Object>();
+			parameters.put("id", id);
+
+			QueryMetadata metadata = RepositoryHelper.toQueryMetadata(SecurityServiceImpl.JPQL_LIST_USERROLE_BY_USER, SecurityServiceImpl.JPQL_COUNT_USERROLE_BY_USER, page, parameters);
+			return this.queryableRepository.getCollection(metadata);
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		}

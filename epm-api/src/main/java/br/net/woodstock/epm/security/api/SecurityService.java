@@ -34,6 +34,8 @@ public interface SecurityService extends Service {
 	void setRoleResources(Role role, Resource[] resources);
 
 	// UserRole
+	QueryResult listUserRolesByUser(Integer id, Page page);
+
 	void saveUserRole(UserRole userRole);
 
 	void updateUserRole(UserRole userRole);

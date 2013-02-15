@@ -6,6 +6,9 @@
 	
 	<var name="userForm" class="br.net.woodstock.epm.web.security.user.UserForm"/>
 	<var name="userSearch" class="br.net.woodstock.epm.web.security.user.UserSearch"/>
+	
+	<var name="userRoleForm" class="br.net.woodstock.epm.web.security.user.UserRoleForm"/>
+	<var name="userRoleSearch" class="br.net.woodstock.epm.web.security.user.UserRoleSearch"/>
 
 	<!-- User -->
 	<view-state id="list" view="user-list.xhtml">
@@ -25,7 +28,7 @@
 			<evaluate expression="userAction.save(userForm)" />
 		</transition>
 		<transition on="role" to="listRole">
-			<evaluate expression="userAction.listRoles(selectedUser)" result="flowScope.userRoleList" />
+			<evaluate expression="userRoleSearch.setUserId(selectedUser.getId())" />
 		</transition>
 		<transition on="cancel" to="search">
 		</transition>
@@ -39,22 +42,25 @@
 	
 	<!-- Role -->
 	<view-state id="listRole" view="user-role-list.xhtml">
+		<on-entry>
+			<evaluate expression="userRoleAction.search(userRoleSearch)" result="flowScope.userRoleList" />
+		</on-entry>
 		<transition on="new" to="newRole">
 			<evaluate expression="userRoleForm.reset()" />
 		</transition>
 		<transition on="edit" to="editRole"> 
 			<evaluate expression="userRoleAction.editRole(selectedUserRole, userRoleForm)" />
 		</transition>
-		<transition on="cancel" to="edit" />
+		<transition on="cancel" to="edit">
+			<evaluate expression="userAction.edit(selectedUser, userForm)" />
+		</transition>
 	</view-state>
 	
 	<view-state id="saveRole" view="user-role-save.xhtml">
 		<transition on="save">
 			<evaluate expression="userAction.saveRole(userRoleForm)" />
 		</transition>
-		<transition on="cancel" to="listRole">
-			<evaluate expression="userAction.listRoles(selectedUser)" result="flowScope.userRoleList" />
-		</transition>
+		<transition on="cancel" to="listRole" />
 	</view-state>
 	
 	<view-state id="newRole" parent="#saveRole" />
