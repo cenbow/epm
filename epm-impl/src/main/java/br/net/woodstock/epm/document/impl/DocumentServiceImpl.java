@@ -27,9 +27,9 @@ public class DocumentServiceImpl implements DocumentService {
 	private static final long	serialVersionUID			= 7929971241857912337L;
 
 	// USER
-	private static final String	JPQL_LIST_DOCUMENT_BY_NAME	= "SELECT d FROM Document AS d WHERE to_ascii(lower(d.name)) LIKE to_ascii(lower(:name)) ORDER BY d.name";
+	private static final String	JPQL_LIST_DOCUMENT_BY_NAME	= "SELECT d FROM Document AS d WHERE d.name LIKE :name ORDER BY d.name";
 
-	private static final String	JPQL_COUNT_DOCUMENT_BY_NAME	= "SELECT COUNT(*) FROM Document AS d WHERE to_ascii(lower(d.name)) LIKE to_ascii(lower(:name))";
+	private static final String	JPQL_COUNT_DOCUMENT_BY_NAME	= "SELECT COUNT(*) FROM Document AS d WHERE d.name LIKE :name";
 
 	@Autowired(required = true)
 	private GenericRepository	genericRepository;

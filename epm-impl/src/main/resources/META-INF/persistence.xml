@@ -2,11 +2,17 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
 	version="2.0">
 	<persistence-unit name="epmPU">
+		<class>br.net.woodstock.epm.orm.BusinessProcess</class>
 		<class>br.net.woodstock.epm.orm.Certificate</class>
+		<class>br.net.woodstock.epm.orm.Department</class>
+		<class>br.net.woodstock.epm.orm.DepartmentSkell</class>
 		<class>br.net.woodstock.epm.orm.Document</class>
 		<class>br.net.woodstock.epm.orm.Resource</class>
 		<class>br.net.woodstock.epm.orm.Role</class>
+		<class>br.net.woodstock.epm.orm.Swimlane</class>
+		<class>br.net.woodstock.epm.orm.SwimlaneItem</class>
 		<class>br.net.woodstock.epm.orm.User</class>
+		<class>br.net.woodstock.epm.orm.UserRole</class>
 
 		<exclude-unlisted-classes>true</exclude-unlisted-classes>
 		<properties>

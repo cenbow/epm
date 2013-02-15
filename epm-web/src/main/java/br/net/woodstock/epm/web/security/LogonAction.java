@@ -26,7 +26,7 @@ public class LogonAction extends AbstractAction {
 	public boolean logon(final LogonForm form) {
 		User user = this.securityService.getUserByLoginPassword(form.getLogin(), form.getPassword());
 		if (user != null) {
-			SecurityContextHolder.getContext().setAuthentication(new LocalAuthentication(user));
+			SecurityContextHolder.getContext().setAuthentication(EPMAuthenticationHelper.toAuthentication(user));
 			return true;
 		}
 		return false;

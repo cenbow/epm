@@ -1,5 +1,7 @@
 package br.net.woodstock.epm.web.security;
 
+import java.io.Serializable;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -9,13 +11,14 @@ import org.springframework.security.core.Authentication;
 import br.net.woodstock.epm.orm.User;
 import br.net.woodstock.epm.security.api.SecurityService;
 
-public class LocalAuthenticationProvider implements AuthenticationProvider {
+public class EPMAuthenticationProvider implements AuthenticationProvider, Serializable {
+
+	private static final long	serialVersionUID	= -7746636115602950148L;
 
 	@Autowired(required = true)
-	private SecurityService	securityService;
+	private SecurityService		securityService;
 
-	
-	public LocalAuthenticationProvider() {
+	public EPMAuthenticationProvider() {
 		super();
 	}
 
@@ -28,7 +31,7 @@ public class LocalAuthenticationProvider implements AuthenticationProvider {
 		if (user == null) {
 			throw new BadCredentialsException("User not found");
 		}
-		return new LocalAuthentication(user);
+		return EPMAuthenticationHelper.toAuthentication(user);
 	}
 
 	@Override
@@ -39,4 +42,5 @@ public class LocalAuthenticationProvider implements AuthenticationProvider {
 		}
 		return false;
 	}
+
 }

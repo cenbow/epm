@@ -14,6 +14,7 @@ import br.net.woodstock.epm.orm.Certificate;
 import br.net.woodstock.epm.orm.Resource;
 import br.net.woodstock.epm.orm.Role;
 import br.net.woodstock.epm.orm.User;
+import br.net.woodstock.epm.orm.UserRole;
 import br.net.woodstock.epm.repository.util.RepositoryHelper;
 import br.net.woodstock.epm.security.api.SecurityService;
 import br.net.woodstock.epm.security.util.PasswordHelper;
@@ -31,21 +32,21 @@ public class SecurityServiceImpl implements SecurityService {
 	private static final long	serialVersionUID				= 7929971241857912337L;
 
 	// USER
-	private static final String	JPQL_GET_USER_BY_LOGIN_PASSWORD	= "SELECT u FROM User AS u LEFT OUTER JOIN FETCH u.roles AS r LEFT OUTER JOIN FETCH r.resources AS rr LEFT OUTER JOIN FETCH u.certificates AS c WHERE u.login = :login AND u.password = :password";
+	private static final String	JPQL_GET_USER_BY_LOGIN_PASSWORD	= "SELECT u FROM User AS u LEFT OUTER JOIN FETCH u.roles AS ur LEFT OUTER JOIN FETCH ur.role AS r LEFT OUTER JOIN FETCH r.resources AS rr WHERE u.login = :login AND u.password = :password";
 
-	private static final String	JPQL_LIST_USER_BY_NAME			= "SELECT u FROM User AS u WHERE lower(u.name) LIKE lower(:name) ORDER BY u.name";
+	private static final String	JPQL_LIST_USER_BY_NAME			= "SELECT u FROM User AS u WHERE u.name LIKE :name ORDER BY u.name";
 
-	private static final String	JPQL_COUNT_USER_BY_NAME			= "SELECT COUNT(*) FROM User AS u WHERE lower(u.name) LIKE lower(:name)";
+	private static final String	JPQL_COUNT_USER_BY_NAME			= "SELECT COUNT(*) FROM User AS u WHERE u.name LIKE :name";
 
 	// ROLE
-	private static final String	JPQL_LIST_ROLE_BY_NAME			= "SELECT r FROM Role AS r WHERE lower(r.name) LIKE lower(:name) ORDER BY r.name";
+	private static final String	JPQL_LIST_ROLE_BY_NAME			= "SELECT r FROM Role AS r WHERE r.name LIKE :name ORDER BY r.name";
 
-	private static final String	JPQL_COUNT_ROLE_BY_NAME			= "SELECT COUNT(*) FROM Role AS r WHERE lower(r.name) LIKE lower(:name)";
+	private static final String	JPQL_COUNT_ROLE_BY_NAME			= "SELECT COUNT(*) FROM Role AS r WHERE r.name LIKE :name";
 
 	// RESOURCE
-	private static final String	JPQL_LIST_RESOURCE_BY_NAME		= "SELECT r FROM Resource AS r WHERE lower(r.name) LIKE lower(:name) ORDER BY r.name";
+	private static final String	JPQL_LIST_RESOURCE_BY_NAME		= "SELECT r FROM Resource AS r WHERE r.name LIKE :name ORDER BY r.name";
 
-	private static final String	JPQL_COUNT_RESOURCE_BY_NAME		= "SELECT COUNT(*) FROM Resource AS r WHERE lower(r.name) LIKE lower(:name)";
+	private static final String	JPQL_COUNT_RESOURCE_BY_NAME		= "SELECT COUNT(*) FROM Resource AS r WHERE r.name LIKE :name";
 
 	@Autowired(required = true)
 	private GenericRepository	genericRepository;
@@ -129,43 +130,6 @@ public class SecurityServiceImpl implements SecurityService {
 		}
 	}
 
-	@Override
-	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-	public void saveUserRoles(final User user, final Role... roles) {
-		try {
-			User u = this.genericRepository.get(user);
-			if (u != null) {
-				if (u.getRoles() == null) {
-					u.setRoles(new HashSet<Role>());
-				}
-
-				Iterator<Role> it = u.getRoles().iterator();
-				while (it.hasNext()) {
-					Role r = it.next();
-					boolean delete = true;
-					for (Role tmp : roles) {
-						if (r.getId().equals(tmp.getId())) {
-							delete = false;
-							break;
-						}
-					}
-					if (delete) {
-						it.remove();
-					}
-				}
-				for (Role r : roles) {
-					Role tmp = this.genericRepository.get(r);
-					if (tmp != null) {
-						u.getRoles().add(tmp);
-					}
-				}
-				this.genericRepository.update(u);
-			}
-		} catch (Exception e) {
-			throw new ServiceException(e);
-		}
-	}
-
 	// Role
 	@Override
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
@@ -210,6 +174,83 @@ public class SecurityServiceImpl implements SecurityService {
 
 			QueryMetadata metadata = RepositoryHelper.toQueryMetadata(SecurityServiceImpl.JPQL_LIST_ROLE_BY_NAME, SecurityServiceImpl.JPQL_COUNT_ROLE_BY_NAME, page, parameters);
 			return this.queryableRepository.getCollection(metadata);
+		} catch (Exception e) {
+			throw new ServiceException(e);
+		}
+	}
+
+	@Override
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	public void setRoleResources(final Role role, final Resource[] resources) {
+		try {
+			Role r = this.genericRepository.get(role);
+			if (r != null) {
+				if (r.getResources() == null) {
+					r.setResources(new HashSet<Resource>());
+				}
+
+				Iterator<Resource> it = r.getResources().iterator();
+				while (it.hasNext()) {
+					Resource re = it.next();
+					boolean delete = true;
+					for (Resource tmp : resources) {
+						if (re.getId().equals(tmp.getId())) {
+							delete = false;
+							break;
+						}
+					}
+					if (delete) {
+						it.remove();
+					}
+				}
+				for (Resource re : resources) {
+					Resource tmp = this.genericRepository.get(re);
+					if (tmp != null) {
+						r.getResources().add(tmp);
+					}
+				}
+				this.genericRepository.update(r);
+			}
+		} catch (Exception e) {
+			throw new ServiceException(e);
+		}
+	}
+
+	// UserRole
+	@Override
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	public void saveUserRole(final UserRole userRole) {
+		try {
+			userRole.setActive(Boolean.TRUE);
+			userRole.setUser(this.genericRepository.get(userRole.getUser()));
+			userRole.setRole(this.genericRepository.get(userRole.getRole()));
+
+			if (userRole.getDepartment() != null) {
+				userRole.setDepartment(this.genericRepository.get(userRole.getDepartment()));
+			}
+
+			this.genericRepository.save(userRole);
+		} catch (Exception e) {
+			throw new ServiceException(e);
+		}
+	}
+
+	@Override
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	public void updateUserRole(final UserRole userRole) {
+		try {
+			UserRole r = this.genericRepository.get(userRole);
+			r.setActive(userRole.getActive());
+			r.setUser(this.genericRepository.get(userRole.getUser()));
+			r.setRole(this.genericRepository.get(userRole.getRole()));
+
+			if (userRole.getDepartment() != null) {
+				r.setDepartment(this.genericRepository.get(userRole.getDepartment()));
+			} else {
+				r.setDepartment(null);
+			}
+
+			this.genericRepository.update(r);
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		}

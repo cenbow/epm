@@ -9,9 +9,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -65,10 +62,8 @@ public class User extends AbstractIntegerEntity {
 	@NotNull
 	private Boolean				active;
 
-	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
-	@JoinTable(name = "epm_user_role", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "role_id"))
-	@IndexedEmbedded
-	private Set<Role>			roles;
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = { CascadeType.REFRESH })
+	private Set<UserRole>		roles;
 
 	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = { CascadeType.REFRESH })
 	@IndexedEmbedded
@@ -136,11 +131,11 @@ public class User extends AbstractIntegerEntity {
 		this.active = active;
 	}
 
-	public Set<Role> getRoles() {
+	public Set<UserRole> getRoles() {
 		return this.roles;
 	}
 
-	public void setRoles(final Set<Role> roles) {
+	public void setRoles(final Set<UserRole> roles) {
 		this.roles = roles;
 	}
 

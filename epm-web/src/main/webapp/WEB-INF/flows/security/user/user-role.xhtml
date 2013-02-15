@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui" template="/WEB-INF/templates/default.xhtml">
+	<ui:define name="title">
+		User
+	</ui:define>
+	<ui:define name="content">
+		<h:form id="formEdit" prependId="false">
+			<div>
+				<p:panel header="User" style="width: 400px; margin: auto;">
+					<table style="width: 100%;">
+						<tr>
+							<td style="width: 25%;">Name : </td>
+							<td style="width: 75%;">
+								<h:outputText value="#{userRoleForm.user.name}" />
+							</td>
+						</tr>
+						<tr>
+							<td>Role: </td>
+							<td>
+								<p:selectOneMenu id="role" value="#{userRoleForm.role}" converter="#{roleConverter}" style="width: 200px;" required="true">
+									<f:selectItem itemLabel="Select" noSelectionOption="true" />
+									<f:selectItems value="#{roles}" var="r" itemLabel="#{r.name}" itemValue="#{r}" />
+								</p:selectOneMenu>
+							</td>
+						</tr>
+						<tr>
+							<td>Department: </td>
+							<td>
+								<p:commandButton icon="ui-icon-search" />	
+								<h:outputText id="departmentName" value="#{userRoleForm.department.name}" />
+							</td>
+						</tr>
+						<h:panelGroup rendered="#{userRoleForm.id != null}">
+							<tr>
+								<td>Active : </td>
+								<td>
+									<p:selectBooleanCheckbox id="active" value="#{userRoleForm.active}" />
+								</td>
+							</tr>
+						</h:panelGroup>
+						<tr>
+							<td colspan="2" style="text-align: center;">
+								<p:commandButton value="Save" action="save" ajax="false" />
+								<p:commandButton value="Back" action="cancel" immediate="true" ajax="false"/>			
+							</td>
+						</tr>
+					</table>					
+				</p:panel>
+			</div>
+		</h:form>
+	</ui:define>
+</ui:composition>

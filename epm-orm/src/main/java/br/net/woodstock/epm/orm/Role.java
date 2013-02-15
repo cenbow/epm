@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -50,8 +51,11 @@ public class Role extends AbstractIntegerEntity {
 	@JoinTable(name = "epm_resource_role", joinColumns = @JoinColumn(name = "role_id", referencedColumnName = "role_id"), inverseJoinColumns = @JoinColumn(name = "resource_id", referencedColumnName = "resource_id"))
 	private Set<Resource>		resources;
 
-	@ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY, cascade = { CascadeType.REFRESH })
-	private Set<User>			users;
+	@OneToMany(mappedBy = "role", fetch = FetchType.LAZY, cascade = { CascadeType.REFRESH })
+	private Set<UserRole>		users;
+
+	@OneToMany(mappedBy = "role", fetch = FetchType.LAZY, cascade = { CascadeType.REFRESH })
+	private Set<SwimlaneItem>	swimlaneItems;
 
 	public Role() {
 		super();
@@ -96,12 +100,20 @@ public class Role extends AbstractIntegerEntity {
 		this.resources = resources;
 	}
 
-	public Set<User> getUsers() {
+	public Set<UserRole> getUsers() {
 		return this.users;
 	}
 
-	public void setUsers(final Set<User> users) {
+	public void setUsers(final Set<UserRole> users) {
 		this.users = users;
+	}
+
+	public Set<SwimlaneItem> getSwimlaneItems() {
+		return this.swimlaneItems;
+	}
+
+	public void setSwimlaneItems(final Set<SwimlaneItem> swimlaneItems) {
+		this.swimlaneItems = swimlaneItems;
 	}
 
 }

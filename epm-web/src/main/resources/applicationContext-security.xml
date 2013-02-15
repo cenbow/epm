@@ -5,7 +5,19 @@
            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
            http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 
-	<security:http auto-config="true" access-denied-page="/no-access.xhtml">
+	<bean id="AuthenticationProvider" class="br.net.woodstock.epm.web.security.EPMAuthenticationProvider" />
+	
+	<bean id="AccessDecisionManager" class="org.springframework.security.access.vote.UnanimousBased">
+		<constructor-arg>
+			<list>
+				<bean class="br.net.woodstock.epm.web.security.EPMAccessDecisionVoter" />
+				<bean class="org.springframework.security.access.vote.RoleVoter" />
+				<bean class="org.springframework.security.access.vote.AuthenticatedVoter" />
+			</list>
+		</constructor-arg>
+	</bean>
+	
+	<security:http auto-config="true" access-denied-page="/spring/no-access" access-decision-manager-ref="AccessDecisionManager">
 		<security:form-login login-page="/spring/logon" default-target-url="/spring/index"
 			always-use-default-target="true" authentication-failure-url="/spring/error" />
 		<security:logout logout-success-url="/spring/logon" />
@@ -17,15 +29,11 @@
 		<security:intercept-url pattern="/spring/javax.faces.resource/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
 		<security:intercept-url pattern="/spring/resource/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />		
 		<!-- App -->
-		<security:intercept-url pattern="/spring/security/*" access="ROLE_ADMINISTRATOR" />
-		<security:intercept-url pattern="/**" access="IS_AUTHENTICATED_FULLY" />
+		<security:intercept-url pattern="/**" access="ROLE_ANY" />
 	</security:http>
 
-	<bean id="LocalAuthenticationProvider" class="br.net.woodstock.epm.web.security.LocalAuthenticationProvider">
-	</bean>
-
 	<security:authentication-manager>
-		<security:authentication-provider ref="LocalAuthenticationProvider" />
+		<security:authentication-provider ref="AuthenticationProvider" />
 	</security:authentication-manager>
 
 </beans>

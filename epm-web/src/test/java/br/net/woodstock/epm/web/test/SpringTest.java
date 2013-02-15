@@ -14,11 +14,11 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:applicationContext-web.xml" })
+@ContextConfiguration(locations = { "classpath:applicationContext-web-test.xml" })
 public class SpringTest implements ApplicationContextAware {
 
 	@Autowired(required = true)
-	@Qualifier(value = "LocalAuthenticationProvider")
+	@Qualifier(value = "AuthenticationProvider")
 	private AuthenticationProvider	authenticationProvider;
 
 	private ApplicationContext		applicationContext;
