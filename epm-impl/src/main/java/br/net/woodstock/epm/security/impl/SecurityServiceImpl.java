@@ -27,12 +27,13 @@ import br.net.woodstock.rockframework.persistence.orm.QueryableRepository;
 import br.net.woodstock.rockframework.utils.ConditionUtils;
 
 @Service
+@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 public class SecurityServiceImpl implements SecurityService {
 
 	private static final long	serialVersionUID				= 7929971241857912337L;
 
 	// USER
-	private static final String	JPQL_GET_USER_BY_LOGIN_PASSWORD	= "SELECT u FROM User AS u LEFT OUTER JOIN FETCH u.roles AS ur LEFT OUTER JOIN FETCH ur.role AS r LEFT OUTER JOIN FETCH r.resources AS rr WHERE u.login = :login AND u.password = :password";
+	private static final String	JPQL_GET_USER_BY_LOGIN_PASSWORD	= "SELECT u FROM User AS u WHERE u.login = :login AND u.password = :password";
 
 	private static final String	JPQL_LIST_USER_BY_NAME			= "SELECT u FROM User AS u WHERE u.name LIKE :name ORDER BY u.name";
 
@@ -65,7 +66,6 @@ public class SecurityServiceImpl implements SecurityService {
 
 	// User
 	@Override
-	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	public User getUserById(final Integer id) {
 		try {
 			return this.genericRepository.get(new User(id));
@@ -75,7 +75,6 @@ public class SecurityServiceImpl implements SecurityService {
 	}
 
 	@Override
-	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	public User getUserByLoginPassword(final String login, final String password) {
 		try {
 			Map<String, Object> parameters = new HashMap<String, Object>();
@@ -90,7 +89,6 @@ public class SecurityServiceImpl implements SecurityService {
 	}
 
 	@Override
-	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void saveUser(final User user) {
 		try {
 			user.setActive(Boolean.TRUE);
@@ -102,7 +100,6 @@ public class SecurityServiceImpl implements SecurityService {
 	}
 
 	@Override
-	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void updateUser(final User user) {
 		try {
 			User u = this.genericRepository.get(user);
@@ -122,7 +119,6 @@ public class SecurityServiceImpl implements SecurityService {
 	}
 
 	@Override
-	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	public QueryResult listUsersByName(final String name, final Page page) {
 		try {
 			Map<String, Object> parameters = new HashMap<String, Object>();
@@ -137,7 +133,6 @@ public class SecurityServiceImpl implements SecurityService {
 
 	// Role
 	@Override
-	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	public Role getRoleById(final Integer id) {
 		try {
 			return this.genericRepository.get(new Role(id));
@@ -147,7 +142,6 @@ public class SecurityServiceImpl implements SecurityService {
 	}
 
 	@Override
-	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void saveRole(final Role role) {
 		try {
 			role.setActive(Boolean.TRUE);
@@ -158,7 +152,6 @@ public class SecurityServiceImpl implements SecurityService {
 	}
 
 	@Override
-	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void updateRole(final Role role) {
 		try {
 			Role r = this.genericRepository.get(role);
@@ -171,7 +164,6 @@ public class SecurityServiceImpl implements SecurityService {
 	}
 
 	@Override
-	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	public QueryResult listRolesByName(final String name, final Page page) {
 		try {
 			Map<String, Object> parameters = new HashMap<String, Object>();
@@ -185,7 +177,6 @@ public class SecurityServiceImpl implements SecurityService {
 	}
 
 	@Override
-	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void setRoleResources(final Role role, final Resource[] resources) {
 		try {
 			Role r = this.genericRepository.get(role);
@@ -223,7 +214,6 @@ public class SecurityServiceImpl implements SecurityService {
 
 	// UserRole
 	@Override
-	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void saveUserRole(final UserRole userRole) {
 		try {
 			userRole.setActive(Boolean.TRUE);
@@ -241,7 +231,6 @@ public class SecurityServiceImpl implements SecurityService {
 	}
 
 	@Override
-	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void updateUserRole(final UserRole userRole) {
 		try {
 			UserRole r = this.genericRepository.get(userRole);
@@ -262,7 +251,6 @@ public class SecurityServiceImpl implements SecurityService {
 	}
 
 	@Override
-	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	public QueryResult listUserRolesByUser(final Integer id, final Page page) {
 		try {
 			Map<String, Object> parameters = new HashMap<String, Object>();
@@ -277,7 +265,6 @@ public class SecurityServiceImpl implements SecurityService {
 
 	// Resource
 	@Override
-	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	public Resource getResourceById(final Integer id) {
 		try {
 			return this.genericRepository.get(new Resource(id));
@@ -287,7 +274,6 @@ public class SecurityServiceImpl implements SecurityService {
 	}
 
 	@Override
-	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void saveResource(final Resource resource) {
 		try {
 			resource.setActive(Boolean.TRUE);
@@ -298,7 +284,6 @@ public class SecurityServiceImpl implements SecurityService {
 	}
 
 	@Override
-	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void updateResource(final Resource resource) {
 		try {
 			Resource r = this.genericRepository.get(resource);
@@ -311,7 +296,6 @@ public class SecurityServiceImpl implements SecurityService {
 	}
 
 	@Override
-	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	public QueryResult listResourcesByName(final String name, final Page page) {
 		try {
 			Map<String, Object> parameters = new HashMap<String, Object>();
@@ -326,7 +310,6 @@ public class SecurityServiceImpl implements SecurityService {
 
 	// Certificate
 	@Override
-	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	public Certificate getCertificateById(final Integer id) {
 		try {
 			return this.genericRepository.get(new Certificate(id));
@@ -336,7 +319,6 @@ public class SecurityServiceImpl implements SecurityService {
 	}
 
 	@Override
-	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void saveCertificate(final Certificate certificate) {
 		try {
 			certificate.setActive(Boolean.TRUE);

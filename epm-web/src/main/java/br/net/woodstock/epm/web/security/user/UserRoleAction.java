@@ -5,7 +5,6 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
-import br.net.woodstock.epm.orm.User;
 import br.net.woodstock.epm.orm.UserRole;
 import br.net.woodstock.epm.security.api.SecurityService;
 import br.net.woodstock.epm.web.AbstractAction;
@@ -56,7 +55,7 @@ public class UserRoleAction extends AbstractAction {
 		}
 	}
 
-	public EntityDataModel<User> search(final UserRoleSearch search) {
+	public EntityDataModel<UserRole> search(final UserRoleSearch search) {
 		EntityRepository repository = new EntityRepository() {
 
 			private static final long	serialVersionUID	= -336605554089769356L;
@@ -72,7 +71,7 @@ public class UserRoleAction extends AbstractAction {
 			}
 
 		};
-		EntityDataModel<User> users = new EntityDataModel<User>(WebConstants.PAGE_SIZE, repository);
+		EntityDataModel<UserRole> users = new EntityDataModel<UserRole>(WebConstants.PAGE_SIZE, repository);
 
 		return users;
 	}

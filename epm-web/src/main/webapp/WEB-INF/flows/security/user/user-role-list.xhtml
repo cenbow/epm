@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui" template="/WEB-INF/templates/default.xhtml">
 	<ui:define name="title">
-		User
+		User/Role
 	</ui:define>
 	<ui:define name="content">
 		<h:form id="formList" prependId="false">
 			<div>
-				<p:panel header="User" style="width: 400px; margin: auto;">
+				<p:panel header="User/Role" style="width: 400px; margin: auto;">
 					<table style="width: 100%;">
 						<tr>
 							<td style="width: 25%;">Name : </td>
@@ -16,7 +16,7 @@
 						</tr>
 						<tr>
 							<td colspan="2" style="text-align: center;">
-								<p:commandButton value="New" action="search" ajax="false" />
+								<p:commandButton value="New" action="new" ajax="false" />
 								<p:commandButton value="Cancel" action="cancel" ajax="false" />
 							</td>
 						</tr>

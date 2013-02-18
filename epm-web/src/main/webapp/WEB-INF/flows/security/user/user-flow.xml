@@ -29,6 +29,7 @@
 		</transition>
 		<transition on="role" to="listRole">
 			<evaluate expression="userRoleSearch.setUserId(selectedUser.getId())" />
+			<evaluate expression="userRoleForm.setUser(selectedUser)" />
 		</transition>
 		<transition on="cancel" to="search">
 		</transition>
@@ -42,9 +43,9 @@
 	
 	<!-- Role -->
 	<view-state id="listRole" view="user-role-list.xhtml">
-		<on-entry>
+		<on-render>
 			<evaluate expression="userRoleAction.search(userRoleSearch)" result="flowScope.userRoleList" />
-		</on-entry>
+		</on-render>
 		<transition on="new" to="newRole">
 			<evaluate expression="userRoleForm.reset()" />
 		</transition>
