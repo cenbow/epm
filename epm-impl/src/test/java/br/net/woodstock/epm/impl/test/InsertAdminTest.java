@@ -57,7 +57,7 @@ public class InsertAdminTest {
 		this.securityService.saveUserRole(userRole);
 	}
 
-	@Test
+	// @Test
 	public void testInsertResources() throws Exception {
 		Resource resource1 = new Resource();
 		resource1.setName("/spring/index");
@@ -88,7 +88,7 @@ public class InsertAdminTest {
 		System.out.println(user.getName());
 	}
 
-	// @Test
+	@Test
 	public void testListUser() throws Exception {
 		QueryResult result = this.securityService.listUsersByName("admin", null);
 		Collection<User> users = result.getResult();

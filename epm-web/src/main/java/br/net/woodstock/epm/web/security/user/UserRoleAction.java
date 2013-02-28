@@ -1,16 +1,21 @@
 package br.net.woodstock.epm.web.security.user;
 
+import java.util.Collection;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
+import br.net.woodstock.epm.orm.Role;
 import br.net.woodstock.epm.orm.UserRole;
 import br.net.woodstock.epm.security.api.SecurityService;
 import br.net.woodstock.epm.web.AbstractAction;
 import br.net.woodstock.epm.web.WebConstants;
 import br.net.woodstock.rockframework.persistence.orm.Page;
 import br.net.woodstock.rockframework.persistence.orm.QueryResult;
+import br.net.woodstock.rockframework.utils.CollectionUtils;
 import br.net.woodstock.rockframework.web.faces.primefaces.EntityDataModel;
 import br.net.woodstock.rockframework.web.faces.primefaces.EntityRepository;
 
@@ -74,6 +79,12 @@ public class UserRoleAction extends AbstractAction {
 		EntityDataModel<UserRole> users = new EntityDataModel<UserRole>(WebConstants.PAGE_SIZE, repository);
 
 		return users;
+	}
+
+	public List<Role> listRoles() {
+		QueryResult result = this.securityService.listRolesByName(null, null);
+		Collection<Role> roles = result.getResult();
+		return CollectionUtils.toList(roles);
 	}
 
 	public SecurityService getSecurityService() {

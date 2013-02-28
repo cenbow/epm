@@ -26,7 +26,7 @@ public class UserRoleForm extends AbstractForm {
 	@Override
 	public void reset() {
 		this.setId(null);
-		this.setUser(null);
+		// this.setUser(null);
 		this.setRole(null);
 		this.setDepartment(null);
 		this.setActive(null);
