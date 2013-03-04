@@ -58,6 +58,8 @@ public class UserRoleAction extends AbstractAction {
 			this.securityService.saveUserRole(role);
 			form.reset();
 		}
+
+		this.addFacesMessage(this.getMessageOK());
 	}
 
 	public EntityDataModel<UserRole> search(final UserRoleSearch search) {

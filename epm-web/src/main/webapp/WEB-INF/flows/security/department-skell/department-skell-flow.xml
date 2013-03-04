@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/webflow http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd"
+	parent="main">
+	
+	<var name="departmentSkellForm" class="br.net.woodstock.epm.web.security.departmentSkell.DepartmentSkellForm"/>
+	<var name="departmentSkellSearch" class="br.net.woodstock.epm.web.security.departmentSkell.DepartmentSkellSearch"/>
+
+	<view-state id="list" view="department-skell-list.xhtml">
+		<transition on="search">
+			<evaluate expression="departmentSkellAction.search(departmentSkellSearch)" result="flowScope.departmentSkellList" />
+		</transition>
+		<transition on="new" to="new">
+			<evaluate expression="departmentSkellForm.reset()" />
+		</transition> 
+		<transition on="edit" to="edit"> 
+			<evaluate expression="departmentSkellAction.edit(selectedDepartment, departmentSkellForm)" />
+		</transition>
+	</view-state>
+	
+	<view-state id="save" view="department-skell-save.xhtml">
+		<transition on="save">
+			<evaluate expression="departmentSkellAction.save(departmentSkellForm)" />
+		</transition>
+		<transition on="cancel" to="search">
+		</transition>
+	</view-state>
+	
+	<view-state id="search" parent="#list" />
+	
+	<view-state id="new" parent="#save" />
+	
+	<view-state id="edit" parent="#save" />
+
+	<end-state id="end">
+	</end-state>
+
+</flow>

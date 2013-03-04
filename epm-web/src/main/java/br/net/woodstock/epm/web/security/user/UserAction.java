@@ -55,6 +55,8 @@ public class UserAction extends AbstractAction {
 			this.securityService.saveUser(user);
 			form.reset();
 		}
+
+		this.addFacesMessage(this.getMessageOK());
 	}
 
 	public EntityDataModel<User> search(final UserSearch search) {

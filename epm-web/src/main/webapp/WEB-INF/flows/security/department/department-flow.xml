@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/webflow http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd"
+	parent="main">
+	
+	<var name="departmentForm" class="br.net.woodstock.epm.web.security.department.DepartmentForm"/>
+	<var name="departmentSearch" class="br.net.woodstock.epm.web.security.department.DepartmentSearch"/>
+
+	<view-state id="list" view="department-list.xhtml">
+		<transition on="search">
+			<evaluate expression="departmentAction.search(departmentSearch)" result="flowScope.departmentList" />
+		</transition>
+		<transition on="new" to="new">
+			<evaluate expression="departmentForm.reset()" />
+		</transition> 
+		<transition on="edit" to="edit"> 
+			<evaluate expression="departmentAction.edit(selectedDepartment, departmentForm)" />
+		</transition>
+	</view-state>
+	
+	<view-state id="save" view="department-save.xhtml">
+		<transition on="save">
+			<evaluate expression="departmentAction.save(departmentForm)" />
+		</transition>
+		<transition on="cancel" to="search">
+		</transition>
+	</view-state>
+	
+	<view-state id="search" parent="#list" />
+	
+	<view-state id="new" parent="#save" />
+	
+	<view-state id="edit" parent="#save" />
+
+	<end-state id="end">
+	</end-state>
+
+</flow>

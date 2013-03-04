@@ -31,6 +31,8 @@ public class Department extends AbstractIntegerEntity {
 
 	private static final long	serialVersionUID	= -5897363506398215712L;
 
+	private static final String	SEPARATOR			= "/";
+
 	@Id
 	@Column(name = "department_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,6 +49,10 @@ public class Department extends AbstractIntegerEntity {
 	@Size(min = 1, max = 100)
 	@Field(index = Index.YES, analyze = Analyze.YES, store = Store.NO)
 	private String				name;
+
+	@Column(name = "department_status", nullable = false, columnDefinition = "BIT")
+	@NotNull
+	private Boolean				active;
 
 	@ManyToOne(optional = true, fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
 	@JoinColumn(name = "department_parent_id", referencedColumnName = "department_id", nullable = true)
@@ -96,6 +102,14 @@ public class Department extends AbstractIntegerEntity {
 		this.name = name;
 	}
 
+	public Boolean getActive() {
+		return this.active;
+	}
+
+	public void setActive(final Boolean active) {
+		this.active = active;
+	}
+
 	public Department getParent() {
 		return this.parent;
 	}
@@ -118,6 +132,29 @@ public class Department extends AbstractIntegerEntity {
 
 	public void setChilds(final Set<Department> childs) {
 		this.childs = childs;
+	}
+
+	// Aux
+	public String getFullName() {
+		Department parent = this.getParent();
+		StringBuilder builder = new StringBuilder();
+		if (parent != null) {
+			builder.append(parent.getFullName());
+			builder.append(Department.SEPARATOR);
+		}
+		builder.append(this.getName());
+		return builder.toString();
+	}
+
+	public String getFullAbbreviation() {
+		Department parent = this.getParent();
+		StringBuilder builder = new StringBuilder();
+		if (parent != null) {
+			builder.append(parent.getFullAbbreviation());
+			builder.append(Department.SEPARATOR);
+		}
+		builder.append(this.getAbbreviation());
+		return builder.toString();
 	}
 
 }

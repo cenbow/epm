@@ -9,6 +9,8 @@
 	
 	<!-- Menu -->
 	<end-state id="index" view="externalRedirect:contextRelative:/spring/index" />
+	<end-state id="security_department" view="externalRedirect:contextRelative:/spring/security/department" />
+	<end-state id="security_department_skell" view="externalRedirect:contextRelative:/spring/security/department-skell" />
 	<end-state id="security_resource" view="externalRedirect:contextRelative:/spring/security/resource" />
 	<end-state id="security_role" view="externalRedirect:contextRelative:/spring/security/role" />
 	<end-state id="security_user" view="externalRedirect:contextRelative:/spring/security/user" />
@@ -18,6 +20,8 @@
 		<transition on="logoff" to="logoff">
 			<evaluate expression="logonAction.logoff()" />
 		</transition>
+		<transition on="security_department" to="security_department" />
+		<transition on="security_department_skell" to="security_department_skell" />
 		<transition on="security_resource" to="security_resource" />
 		<transition on="security_role" to="security_role" />
 		<transition on="security_user" to="security_user" />

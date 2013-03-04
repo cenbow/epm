@@ -22,6 +22,8 @@
 	<import resource="classpath:applicationContext-flows.xml" />
 	<import resource="classpath:applicationContext-security.xml" />
 	
-	
+	<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+        <property name="basename" value="classpath:messages" />
+    </bean>
 	
 </beans>

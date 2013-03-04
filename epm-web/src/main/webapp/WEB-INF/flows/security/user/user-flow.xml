@@ -59,7 +59,7 @@
 	
 	<view-state id="saveRole" view="user-role-save.xhtml">
 		<on-render>
-			<evaluate expression="userRoleAction.listRoles" result="flowScope.roles" />
+			<evaluate expression="userRoleAction.listRoles()" result="flowScope.roles" />
 		</on-render>
 		<transition on="save">
 			<evaluate expression="userAction.saveRole(userRoleForm)" />

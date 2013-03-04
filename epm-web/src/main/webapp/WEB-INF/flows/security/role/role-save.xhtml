@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui" template="/WEB-INF/templates/default.xhtml">
 	<ui:define name="title">
-		Role
+		<h:outputText value="#{messages['label.role']}" />
 	</ui:define>
 	<ui:define name="content">
 		<h:form id="formEdit" prependId="false">
 			<div>
-				<p:panel header="Role" style="width: 400px; margin: auto;">
+				<p:panel header="#{messages['label.role']}" style="width: 400px; margin: auto;">
 					<table style="width: 100%;">
 						<tr>
-							<td style="width: 25%;">Name : </td>
+							<td style="width: 25%;"><h:outputText value="#{messages['label.name']}" /> : </td>
 							<td style="width: 75%;">
-								<p:inputText id="login" value="#{roleForm.name}" size="30" maxlength="100" required="true">
+								<p:inputText id="name" value="#{roleForm.name}" size="30" maxlength="100" required="true">
 									<f:validateLength minimum="3" maximum="100" />
 								</p:inputText>
 							</td>
 						</tr>
 						<h:panelGroup rendered="#{roleForm.id != null}">
 							<tr>
-								<td>Active : </td>
+								<td><h:outputText value="#{messages['label.active']}" /> : </td>
 								<td>
 									<p:selectBooleanCheckbox id="active" value="#{roleForm.active}" />
 								</td>
@@ -26,8 +26,8 @@
 						</h:panelGroup>
 						<tr>
 							<td colspan="2" style="text-align: center;">
-								<p:commandButton value="Save" action="save" ajax="false" />
-								<p:commandButton value="Back" action="cancel" immediate="true" ajax="false"/>			
+								<p:commandButton value="#{messages['label.save']}" action="save" ajax="false" />
+								<p:commandButton value="#{messages['label.back']}" action="cancel" immediate="true" ajax="false"/>			
 							</td>
 						</tr>
 					</table>					

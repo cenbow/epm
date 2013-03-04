@@ -39,4 +39,5 @@ body, p, div, td, th, span, input, select {
 .msg {
 	color: #FF4444;
 	font-weight: bold;
+	text-align: center;
 }

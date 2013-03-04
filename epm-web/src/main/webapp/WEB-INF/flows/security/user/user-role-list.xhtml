@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui" template="/WEB-INF/templates/default.xhtml">
 	<ui:define name="title">
-		User/Role
+		<h:outputText value="#{messages['label.userRole']}" />
 	</ui:define>
 	<ui:define name="content">
 		<h:form id="formList" prependId="false">
 			<div>
-				<p:panel header="User/Role" style="width: 400px; margin: auto;">
+				<p:panel header="#{messages['label.userRole']}" style="width: 400px; margin: auto;">
 					<table style="width: 100%;">
 						<tr>
-							<td style="width: 25%;">Name : </td>
+							<td style="width: 25%;"><h:outputText value="#{messages['label.name']}" /> : </td>
 							<td style="width: 75%;">
 								<h:outputText value="#{userRoleForm.user.name}" />
 							</td>
@@ -26,21 +26,21 @@
 				<p:dataTable value="#{userRoleList}" var="role" rows="#{webConstants.pageSize}" paginator="true" style="width: 300px; margin: auto;" rendered="#{not empty userRoleList}" first="#{userRoleSearch.firstRow}" emptyMessage="Na Data Found" lazy="true" selectionMode="single" selection="#{flowScope.selectedUserRole}">
 					<p:column>
 						<f:facet name="header">
-							<h:outputText value="Role" />
+							<h:outputText value="#{messages['label.role']}" />
 						</f:facet>
 						<h:outputText value="#{role.role.name}" />						
 					</p:column>
 					<p:column>
 						<f:facet name="header">
-							<h:outputText value="Department" />
+							<h:outputText value="#{messages['label.department']}" />
 						</f:facet>
 						<h:outputText value="#{role.department.name}" />						
 					</p:column>
 					<p:column>
 						<f:facet name="header">
-							<h:outputText value="Action" />
+							<h:outputText value="#{messages['label.action']}" />
 						</f:facet>
-						<p:commandButton alt="Edit" title="Edit" action="edit" ajax="false" icon="ui-icon-pencil">
+						<p:commandButton alt="#{messages['label.edit']}" title="#{messages['label.edit']}" action="edit" ajax="false" icon="ui-icon-pencil">
 							<f:setPropertyActionListener target="#{userRoleSearch.selectedIndex}" value="#{userRoleList.rowIndex}" />
 						</p:commandButton>
 					</p:column>

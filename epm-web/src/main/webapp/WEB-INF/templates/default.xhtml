@@ -13,16 +13,18 @@
 			<ui:insert name="header">
 				<h:form id="_formHeader">
 					<p:menubar rendered="#{currentUser.authenticated}">
-						<p:submenu label="Main Menu">
-							<p:menuitem value="Home" action="index" ajax="false" icon="ui-icon-home" />
+						<p:submenu label="#{messages['label.mainMenu']}">
+							<p:menuitem value="#{messages['label.home']}" action="index" ajax="false" icon="ui-icon-home" />
 							<p:separator />
-							<p:submenu label="Security" icon="ui-icon-locked">
-								<p:menuitem value="Resource" action="security_resource" ajax="false" />
-								<p:menuitem value="Role" action="security_role" ajax="false" />
-								<p:menuitem value="User" action="security_user" ajax="false" />
+							<p:submenu label="#{messages['label.security']}" icon="ui-icon-locked">
+								<p:menuitem value="#{messages['label.department']}" action="security_department" ajax="false" />
+								<p:menuitem value="#{messages['label.departmentSkell']}" action="security_department_skell" ajax="false" />
+								<p:menuitem value="#{messages['label.resource']}" action="security_resource" ajax="false" />
+								<p:menuitem value="#{messages['label.role']}" action="security_role" ajax="false" />
+								<p:menuitem value="#{messages['label.user']}" action="security_user" ajax="false" />
 							</p:submenu>
 							<p:separator />
-							<p:menuitem value="Logoff" action="logoff" ajax="false" icon="ui-icon-close" />
+							<p:menuitem value="#{messages['label.logoff']}" action="logoff" ajax="false" icon="ui-icon-close" />
 						</p:submenu>
 					</p:menubar>
 				</h:form>
@@ -31,7 +33,7 @@
 		
 		<aside>
 			<br />
-			<p:dialog id="globalMessagesPopup" header="Mensagem" width="300" height="200" modal="true" resizeable="false" visible="true" rendered="#{not empty facesContext.messageList}">
+			<p:dialog id="globalMessagesPopup" header="#{messages['label.message']}" width="300" height="200" modal="true" resizeable="false" visible="true" rendered="#{not empty facesContext.messageList}">
 				<p:messages />
 			</p:dialog>
 			<ui:insert name="content"></ui:insert>
