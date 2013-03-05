@@ -1,5 +1,6 @@
 package br.net.woodstock.epm.security.impl;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,10 +31,14 @@ public class LocaleServiceImpl implements LocaleService {
 
 	private static final String	JPQL_COUNT_DEPARTMENT_BY_NAME		= "SELECT COUNT(*) FROM Department AS d WHERE d.name LIKE :name OR d.abbreviation LIKE :name";
 
+	private static final String	JPQL_LIST_ROOT_DEPARTMENT			= "SELECT d FROM Department AS d WHERE d.parent IS NULL ORDER BY d.name";
+
 	// DEPARTMENT
 	private static final String	JPQL_LIST_DEPARTMENT_SKELL_BY_NAME	= "SELECT d FROM DepartmentSkell AS d WHERE d.name LIKE :name ORDER BY d.name";
 
 	private static final String	JPQL_COUNT_DEPARTMENT_SKELL_BY_NAME	= "SELECT COUNT(*) FROM DepartmentSkell AS d WHERE d.name LIKE :name";
+
+	private static final String	JPQL_LIST_ROOT_DEPARTMENT_SKELL		= "SELECT d FROM DepartmentSkell AS d WHERE d.parent IS NULL ORDER BY d.name";
 
 	@Autowired(required = true)
 	private GenericRepository	genericRepository;
@@ -106,6 +111,16 @@ public class LocaleServiceImpl implements LocaleService {
 		}
 	}
 
+	@Override
+	public Collection<Department> listRootDepartments() {
+		try {
+			QueryMetadata metadata = RepositoryHelper.toQueryMetadata(LocaleServiceImpl.JPQL_LIST_ROOT_DEPARTMENT);
+			return this.queryableRepository.getCollection(metadata).getResult();
+		} catch (Exception e) {
+			throw new ServiceException(e);
+		}
+	}
+
 	// DepartmentSkell
 	@Override
 	public DepartmentSkell getDepartmentSkellById(final Integer id) {
@@ -145,13 +160,23 @@ public class LocaleServiceImpl implements LocaleService {
 	}
 
 	@Override
-	public QueryResult listDepartmentsSkellByName(final String name, final Page page) {
+	public QueryResult listDepartmentSkellsByName(final String name, final Page page) {
 		try {
 			Map<String, Object> parameters = new HashMap<String, Object>();
 			parameters.put("name", RepositoryHelper.getLikeValue(name, false));
 
 			QueryMetadata metadata = RepositoryHelper.toQueryMetadata(LocaleServiceImpl.JPQL_LIST_DEPARTMENT_SKELL_BY_NAME, LocaleServiceImpl.JPQL_COUNT_DEPARTMENT_SKELL_BY_NAME, page, parameters);
 			return this.queryableRepository.getCollection(metadata);
+		} catch (Exception e) {
+			throw new ServiceException(e);
+		}
+	}
+
+	@Override
+	public Collection<DepartmentSkell> listRootDepartmentSkells() {
+		try {
+			QueryMetadata metadata = RepositoryHelper.toQueryMetadata(LocaleServiceImpl.JPQL_LIST_ROOT_DEPARTMENT_SKELL);
+			return this.queryableRepository.getCollection(metadata).getResult();
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		}

@@ -56,7 +56,6 @@ public class Department extends AbstractIntegerEntity {
 
 	@ManyToOne(optional = true, fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
 	@JoinColumn(name = "department_parent_id", referencedColumnName = "department_id", nullable = true)
-	@NotNull
 	private Department			parent;
 
 	@ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)

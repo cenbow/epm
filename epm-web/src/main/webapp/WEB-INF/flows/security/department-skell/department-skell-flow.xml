@@ -20,6 +20,9 @@
 	</view-state>
 	
 	<view-state id="save" view="department-skell-save.xhtml">
+		<on-render>
+			<evaluate expression="departmentSkellAction.getTree()" result="flowScope.departmentSkellTree" />
+		</on-render>
 		<transition on="save">
 			<evaluate expression="departmentSkellAction.save(departmentSkellForm)" />
 		</transition>

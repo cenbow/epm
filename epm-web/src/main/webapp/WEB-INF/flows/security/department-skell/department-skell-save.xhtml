@@ -16,11 +16,21 @@
 								</p:inputText>
 							</td>
 						</tr>
-						<h:panelGroup rendered="#{departmentSkellForm.id != null}">
+						<h:panelGroup rendered="#{departmentSkellTree.childCount > 0}">
 							<tr>
-								<td><h:outputText value="#{messages['label.active']}" /> : </td>
-								<td>
-									<p:selectBooleanCheckbox id="active" value="#{departmentSkellForm.active}" />
+								<td style="width: 25%;"><h:outputText value="#{messages['label.parent']}" /> : </td>
+								<td style="width: 75%;">
+									<p:commandButton id="modalDialogButton" onclick="wvParent.show();" type="button" icon="ui-icon-search"/> 
+									<p:spacer width="10" />
+									<h:outputText id="parentName" value="#{departmentSkellForm.parentName}" />
+									<p:dialog id="mdParent" header="#{messages['label.parent']}" widgetVar="wvParent" modal="true" height="270" width="400">
+										<p:tree id="parent" value="#{departmentSkellTree}" var="item" selectionMode="single" selection="#{departmentSkellForm.selectedNode}" style="border-width: 0px;">
+											<p:ajax listener="#{departmentSkellForm.onNodeSelect}" update="@form" event="select"/>
+											<p:treeNode expandedIcon="ui-icon-folder-open" collapsedIcon="ui-icon-folder-collapsed">
+												<h:outputText value="#{item.name}" />
+											</p:treeNode>
+										</p:tree>
+									</p:dialog>									
 								</td>
 							</tr>
 						</h:panelGroup>

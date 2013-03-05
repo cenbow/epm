@@ -1,7 +1,10 @@
 package br.net.woodstock.epm.web.security.departmentSkell;
 
-import br.net.woodstock.epm.orm.DepartmentSkell;
+import org.primefaces.event.NodeSelectEvent;
+import org.primefaces.model.TreeNode;
+
 import br.net.woodstock.epm.web.AbstractForm;
+import br.net.woodstock.epm.web.tree.TreeItem;
 
 public class DepartmentSkellForm extends AbstractForm {
 
@@ -11,7 +14,11 @@ public class DepartmentSkellForm extends AbstractForm {
 
 	private String				name;
 
-	private DepartmentSkell		parent;
+	private Integer				parentId;
+
+	private String				parentName;
+
+	private TreeNode			selectedNode;
 
 	public DepartmentSkellForm() {
 		super();
@@ -21,7 +28,8 @@ public class DepartmentSkellForm extends AbstractForm {
 	public void reset() {
 		this.setId(null);
 		this.setName(null);
-		this.setParent(null);
+		this.setParentId(null);
+		this.setParentName(null);
 	}
 
 	public Integer getId() {
@@ -40,12 +48,36 @@ public class DepartmentSkellForm extends AbstractForm {
 		this.name = name;
 	}
 
-	public DepartmentSkell getParent() {
-		return this.parent;
+	public Integer getParentId() {
+		return this.parentId;
 	}
 
-	public void setParent(final DepartmentSkell parent) {
-		this.parent = parent;
+	public void setParentId(final Integer parentId) {
+		this.parentId = parentId;
+	}
+
+	public String getParentName() {
+		return this.parentName;
+	}
+
+	public void setParentName(final String parentName) {
+		this.parentName = parentName;
+	}
+
+	public TreeNode getSelectedNode() {
+		return this.selectedNode;
+	}
+
+	public void setSelectedNode(final TreeNode selectedNode) {
+		this.selectedNode = selectedNode;
+	}
+
+	// Aux
+	public void onNodeSelect(final NodeSelectEvent e) {
+		TreeNode node = e.getTreeNode();
+		TreeItem item = (TreeItem) node.getData();
+		this.parentId = item.getId();
+		this.parentName = item.getName();
 	}
 
 }

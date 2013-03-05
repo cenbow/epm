@@ -31,6 +31,8 @@ public class DepartmentSkell extends AbstractIntegerEntity {
 
 	private static final long		serialVersionUID	= -4698111874290305730L;
 
+	private static final String		SEPARATOR			= "/";
+
 	@Id
 	@Column(name = "department_skell_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,7 +46,6 @@ public class DepartmentSkell extends AbstractIntegerEntity {
 
 	@ManyToOne(optional = true, fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
 	@JoinColumn(name = "department_skell_parent_id", referencedColumnName = "department_skell_id", nullable = true)
-	@NotNull
 	private DepartmentSkell			parent;
 
 	@OneToMany(mappedBy = "parent", fetch = FetchType.LAZY, cascade = { CascadeType.REFRESH })
@@ -102,6 +103,28 @@ public class DepartmentSkell extends AbstractIntegerEntity {
 
 	public void setDepartments(final Set<Department> departments) {
 		this.departments = departments;
+	}
+
+	// Aux
+	public String getParentName() {
+		DepartmentSkell parent = this.getParent();
+		StringBuilder builder = new StringBuilder();
+		if (parent != null) {
+			if (parent.getParent() != null) {
+				builder.append(parent.getParentName());
+				builder.append(DepartmentSkell.SEPARATOR);
+			}
+			builder.append(parent.getName());
+		}
+		return builder.toString();
+	}
+
+	public String getFullName() {
+		StringBuilder builder = new StringBuilder();
+		builder.append(this.getParentName());
+		builder.append(DepartmentSkell.SEPARATOR);
+		builder.append(this.getName());
+		return builder.toString();
 	}
 
 }

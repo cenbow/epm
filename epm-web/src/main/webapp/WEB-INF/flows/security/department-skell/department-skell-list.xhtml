@@ -23,12 +23,18 @@
 					</table>					
 				</p:panel>
 				<br />
-				<p:dataTable value="#{departmentSkellList}" var="r" rows="#{webConstants.pageSize}" paginator="true" style="width: 300px; margin: auto;" rendered="#{not empty departmentSkellList}" first="#{departmentSkellSearch.firstRow}" emptyMessage="Na Data Found" lazy="true" selectionMode="single" selection="#{flowScope.selectedDepartment}">
+				<p:dataTable value="#{departmentSkellList}" var="r" rows="#{webConstants.pageSize}" paginator="true" style="width: 500px; margin: auto;" rendered="#{not empty departmentSkellList}" first="#{departmentSkellSearch.firstRow}" emptyMessage="Na Data Found" lazy="true" selectionMode="single" selection="#{flowScope.selectedDepartmentSkell}">
 					<p:column>
 						<f:facet name="header">
 							<h:outputText value="#{messages['label.name']}" />
 						</f:facet>
-						<h:outputText value="#{r.fullName}" />						
+						<h:outputText value="#{r.name}" />						
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="#{messages['label.parent']}" />
+						</f:facet>
+						<h:outputText value="#{r.parentName}" />						
 					</p:column>
 					<p:column>
 						<f:facet name="header">
