@@ -15,7 +15,7 @@
 			<evaluate expression="departmentSkellForm.reset()" />
 		</transition> 
 		<transition on="edit" to="edit"> 
-			<evaluate expression="departmentSkellAction.edit(selectedDepartment, departmentSkellForm)" />
+			<evaluate expression="departmentSkellAction.edit(selectedDepartmentSkell, departmentSkellForm)" />
 		</transition>
 	</view-state>
 	

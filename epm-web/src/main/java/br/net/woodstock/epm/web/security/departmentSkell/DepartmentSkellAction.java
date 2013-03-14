@@ -5,9 +5,9 @@ import java.util.Collection;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.context.WebApplicationContext;
 
 import br.net.woodstock.epm.orm.DepartmentSkell;
 import br.net.woodstock.epm.orm.User;
@@ -21,7 +21,7 @@ import br.net.woodstock.rockframework.web.faces.primefaces.EntityDataModel;
 import br.net.woodstock.rockframework.web.faces.primefaces.EntityRepository;
 
 @Controller
-@Scope(WebApplicationContext.SCOPE_APPLICATION)
+@Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
 public class DepartmentSkellAction extends AbstractAction {
 
 	private static final long	serialVersionUID	= -6705247715553054517L;

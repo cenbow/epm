@@ -1,29 +1,23 @@
 package br.net.woodstock.epm.web.util;
 
-import java.io.Serializable;
 import java.util.Locale;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.MessageSource;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 
-@Component
-@Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
-public class EPMMessage implements Serializable {
+public abstract class EPMMessage {
 
-	private static final long	serialVersionUID	= 4586244468342338243L;
+	private static MessageSource	messageSource;
 
-	@Autowired(required = true)
-	private MessageSource		messageSource;
-
-	public EPMMessage() {
+	private EPMMessage() {
 		super();
 	}
 
-	public String getMessage(final String name, final Object[] args, final Locale locale) {
-		return this.messageSource.getMessage(name, args, locale);
+	public static void setMessageSource(final MessageSource messageSource) {
+		EPMMessage.messageSource = messageSource;
+	}
+
+	public static String getMessage(final String name, final Object[] args, final Locale locale) {
+		return EPMMessage.messageSource.getMessage(name, args, locale);
 	}
 
 }
