@@ -14,6 +14,9 @@ import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import br.net.woodstock.rockframework.core.utils.Conditions;
+import br.net.woodstock.rockframework.core.utils.Files;
+import br.net.woodstock.rockframework.core.utils.IO;
 import br.net.woodstock.rockframework.security.Alias;
 import br.net.woodstock.rockframework.security.Identity;
 import br.net.woodstock.rockframework.security.sign.PKCS7SignatureMode;
@@ -28,9 +31,6 @@ import br.net.woodstock.rockframework.security.store.Store;
 import br.net.woodstock.rockframework.security.store.StoreAlias;
 import br.net.woodstock.rockframework.security.timestamp.TimeStampClient;
 import br.net.woodstock.rockframework.security.timestamp.impl.URLTimeStampClient;
-import br.net.woodstock.rockframework.utils.ConditionUtils;
-import br.net.woodstock.rockframework.utils.FileUtils;
-import br.net.woodstock.rockframework.utils.IOUtils;
 
 public final class ConfirmPanel extends JPanel {
 
@@ -102,21 +102,21 @@ public final class ConfirmPanel extends JPanel {
 		InputStream inputStream = null;
 		try {
 			File outputFile = this.getOutputFile(file);
-			String extension = FileUtils.getExtension(file);
+			String extension = Files.getExtension(file);
 			boolean pdf = Constants.PDF_FILE_EXTENSION.equals(extension);
 
 			inputStream = new FileInputStream(file);
 			Alias selectedAlias = ApplicationHolder.getInstance().getAlias();
 			StoreAlias alias = null;
 
-			if ((ConditionUtils.isNotEmpty(ApplicationHolder.getInstance().getPassword()))) {
+			if ((Conditions.isNotEmpty(ApplicationHolder.getInstance().getPassword()))) {
 				alias = new PasswordAlias(selectedAlias.getName(), new String(ApplicationHolder.getInstance().getPassword()));
 			} else {
 				alias = new StoreAlias(selectedAlias.getName());
 			}
 
 			TimeStampClient timeStampClient = null;
-			if (ConditionUtils.isNotEmpty(ApplicationHolder.getInstance().getTimeStampUrl())) {
+			if (Conditions.isNotEmpty(ApplicationHolder.getInstance().getTimeStampUrl())) {
 				timeStampClient = new URLTimeStampClient(ApplicationHolder.getInstance().getTimeStampUrl());
 			}
 
@@ -143,7 +143,7 @@ public final class ConfirmPanel extends JPanel {
 				signer = new BouncyCastlePKCS7Signer(parameters);
 			}
 
-			byte[] bytes = IOUtils.toByteArray(inputStream);
+			byte[] bytes = IO.toByteArray(inputStream);
 			byte[] signature = signer.sign(bytes);
 			FileOutputStream outputStream = new FileOutputStream(outputFile);
 			outputStream.write(signature);
@@ -165,8 +165,8 @@ public final class ConfirmPanel extends JPanel {
 	}
 
 	protected File getOutputFile(final File file) {
-		String fileName = FileUtils.getName(file);
-		String extension = FileUtils.getExtension(file);
+		String fileName = Files.getName(file);
+		String extension = Files.getExtension(file);
 
 		String newFileName = null;
 

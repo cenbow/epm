@@ -13,7 +13,11 @@
 	<dependencies>
 		<dependency>
 			<groupId>br.net.woodstock.rockframework</groupId>
-			<artifactId>rockframework-persistence</artifactId>
+			<artifactId>rockframework-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>br.net.woodstock.rockframework</groupId>
+			<artifactId>rockframework-domain</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>javax.validation</groupId>

@@ -44,6 +44,11 @@
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
+			<groupId>br.net.woodstock.rockframework</groupId>
+			<artifactId>rockframework-document</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 		</dependency>

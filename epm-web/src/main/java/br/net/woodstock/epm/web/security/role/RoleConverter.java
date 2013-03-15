@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 import br.net.woodstock.epm.orm.Role;
 import br.net.woodstock.epm.security.api.SecurityService;
-import br.net.woodstock.rockframework.utils.ConditionUtils;
+import br.net.woodstock.rockframework.core.utils.Conditions;
 
 @Component("roleConverter")
 public class RoleConverter implements Converter, Serializable {
@@ -27,7 +27,7 @@ public class RoleConverter implements Converter, Serializable {
 
 	@Override
 	public Object getAsObject(final FacesContext context, final UIComponent component, final String value) {
-		if (ConditionUtils.isNotEmpty(value)) {
+		if (Conditions.isNotEmpty(value)) {
 			Integer id = Integer.valueOf(value);
 			Role role = this.securityService.getRoleById(id);
 			return role;

@@ -6,5 +6,9 @@
 	<bean id="ContentRepository" class="br.net.woodstock.epm.document.impl.FileSystemRepository">
 		<constructor-arg name="path" value="/home/lourival/tmp/fsrepo" />
 	</bean>
+	
+	<bean id="messageBundle" class="br.net.woodstock.rockframework.core.util.MessageBundle">
+		<constructor-arg value="messages" />
+    </bean>
 
 </beans>

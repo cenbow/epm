@@ -16,7 +16,7 @@ import org.apache.tika.sax.BodyContentHandler;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 
-import br.net.woodstock.rockframework.utils.ConditionUtils;
+import br.net.woodstock.rockframework.core.utils.Conditions;
 
 abstract class DocumentContentHelper {
 
@@ -59,7 +59,7 @@ abstract class DocumentContentHelper {
 	}
 
 	private static String toString(final String[] values) {
-		if (ConditionUtils.isEmpty(values)) {
+		if (Conditions.isEmpty(values)) {
 			return null;
 		}
 		if (values.length == 1) {

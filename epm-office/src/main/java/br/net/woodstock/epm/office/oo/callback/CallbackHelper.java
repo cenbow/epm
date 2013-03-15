@@ -8,7 +8,7 @@ import java.net.URL;
 
 import br.net.woodstock.epm.office.OfficeLog;
 import br.net.woodstock.epm.office.oo.impl.OpenOfficeHelper;
-import br.net.woodstock.rockframework.utils.IOUtils;
+import br.net.woodstock.rockframework.core.utils.IO;
 
 import com.sun.star.beans.PropertyValue;
 import com.sun.star.frame.XComponentLoader;
@@ -80,7 +80,7 @@ abstract class CallbackHelper {
 		file.deleteOnExit();
 		FileOutputStream outputStream = new FileOutputStream(file);
 
-		IOUtils.copy(inputStream, outputStream);
+		IO.copy(inputStream, outputStream);
 		outputStream.close();
 
 		String url = CallbackHelper.getFileURL(file);

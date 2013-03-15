@@ -8,8 +8,8 @@ import java.util.Map.Entry;
 import org.junit.Test;
 
 import br.net.woodstock.epm.document.util.DocumentContent;
-import br.net.woodstock.rockframework.utils.IOUtils;
-import br.net.woodstock.rockframework.utils.StringUtils;
+import br.net.woodstock.rockframework.core.utils.IO;
+import br.net.woodstock.rockframework.core.utils.Strings;
 
 public class MetadataTest {
 
@@ -28,17 +28,17 @@ public class MetadataTest {
 		list.add("/home/lourival/Documents/pje-cnj-1.png");
 		list.add("/home/lourival/Documents/Acesso-soapui-project.xml");
 		for (String l : list) {
-			System.out.println(StringUtils.repeat("=", 100));
+			System.out.println(Strings.repeat("=", 100));
 			System.out.println("File: " + l);
 			File file = new File(l);
-			byte[] bytes = IOUtils.toByteArray(file);
+			byte[] bytes = IO.toByteArray(file);
 			DocumentContent content = DocumentContent.getInstance(bytes);
 			for (Entry<String, String> entry : content.getMetadata().entrySet()) {
 				System.out.println(entry.getKey() + " => " + entry.getValue());
 			}
 			System.out.println("Mime: " + content.getMimeType());
 			System.out.println(content.getText());
-			System.out.println(StringUtils.repeat("=", 100));
+			System.out.println(Strings.repeat("=", 100));
 		}
 	}
 

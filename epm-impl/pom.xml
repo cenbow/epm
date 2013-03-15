@@ -17,11 +17,11 @@
 		</dependency>
 		<dependency>
 			<groupId>br.net.woodstock.rockframework</groupId>
-			<artifactId>rockframework-domain</artifactId>
+			<artifactId>rockframework-document</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>br.net.woodstock.rockframework</groupId>
-			<artifactId>rockframework-persistence</artifactId>
+			<artifactId>rockframework-domain</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>br.net.woodstock.epm</groupId>

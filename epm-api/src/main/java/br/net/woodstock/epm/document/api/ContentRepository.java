@@ -1,6 +1,6 @@
 package br.net.woodstock.epm.document.api;
 
-import br.net.woodstock.rockframework.persistence.Repository;
+import br.net.woodstock.rockframework.domain.persistence.Repository;
 
 public interface ContentRepository extends Repository {
 

@@ -17,6 +17,10 @@
 		</dependency>
 		<dependency>
 			<groupId>br.net.woodstock.rockframework</groupId>
+			<artifactId>rockframework-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>br.net.woodstock.rockframework</groupId>
 			<artifactId>rockframework-domain</artifactId>
 		</dependency>
 		<dependency>

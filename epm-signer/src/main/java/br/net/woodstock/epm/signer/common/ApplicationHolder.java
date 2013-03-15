@@ -6,10 +6,10 @@ import java.util.Set;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 
+import br.net.woodstock.rockframework.core.utils.Conditions;
+import br.net.woodstock.rockframework.core.utils.SystemProperties;
 import br.net.woodstock.rockframework.security.Alias;
 import br.net.woodstock.rockframework.security.store.Store;
-import br.net.woodstock.rockframework.utils.ConditionUtils;
-import br.net.woodstock.rockframework.utils.SystemUtils;
 
 public final class ApplicationHolder {
 
@@ -51,14 +51,14 @@ public final class ApplicationHolder {
 		super();
 		this.handlers = new HashSet<StoreTypeHandler>();
 		this.handlers.add(new PKCS12StoreTypeHandler());
-		if (System.getProperty(SystemUtils.OS_NAME_PROPERTY).startsWith(Constants.WINDOWS_OS_NAME)) {
+		if (System.getProperty(SystemProperties.OS_NAME_PROPERTY).startsWith(Constants.WINDOWS_OS_NAME)) {
 			this.handlers.add(new WindowsMYStoreTypeHandler());
 		}
 
 		this.preferences = Preferences.userNodeForPackage(ApplicationHolder.class);
 
 		String className = this.preferences.get(ApplicationHolder.PREF_STORE_HANDLER, null);
-		if (ConditionUtils.isNotEmpty(className)) {
+		if (Conditions.isNotEmpty(className)) {
 			try {
 				Class<?> clazz = Class.forName(className);
 				for (StoreTypeHandler sth : this.handlers) {
@@ -129,7 +129,7 @@ public final class ApplicationHolder {
 	}
 
 	public void setTimeStampUrl(final String timeStampUrl) {
-		if (ConditionUtils.isNotEmpty(timeStampUrl)) {
+		if (Conditions.isNotEmpty(timeStampUrl)) {
 			this.preferences.put(ApplicationHolder.PREF_TIMESTAMP_URL, timeStampUrl);
 		} else {
 			this.preferences.remove(ApplicationHolder.PREF_TIMESTAMP_URL);

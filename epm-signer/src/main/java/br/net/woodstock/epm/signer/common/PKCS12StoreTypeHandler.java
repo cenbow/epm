@@ -21,11 +21,11 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 
+import br.net.woodstock.rockframework.core.utils.Conditions;
 import br.net.woodstock.rockframework.security.store.KeyStoreType;
 import br.net.woodstock.rockframework.security.store.Store;
 import br.net.woodstock.rockframework.security.store.impl.JCAStore;
 import br.net.woodstock.rockframework.security.util.BouncyCastleProviderHelper;
-import br.net.woodstock.rockframework.utils.ConditionUtils;
 
 public class PKCS12StoreTypeHandler implements StoreTypeHandler {
 
@@ -152,7 +152,7 @@ public class PKCS12StoreTypeHandler implements StoreTypeHandler {
 	protected void checkStatus() {
 		String file = this.txStore.getText();
 		char[] password = this.txStorePassword.getPassword();
-		if ((ConditionUtils.isNotEmpty(file)) && (ConditionUtils.isNotEmpty(password))) {
+		if ((Conditions.isNotEmpty(file)) && (Conditions.isNotEmpty(password))) {
 			this.btOpen.setEnabled(true);
 		} else {
 			this.btOpen.setEnabled(false);

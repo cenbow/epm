@@ -14,7 +14,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import br.net.woodstock.epm.document.api.DocumentService;
 import br.net.woodstock.epm.orm.Document;
 import br.net.woodstock.epm.orm.User;
-import br.net.woodstock.rockframework.utils.IOUtils;
+import br.net.woodstock.rockframework.core.utils.IO;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:applicationContext-test.xml" })
@@ -58,7 +58,7 @@ public class DocumentServiceTest {
 		list.add("/home/lourival/Documents/Acesso-soapui-project.xml");
 		for (String l : list) {
 			File file = new File(l);
-			byte[] binary = IOUtils.toByteArray(file);
+			byte[] binary = IO.toByteArray(file);
 			Document document = new Document();
 
 			document.setCreated(new Date());

@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.BlockJUnit4ClassRunner;
 
+import br.net.woodstock.rockframework.core.util.DateBuilder;
 import br.net.woodstock.rockframework.security.Identity;
 import br.net.woodstock.rockframework.security.cert.CertificateRequest;
 import br.net.woodstock.rockframework.security.cert.CertificateResponse;
@@ -23,7 +24,6 @@ import br.net.woodstock.rockframework.security.store.PasswordAlias;
 import br.net.woodstock.rockframework.security.store.PrivateKeyEntry;
 import br.net.woodstock.rockframework.security.store.Store;
 import br.net.woodstock.rockframework.security.store.impl.JCAStore;
-import br.net.woodstock.rockframework.util.DateBuilder;
 
 @RunWith(BlockJUnit4ClassRunner.class)
 public class CertificateTest {

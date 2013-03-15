@@ -31,7 +31,7 @@ import javax.swing.tree.ExpandVetoException;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
-import br.net.woodstock.rockframework.utils.ArrayUtils;
+import br.net.woodstock.rockframework.core.utils.Arrays;
 
 public final class FilePanel extends JPanel {
 
@@ -172,7 +172,7 @@ public final class FilePanel extends JPanel {
 					if (node instanceof FileMutableTreeNode) {
 						FileMutableTreeNode fmtn = (FileMutableTreeNode) node;
 						if (fmtn.getFile().canRead()) {
-							List<File> files = ArrayUtils.toList(FilePanel.this.getFileSystemView().getFiles(fmtn.getFile(), false));
+							List<File> files = Arrays.toList(FilePanel.this.getFileSystemView().getFiles(fmtn.getFile(), false));
 							Collections.sort(files, FileComparator.getInstance());
 							for (File file : files) {
 								if (file.canRead()) {

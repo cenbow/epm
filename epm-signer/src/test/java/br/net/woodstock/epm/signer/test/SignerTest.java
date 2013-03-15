@@ -4,6 +4,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 
 import junit.framework.TestCase;
+import br.net.woodstock.rockframework.core.utils.IO;
 import br.net.woodstock.rockframework.security.sign.PKCS7SignatureParameters;
 import br.net.woodstock.rockframework.security.sign.Signatory;
 import br.net.woodstock.rockframework.security.sign.Signature;
@@ -14,7 +15,6 @@ import br.net.woodstock.rockframework.security.store.PasswordAlias;
 import br.net.woodstock.rockframework.security.store.PrivateKeyEntry;
 import br.net.woodstock.rockframework.security.store.impl.JCAStore;
 import br.net.woodstock.rockframework.security.timestamp.TimeStamp;
-import br.net.woodstock.rockframework.utils.IOUtils;
 
 public class SignerTest extends TestCase {
 
@@ -44,7 +44,7 @@ public class SignerTest extends TestCase {
 
 		PDFSigner signer = new PDFSigner(signatureParameters);
 
-		byte[] signed = signer.sign(IOUtils.toByteArray(fileInputStream));
+		byte[] signed = signer.sign(IO.toByteArray(fileInputStream));
 		FileOutputStream fileOutputStream = new FileOutputStream("/tmp/teste-demo.pdf");
 		fileOutputStream.write(signed);
 
@@ -55,7 +55,7 @@ public class SignerTest extends TestCase {
 	public void xtest8() throws Exception {
 		PDFSigner signer = new PDFSigner(null);
 		FileInputStream inputStream = new FileInputStream("/tmp/sign2.pdf");
-		Signature[] signatures = signer.getSignatures(IOUtils.toByteArray(inputStream));
+		Signature[] signatures = signer.getSignatures(IO.toByteArray(inputStream));
 		for (Signature signature : signatures) {
 			System.out.println(signature.getSignatureInfo().getLocation());
 			for (Signatory signatory : signature.getSignatories()) {

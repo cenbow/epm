@@ -11,20 +11,20 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.net.woodstock.epm.orm.Certificate;
+import br.net.woodstock.epm.orm.Department;
 import br.net.woodstock.epm.orm.Resource;
 import br.net.woodstock.epm.orm.Role;
 import br.net.woodstock.epm.orm.User;
 import br.net.woodstock.epm.orm.UserRole;
-import br.net.woodstock.epm.repository.util.RepositoryHelper;
+import br.net.woodstock.epm.repository.util.ORMRepositoryHelper;
 import br.net.woodstock.epm.security.api.SecurityService;
 import br.net.woodstock.epm.security.util.PasswordHelper;
-import br.net.woodstock.rockframework.domain.service.ServiceException;
-import br.net.woodstock.rockframework.persistence.orm.GenericRepository;
-import br.net.woodstock.rockframework.persistence.orm.Page;
-import br.net.woodstock.rockframework.persistence.orm.QueryMetadata;
-import br.net.woodstock.rockframework.persistence.orm.QueryResult;
-import br.net.woodstock.rockframework.persistence.orm.QueryableRepository;
-import br.net.woodstock.rockframework.utils.ConditionUtils;
+import br.net.woodstock.rockframework.core.utils.Conditions;
+import br.net.woodstock.rockframework.domain.ServiceException;
+import br.net.woodstock.rockframework.domain.persistence.Page;
+import br.net.woodstock.rockframework.domain.persistence.orm.ORMFilter;
+import br.net.woodstock.rockframework.domain.persistence.orm.ORMRepository;
+import br.net.woodstock.rockframework.domain.persistence.orm.ORMResult;
 
 @Service
 @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
@@ -55,10 +55,7 @@ public class SecurityServiceImpl implements SecurityService {
 	private static final String	JPQL_COUNT_RESOURCE_BY_NAME		= "SELECT COUNT(*) FROM Resource AS r WHERE r.name LIKE :name";
 
 	@Autowired(required = true)
-	private GenericRepository	genericRepository;
-
-	@Autowired(required = true)
-	private QueryableRepository	queryableRepository;
+	private ORMRepository		repository;
 
 	public SecurityServiceImpl() {
 		super();
@@ -68,7 +65,7 @@ public class SecurityServiceImpl implements SecurityService {
 	@Override
 	public User getUserById(final Integer id) {
 		try {
-			return this.genericRepository.get(new User(id));
+			return this.repository.get(User.class, id);
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		}
@@ -80,8 +77,8 @@ public class SecurityServiceImpl implements SecurityService {
 			Map<String, Object> parameters = new HashMap<String, Object>();
 			parameters.put("login", login);
 			parameters.put("password", PasswordHelper.encode(password));
-			QueryMetadata metadata = RepositoryHelper.toQueryMetadata(SecurityServiceImpl.JPQL_GET_USER_BY_LOGIN_PASSWORD, parameters);
-			User user = this.queryableRepository.getSingle(metadata);
+			ORMFilter filter = ORMRepositoryHelper.toORMFilter(SecurityServiceImpl.JPQL_GET_USER_BY_LOGIN_PASSWORD, parameters);
+			User user = this.repository.getSingle(filter);
 			return user;
 		} catch (Exception e) {
 			throw new ServiceException(e);
@@ -93,7 +90,7 @@ public class SecurityServiceImpl implements SecurityService {
 		try {
 			user.setActive(Boolean.TRUE);
 			user.setPassword(PasswordHelper.encode(user.getPassword()));
-			this.genericRepository.save(user);
+			this.repository.save(user);
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		}
@@ -102,30 +99,30 @@ public class SecurityServiceImpl implements SecurityService {
 	@Override
 	public void updateUser(final User user) {
 		try {
-			User u = this.genericRepository.get(user);
+			User u = this.repository.get(User.class, user.getId());
 			u.setActive(user.getActive());
 			u.setEmail(user.getEmail());
 			u.setLogin(user.getLogin());
 			u.setName(user.getName());
 
-			if (ConditionUtils.isNotEmpty(user.getPassword())) {
+			if (Conditions.isNotEmpty(user.getPassword())) {
 				user.setPassword(PasswordHelper.encode(user.getPassword()));
 			}
 
-			this.genericRepository.update(u);
+			this.repository.update(u);
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		}
 	}
 
 	@Override
-	public QueryResult listUsersByName(final String name, final Page page) {
+	public ORMResult listUsersByName(final String name, final Page page) {
 		try {
 			Map<String, Object> parameters = new HashMap<String, Object>();
-			parameters.put("name", RepositoryHelper.getLikeValue(name, false));
+			parameters.put("name", ORMRepositoryHelper.getLikeValue(name, false));
 
-			QueryMetadata metadata = RepositoryHelper.toQueryMetadata(SecurityServiceImpl.JPQL_LIST_USER_BY_NAME, SecurityServiceImpl.JPQL_COUNT_USER_BY_NAME, page, parameters);
-			return this.queryableRepository.getCollection(metadata);
+			ORMFilter filter = ORMRepositoryHelper.toORMFilter(SecurityServiceImpl.JPQL_LIST_USER_BY_NAME, SecurityServiceImpl.JPQL_COUNT_USER_BY_NAME, page, parameters);
+			return this.repository.getCollection(filter);
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		}
@@ -135,7 +132,7 @@ public class SecurityServiceImpl implements SecurityService {
 	@Override
 	public Role getRoleById(final Integer id) {
 		try {
-			return this.genericRepository.get(new Role(id));
+			return this.repository.get(Role.class, id);
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		}
@@ -145,7 +142,7 @@ public class SecurityServiceImpl implements SecurityService {
 	public void saveRole(final Role role) {
 		try {
 			role.setActive(Boolean.TRUE);
-			this.genericRepository.save(role);
+			this.repository.save(role);
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		}
@@ -154,23 +151,23 @@ public class SecurityServiceImpl implements SecurityService {
 	@Override
 	public void updateRole(final Role role) {
 		try {
-			Role r = this.genericRepository.get(role);
+			Role r = this.repository.get(Role.class, role.getId());
 			r.setActive(role.getActive());
 			r.setName(role.getName());
-			this.genericRepository.update(r);
+			this.repository.update(r);
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		}
 	}
 
 	@Override
-	public QueryResult listRolesByName(final String name, final Page page) {
+	public ORMResult listRolesByName(final String name, final Page page) {
 		try {
 			Map<String, Object> parameters = new HashMap<String, Object>();
-			parameters.put("name", RepositoryHelper.getLikeValue(name, false));
+			parameters.put("name", ORMRepositoryHelper.getLikeValue(name, false));
 
-			QueryMetadata metadata = RepositoryHelper.toQueryMetadata(SecurityServiceImpl.JPQL_LIST_ROLE_BY_NAME, SecurityServiceImpl.JPQL_COUNT_ROLE_BY_NAME, page, parameters);
-			return this.queryableRepository.getCollection(metadata);
+			ORMFilter filter = ORMRepositoryHelper.toORMFilter(SecurityServiceImpl.JPQL_LIST_ROLE_BY_NAME, SecurityServiceImpl.JPQL_COUNT_ROLE_BY_NAME, page, parameters);
+			return this.repository.getCollection(filter);
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		}
@@ -179,7 +176,7 @@ public class SecurityServiceImpl implements SecurityService {
 	@Override
 	public void setRoleResources(final Role role, final Resource[] resources) {
 		try {
-			Role r = this.genericRepository.get(role);
+			Role r = this.repository.get(Role.class, role.getId());
 			if (r != null) {
 				if (r.getResources() == null) {
 					r.setResources(new HashSet<Resource>());
@@ -200,12 +197,12 @@ public class SecurityServiceImpl implements SecurityService {
 					}
 				}
 				for (Resource re : resources) {
-					Resource tmp = this.genericRepository.get(re);
+					Resource tmp = this.repository.get(Resource.class, re.getId());
 					if (tmp != null) {
 						r.getResources().add(tmp);
 					}
 				}
-				this.genericRepository.update(r);
+				this.repository.update(r);
 			}
 		} catch (Exception e) {
 			throw new ServiceException(e);
@@ -217,14 +214,14 @@ public class SecurityServiceImpl implements SecurityService {
 	public void saveUserRole(final UserRole userRole) {
 		try {
 			userRole.setActive(Boolean.TRUE);
-			userRole.setUser(this.genericRepository.get(userRole.getUser()));
-			userRole.setRole(this.genericRepository.get(userRole.getRole()));
+			userRole.setUser(this.repository.get(User.class, userRole.getUser().getId()));
+			userRole.setRole(this.repository.get(Role.class, userRole.getRole().getId()));
 
 			if (userRole.getDepartment() != null) {
-				userRole.setDepartment(this.genericRepository.get(userRole.getDepartment()));
+				userRole.setDepartment(this.repository.get(Department.class, userRole.getDepartment().getId()));
 			}
 
-			this.genericRepository.save(userRole);
+			this.repository.save(userRole);
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		}
@@ -233,31 +230,31 @@ public class SecurityServiceImpl implements SecurityService {
 	@Override
 	public void updateUserRole(final UserRole userRole) {
 		try {
-			UserRole r = this.genericRepository.get(userRole);
+			UserRole r = this.repository.get(UserRole.class, userRole.getId());
 			r.setActive(userRole.getActive());
-			r.setUser(this.genericRepository.get(userRole.getUser()));
-			r.setRole(this.genericRepository.get(userRole.getRole()));
+			r.setUser(this.repository.get(User.class, userRole.getUser().getId()));
+			r.setRole(this.repository.get(Role.class, userRole.getRole().getId()));
 
 			if (userRole.getDepartment() != null) {
-				r.setDepartment(this.genericRepository.get(userRole.getDepartment()));
+				r.setDepartment(this.repository.get(Department.class, userRole.getDepartment().getId()));
 			} else {
 				r.setDepartment(null);
 			}
 
-			this.genericRepository.update(r);
+			this.repository.update(r);
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		}
 	}
 
 	@Override
-	public QueryResult listUserRolesByUser(final Integer id, final Page page) {
+	public ORMResult listUserRolesByUser(final Integer id, final Page page) {
 		try {
 			Map<String, Object> parameters = new HashMap<String, Object>();
 			parameters.put("id", id);
 
-			QueryMetadata metadata = RepositoryHelper.toQueryMetadata(SecurityServiceImpl.JPQL_LIST_USERROLE_BY_USER, SecurityServiceImpl.JPQL_COUNT_USERROLE_BY_USER, page, parameters);
-			return this.queryableRepository.getCollection(metadata);
+			ORMFilter filter = ORMRepositoryHelper.toORMFilter(SecurityServiceImpl.JPQL_LIST_USERROLE_BY_USER, SecurityServiceImpl.JPQL_COUNT_USERROLE_BY_USER, page, parameters);
+			return this.repository.getCollection(filter);
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		}
@@ -267,7 +264,7 @@ public class SecurityServiceImpl implements SecurityService {
 	@Override
 	public Resource getResourceById(final Integer id) {
 		try {
-			return this.genericRepository.get(new Resource(id));
+			return this.repository.get(Resource.class, id);
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		}
@@ -277,7 +274,7 @@ public class SecurityServiceImpl implements SecurityService {
 	public void saveResource(final Resource resource) {
 		try {
 			resource.setActive(Boolean.TRUE);
-			this.genericRepository.save(resource);
+			this.repository.save(resource);
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		}
@@ -286,23 +283,23 @@ public class SecurityServiceImpl implements SecurityService {
 	@Override
 	public void updateResource(final Resource resource) {
 		try {
-			Resource r = this.genericRepository.get(resource);
+			Resource r = this.repository.get(Resource.class, resource.getId());
 			r.setActive(resource.getActive());
 			r.setName(resource.getName());
-			this.genericRepository.update(r);
+			this.repository.update(r);
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		}
 	}
 
 	@Override
-	public QueryResult listResourcesByName(final String name, final Page page) {
+	public ORMResult listResourcesByName(final String name, final Page page) {
 		try {
 			Map<String, Object> parameters = new HashMap<String, Object>();
-			parameters.put("name", RepositoryHelper.getLikeValue(name, false));
+			parameters.put("name", ORMRepositoryHelper.getLikeValue(name, false));
 
-			QueryMetadata metadata = RepositoryHelper.toQueryMetadata(SecurityServiceImpl.JPQL_LIST_RESOURCE_BY_NAME, SecurityServiceImpl.JPQL_COUNT_RESOURCE_BY_NAME, page, parameters);
-			return this.queryableRepository.getCollection(metadata);
+			ORMFilter filter = ORMRepositoryHelper.toORMFilter(SecurityServiceImpl.JPQL_LIST_RESOURCE_BY_NAME, SecurityServiceImpl.JPQL_COUNT_RESOURCE_BY_NAME, page, parameters);
+			return this.repository.getCollection(filter);
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		}
@@ -312,7 +309,7 @@ public class SecurityServiceImpl implements SecurityService {
 	@Override
 	public Certificate getCertificateById(final Integer id) {
 		try {
-			return this.genericRepository.get(new Certificate(id));
+			return this.repository.get(Certificate.class, id);
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		}
@@ -322,7 +319,7 @@ public class SecurityServiceImpl implements SecurityService {
 	public void saveCertificate(final Certificate certificate) {
 		try {
 			certificate.setActive(Boolean.TRUE);
-			this.genericRepository.save(certificate);
+			this.repository.save(certificate);
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		}

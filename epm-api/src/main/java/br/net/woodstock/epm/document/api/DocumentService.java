@@ -1,9 +1,9 @@
 package br.net.woodstock.epm.document.api;
 
 import br.net.woodstock.epm.orm.Document;
-import br.net.woodstock.rockframework.domain.service.Service;
-import br.net.woodstock.rockframework.persistence.orm.Page;
-import br.net.woodstock.rockframework.persistence.orm.QueryResult;
+import br.net.woodstock.rockframework.domain.Service;
+import br.net.woodstock.rockframework.domain.persistence.Page;
+import br.net.woodstock.rockframework.domain.persistence.orm.ORMResult;
 
 public interface DocumentService extends Service {
 
@@ -15,6 +15,6 @@ public interface DocumentService extends Service {
 
 	void updateDocument(Document document, byte[] content);
 
-	QueryResult listDocumentsByName(String name, Page page);
+	ORMResult listDocumentsByName(String name, Page page);
 
 }

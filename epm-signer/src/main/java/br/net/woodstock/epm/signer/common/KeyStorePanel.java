@@ -14,13 +14,13 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 
+import br.net.woodstock.rockframework.core.utils.Conditions;
 import br.net.woodstock.rockframework.security.Alias;
 import br.net.woodstock.rockframework.security.store.PasswordAlias;
 import br.net.woodstock.rockframework.security.store.PrivateKeyEntry;
 import br.net.woodstock.rockframework.security.store.Store;
 import br.net.woodstock.rockframework.security.store.StoreAlias;
 import br.net.woodstock.rockframework.security.store.StoreException;
-import br.net.woodstock.rockframework.utils.ConditionUtils;
 
 public final class KeyStorePanel extends JPanel {
 
@@ -143,7 +143,7 @@ public final class KeyStorePanel extends JPanel {
 					Alias selectedAlias = ApplicationHolder.getInstance().getAlias();
 					StoreAlias alias = null;
 
-					if ((ConditionUtils.isNotEmpty(KeyStorePanel.this.getTxKeyPassword().getPassword()))) {
+					if ((Conditions.isNotEmpty(KeyStorePanel.this.getTxKeyPassword().getPassword()))) {
 						alias = new PasswordAlias(selectedAlias.getName(), new String(KeyStorePanel.this.getTxKeyPassword().getPassword()));
 					} else {
 						alias = new StoreAlias(selectedAlias.getName());
@@ -213,7 +213,7 @@ public final class KeyStorePanel extends JPanel {
 		if (!(this.cbCertificate.getSelectedItem() instanceof Alias)) {
 			enabled = false;
 		}
-		if ((this.txKeyPassword.isEditable() && (ConditionUtils.isEmpty(this.txKeyPassword.getPassword())))) {
+		if ((this.txKeyPassword.isEditable() && (Conditions.isEmpty(this.txKeyPassword.getPassword())))) {
 			enabled = false;
 		}
 		this.btNext.setEnabled(enabled);

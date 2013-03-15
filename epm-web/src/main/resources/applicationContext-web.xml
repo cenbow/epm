@@ -22,13 +22,4 @@
 	<import resource="classpath:applicationContext-flows.xml" />
 	<import resource="classpath:applicationContext-security.xml" />
 	
-	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
-        <property name="basename" value="classpath:messages" />
-    </bean>
-    
-	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-		<property name="staticMethod" value="br.net.woodstock.epm.web.util.EPMMessage.setMessageSource"/>
-		<property name="arguments" ref="messageSource" />
-	</bean>
-	
 </beans>

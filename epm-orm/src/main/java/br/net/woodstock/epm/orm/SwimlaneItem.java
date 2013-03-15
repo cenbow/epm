@@ -14,7 +14,7 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.search.annotations.Indexed;
 
-import br.net.woodstock.rockframework.persistence.AbstractIntegerEntity;
+import br.net.woodstock.rockframework.domain.persistence.AbstractIntegerEntity;
 
 @Entity
 @Table(name = "epm_swimlane_item")

@@ -2,7 +2,7 @@ package br.net.woodstock.epm.web.tree;
 
 import java.io.Serializable;
 
-import br.net.woodstock.rockframework.utils.ObjectUtils;
+import br.net.woodstock.rockframework.core.utils.Objects;
 
 public class TreeItem implements Serializable {
 
@@ -51,7 +51,7 @@ public class TreeItem implements Serializable {
 
 	@Override
 	public int hashCode() {
-		int prime = ObjectUtils.HASH_PRIME;
+		int prime = Objects.HASH_PRIME;
 		int result = 1;
 		result = (prime * result) + ((this.description == null) ? 0 : this.description.hashCode());
 		result = (prime * result) + ((this.id == null) ? 0 : this.id.hashCode());

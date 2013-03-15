@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.net.woodstock.epm.office.oo.OpenOfficeConfig;
-import br.net.woodstock.rockframework.utils.CollectionUtils;
+import br.net.woodstock.rockframework.core.utils.Collections;
 
 abstract class AbstractOpenOfficeConfig implements OpenOfficeConfig {
 
@@ -26,7 +26,7 @@ abstract class AbstractOpenOfficeConfig implements OpenOfficeConfig {
 		list.add("--nolockcheck");
 		list.add("--nologo");
 		list.add("--norestore");
-		this.startupCommand = CollectionUtils.toArray(list, String.class);
+		this.startupCommand = Collections.toArray(list, String.class);
 	}
 
 	@Override

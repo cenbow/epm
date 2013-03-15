@@ -13,7 +13,7 @@ import br.net.woodstock.epm.orm.Role;
 import br.net.woodstock.epm.orm.User;
 import br.net.woodstock.epm.orm.UserRole;
 import br.net.woodstock.epm.security.api.SecurityService;
-import br.net.woodstock.rockframework.persistence.orm.QueryResult;
+import br.net.woodstock.rockframework.domain.persistence.orm.ORMResult;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:applicationContext-test.xml" })
@@ -90,8 +90,8 @@ public class InsertAdminTest {
 
 	@Test
 	public void testListUser() throws Exception {
-		QueryResult result = this.securityService.listUsersByName("admin", null);
-		Collection<User> users = result.getResult();
+		ORMResult result = this.securityService.listUsersByName("admin", null);
+		Collection<User> users = result.getItems();
 		for (User user : users) {
 			System.out.println(user.getName());
 		}

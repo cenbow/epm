@@ -5,9 +5,9 @@ import br.net.woodstock.epm.orm.Resource;
 import br.net.woodstock.epm.orm.Role;
 import br.net.woodstock.epm.orm.User;
 import br.net.woodstock.epm.orm.UserRole;
-import br.net.woodstock.rockframework.domain.service.Service;
-import br.net.woodstock.rockframework.persistence.orm.Page;
-import br.net.woodstock.rockframework.persistence.orm.QueryResult;
+import br.net.woodstock.rockframework.domain.Service;
+import br.net.woodstock.rockframework.domain.persistence.Page;
+import br.net.woodstock.rockframework.domain.persistence.orm.ORMResult;
 
 public interface SecurityService extends Service {
 
@@ -20,7 +20,7 @@ public interface SecurityService extends Service {
 
 	void updateUser(User user);
 
-	QueryResult listUsersByName(String name, Page page);
+	ORMResult listUsersByName(String name, Page page);
 
 	// Role
 	Role getRoleById(Integer id);
@@ -29,12 +29,12 @@ public interface SecurityService extends Service {
 
 	void updateRole(Role role);
 
-	QueryResult listRolesByName(String name, Page page);
+	ORMResult listRolesByName(String name, Page page);
 
 	void setRoleResources(Role role, Resource[] resources);
 
 	// UserRole
-	QueryResult listUserRolesByUser(Integer id, Page page);
+	ORMResult listUserRolesByUser(Integer id, Page page);
 
 	void saveUserRole(UserRole userRole);
 
@@ -47,7 +47,7 @@ public interface SecurityService extends Service {
 
 	void updateResource(Resource resource);
 
-	QueryResult listResourcesByName(String name, Page page);
+	ORMResult listResourcesByName(String name, Page page);
 
 	// Certificate
 	Certificate getCertificateById(Integer id);

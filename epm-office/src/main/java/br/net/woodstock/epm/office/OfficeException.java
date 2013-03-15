@@ -1,8 +1,8 @@
 package br.net.woodstock.epm.office;
 
-import br.net.woodstock.rockframework.DelegateException;
+import br.net.woodstock.rockframework.core.RockFrameworkException;
 
-public class OfficeException extends DelegateException {
+public class OfficeException extends RockFrameworkException {
 
 	private static final long	serialVersionUID	= -6958778504120548911L;
 

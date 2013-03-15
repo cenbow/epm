@@ -8,13 +8,13 @@ import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import br.net.woodstock.epm.repository.impl.PersistenceHelper;
+import br.net.woodstock.epm.repository.impl.ORMRepositoryImpl;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:applicationContext-test.xml" })
 public class SpringTest {
 
-	@PersistenceContext(name = PersistenceHelper.PERSISTENCE_UNIT)
+	@PersistenceContext(name = ORMRepositoryImpl.PERSISTENCE_UNIT)
 	private EntityManager	entityManager;
 
 	public SpringTest() {

@@ -10,10 +10,10 @@ import br.net.woodstock.epm.orm.User;
 import br.net.woodstock.epm.security.api.SecurityService;
 import br.net.woodstock.epm.web.AbstractAction;
 import br.net.woodstock.epm.web.WebConstants;
-import br.net.woodstock.rockframework.persistence.orm.Page;
-import br.net.woodstock.rockframework.persistence.orm.QueryResult;
+import br.net.woodstock.rockframework.domain.persistence.Page;
+import br.net.woodstock.rockframework.domain.persistence.orm.ORMResult;
+import br.net.woodstock.rockframework.web.faces.EntityRepository;
 import br.net.woodstock.rockframework.web.faces.primefaces.EntityDataModel;
-import br.net.woodstock.rockframework.web.faces.primefaces.EntityRepository;
 
 @Controller
 @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
@@ -60,7 +60,7 @@ public class RoleAction extends AbstractAction {
 			private static final long	serialVersionUID	= -7098011024917168622L;
 
 			@Override
-			public QueryResult getResult(final Page page) {
+			public ORMResult getResult(final Page page) {
 				return RoleAction.this.getSecurityService().listRolesByName(search.getName(), page);
 			}
 

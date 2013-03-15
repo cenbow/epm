@@ -11,14 +11,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.net.woodstock.epm.orm.Department;
 import br.net.woodstock.epm.orm.DepartmentSkell;
-import br.net.woodstock.epm.repository.util.RepositoryHelper;
+import br.net.woodstock.epm.repository.util.ORMRepositoryHelper;
 import br.net.woodstock.epm.security.api.LocaleService;
-import br.net.woodstock.rockframework.domain.service.ServiceException;
-import br.net.woodstock.rockframework.persistence.orm.GenericRepository;
-import br.net.woodstock.rockframework.persistence.orm.Page;
-import br.net.woodstock.rockframework.persistence.orm.QueryMetadata;
-import br.net.woodstock.rockframework.persistence.orm.QueryResult;
-import br.net.woodstock.rockframework.persistence.orm.QueryableRepository;
+import br.net.woodstock.rockframework.domain.ServiceException;
+import br.net.woodstock.rockframework.domain.persistence.Page;
+import br.net.woodstock.rockframework.domain.persistence.orm.ORMFilter;
+import br.net.woodstock.rockframework.domain.persistence.orm.ORMRepository;
+import br.net.woodstock.rockframework.domain.persistence.orm.ORMResult;
 
 @Service
 @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
@@ -41,10 +40,7 @@ public class LocaleServiceImpl implements LocaleService {
 	private static final String	JPQL_LIST_ROOT_DEPARTMENT_SKELL		= "SELECT d FROM DepartmentSkell AS d WHERE d.parent IS NULL ORDER BY d.name";
 
 	@Autowired(required = true)
-	private GenericRepository	genericRepository;
-
-	@Autowired(required = true)
-	private QueryableRepository	queryableRepository;
+	private ORMRepository		repository;
 
 	public LocaleServiceImpl() {
 		super();
@@ -54,7 +50,7 @@ public class LocaleServiceImpl implements LocaleService {
 	@Override
 	public Department getDepartmentById(final Integer id) {
 		try {
-			return this.genericRepository.get(new Department(id));
+			return this.repository.get(Department.class, id);
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		}
@@ -64,7 +60,7 @@ public class LocaleServiceImpl implements LocaleService {
 	public void saveDepartment(final Department department) {
 		try {
 			department.setActive(Boolean.TRUE);
-			this.genericRepository.save(department);
+			this.repository.save(department);
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		}
@@ -73,39 +69,39 @@ public class LocaleServiceImpl implements LocaleService {
 	@Override
 	public void updateDepartment(final Department department) {
 		try {
-			Department r = this.genericRepository.get(department);
+			Department r = this.repository.get(Department.class, department.getId());
 			r.setAbbreviation(department.getAbbreviation());
 			r.setActive(department.getActive());
 			r.setName(department.getName());
 
 			if (department.getParent() != null) {
-				Department p = this.genericRepository.get(department.getParent());
+				Department p = this.repository.get(Department.class, department.getParent().getId());
 				r.setParent(p);
 			} else {
 				r.setParent(null);
 			}
 
 			if (department.getSkell() != null) {
-				DepartmentSkell s = this.genericRepository.get(department.getSkell());
+				DepartmentSkell s = this.repository.get(DepartmentSkell.class, department.getSkell().getId());
 				r.setSkell(s);
 			} else {
 				r.setParent(null);
 			}
 
-			this.genericRepository.update(r);
+			this.repository.update(r);
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		}
 	}
 
 	@Override
-	public QueryResult listDepartmentsByName(final String name, final Page page) {
+	public ORMResult listDepartmentsByName(final String name, final Page page) {
 		try {
 			Map<String, Object> parameters = new HashMap<String, Object>();
-			parameters.put("name", RepositoryHelper.getLikeValue(name, false));
+			parameters.put("name", ORMRepositoryHelper.getLikeValue(name, false));
 
-			QueryMetadata metadata = RepositoryHelper.toQueryMetadata(LocaleServiceImpl.JPQL_LIST_DEPARTMENT_BY_NAME, LocaleServiceImpl.JPQL_COUNT_DEPARTMENT_BY_NAME, page, parameters);
-			return this.queryableRepository.getCollection(metadata);
+			ORMFilter filter = ORMRepositoryHelper.toORMFilter(LocaleServiceImpl.JPQL_LIST_DEPARTMENT_BY_NAME, LocaleServiceImpl.JPQL_COUNT_DEPARTMENT_BY_NAME, page, parameters);
+			return this.repository.getCollection(filter);
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		}
@@ -114,8 +110,8 @@ public class LocaleServiceImpl implements LocaleService {
 	@Override
 	public Collection<Department> listRootDepartments() {
 		try {
-			QueryMetadata metadata = RepositoryHelper.toQueryMetadata(LocaleServiceImpl.JPQL_LIST_ROOT_DEPARTMENT);
-			return this.queryableRepository.getCollection(metadata).getResult();
+			ORMFilter filter = ORMRepositoryHelper.toORMFilter(LocaleServiceImpl.JPQL_LIST_ROOT_DEPARTMENT);
+			return this.repository.getCollection(filter).getItems();
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		}
@@ -125,7 +121,7 @@ public class LocaleServiceImpl implements LocaleService {
 	@Override
 	public DepartmentSkell getDepartmentSkellById(final Integer id) {
 		try {
-			return this.genericRepository.get(new DepartmentSkell(id));
+			return this.repository.get(DepartmentSkell.class, id);
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		}
@@ -134,7 +130,7 @@ public class LocaleServiceImpl implements LocaleService {
 	@Override
 	public void saveDepartmentSkell(final DepartmentSkell department) {
 		try {
-			this.genericRepository.save(department);
+			this.repository.save(department);
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		}
@@ -143,30 +139,30 @@ public class LocaleServiceImpl implements LocaleService {
 	@Override
 	public void updateDepartmentSkell(final DepartmentSkell department) {
 		try {
-			DepartmentSkell r = this.genericRepository.get(department);
+			DepartmentSkell r = this.repository.get(DepartmentSkell.class, department.getId());
 			r.setName(department.getName());
 
 			if (department.getParent() != null) {
-				DepartmentSkell p = this.genericRepository.get(department.getParent());
+				DepartmentSkell p = this.repository.get(DepartmentSkell.class, department.getParent().getId());
 				r.setParent(p);
 			} else {
 				r.setParent(null);
 			}
 
-			this.genericRepository.update(r);
+			this.repository.update(r);
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		}
 	}
 
 	@Override
-	public QueryResult listDepartmentSkellsByName(final String name, final Page page) {
+	public ORMResult listDepartmentSkellsByName(final String name, final Page page) {
 		try {
 			Map<String, Object> parameters = new HashMap<String, Object>();
-			parameters.put("name", RepositoryHelper.getLikeValue(name, false));
+			parameters.put("name", ORMRepositoryHelper.getLikeValue(name, false));
 
-			QueryMetadata metadata = RepositoryHelper.toQueryMetadata(LocaleServiceImpl.JPQL_LIST_DEPARTMENT_SKELL_BY_NAME, LocaleServiceImpl.JPQL_COUNT_DEPARTMENT_SKELL_BY_NAME, page, parameters);
-			return this.queryableRepository.getCollection(metadata);
+			ORMFilter filter = ORMRepositoryHelper.toORMFilter(LocaleServiceImpl.JPQL_LIST_DEPARTMENT_SKELL_BY_NAME, LocaleServiceImpl.JPQL_COUNT_DEPARTMENT_SKELL_BY_NAME, page, parameters);
+			return this.repository.getCollection(filter);
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		}
@@ -175,8 +171,8 @@ public class LocaleServiceImpl implements LocaleService {
 	@Override
 	public Collection<DepartmentSkell> listRootDepartmentSkells() {
 		try {
-			QueryMetadata metadata = RepositoryHelper.toQueryMetadata(LocaleServiceImpl.JPQL_LIST_ROOT_DEPARTMENT_SKELL);
-			return this.queryableRepository.getCollection(metadata).getResult();
+			ORMFilter filter = ORMRepositoryHelper.toORMFilter(LocaleServiceImpl.JPQL_LIST_ROOT_DEPARTMENT_SKELL);
+			return this.repository.getCollection(filter).getItems();
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		}

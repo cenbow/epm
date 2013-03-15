@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 import br.net.woodstock.epm.process.api.DeploymentType;
 import br.net.woodstock.epm.process.api.ProcessService;
-import br.net.woodstock.rockframework.domain.service.ServiceException;
+import br.net.woodstock.rockframework.domain.ServiceException;
 
 @Service
 public class ProcessServiceImpl implements ProcessService {

@@ -1,19 +1,25 @@
 package br.net.woodstock.epm.web.security.department;
 
+import java.util.Collection;
+
+import org.primefaces.model.DefaultTreeNode;
+import org.primefaces.model.TreeNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 import br.net.woodstock.epm.orm.Department;
+import br.net.woodstock.epm.orm.DepartmentSkell;
 import br.net.woodstock.epm.orm.User;
 import br.net.woodstock.epm.security.api.LocaleService;
 import br.net.woodstock.epm.web.AbstractAction;
 import br.net.woodstock.epm.web.WebConstants;
-import br.net.woodstock.rockframework.persistence.orm.Page;
-import br.net.woodstock.rockframework.persistence.orm.QueryResult;
+import br.net.woodstock.epm.web.tree.TreeItem;
+import br.net.woodstock.rockframework.domain.persistence.Page;
+import br.net.woodstock.rockframework.domain.persistence.orm.ORMResult;
+import br.net.woodstock.rockframework.web.faces.EntityRepository;
 import br.net.woodstock.rockframework.web.faces.primefaces.EntityDataModel;
-import br.net.woodstock.rockframework.web.faces.primefaces.EntityRepository;
 
 @Controller
 @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
@@ -22,7 +28,7 @@ public class DepartmentAction extends AbstractAction {
 	private static final long	serialVersionUID	= -3462021569529103583L;
 
 	@Autowired(required = true)
-	private LocaleService		securityService;
+	private LocaleService		localeService;
 
 	public DepartmentAction() {
 		super();
@@ -34,8 +40,14 @@ public class DepartmentAction extends AbstractAction {
 			form.setActive(department.getActive());
 			form.setId(department.getId());
 			form.setName(department.getName());
-			form.setParent(department.getParent());
-			form.setSkell(department.getSkell());
+			if (department.getParent() != null) {
+				form.setParentId(department.getParent().getId());
+				form.setParentName(department.getParent().getName());
+			}
+			if (department.getSkell() != null) {
+				form.setSkellId(department.getSkell().getId());
+				form.setSkellName(department.getSkell().getName());
+			}
 			return true;
 		}
 		return false;
@@ -47,13 +59,19 @@ public class DepartmentAction extends AbstractAction {
 		department.setActive(form.getActive());
 		department.setId(form.getId());
 		department.setName(form.getName());
-		department.setParent(form.getParent());
-		department.setSkell(form.getSkell());
+
+		if (form.getParentId() != null) {
+			department.setParent(new Department(form.getParentId()));
+		}
+
+		if (form.getSkellId() != null) {
+			department.setSkell(new DepartmentSkell(form.getSkellId()));
+		}
 
 		if (department.getId() != null) {
-			this.securityService.updateDepartment(department);
+			this.localeService.updateDepartment(department);
 		} else {
-			this.securityService.saveDepartment(department);
+			this.localeService.saveDepartment(department);
 			form.reset();
 		}
 
@@ -66,7 +84,7 @@ public class DepartmentAction extends AbstractAction {
 			private static final long	serialVersionUID	= -7098011024917168622L;
 
 			@Override
-			public QueryResult getResult(final Page page) {
+			public ORMResult getResult(final Page page) {
 				return DepartmentAction.this.getLocaleService().listDepartmentsByName(search.getName(), page);
 			}
 
@@ -81,8 +99,27 @@ public class DepartmentAction extends AbstractAction {
 		return users;
 	}
 
+	public TreeNode getTree() {
+		TreeNode root = new DefaultTreeNode("root", null);
+		Collection<Department> collection = this.localeService.listRootDepartments();
+		for (Department d : collection) {
+			this.addNode(root, d);
+		}
+		return root;
+	}
+
+	private void addNode(final TreeNode parent, final Department department) {
+		TreeItem item = new TreeItem(department.getId(), department.getName(), department.getFullName());
+		TreeNode node = new DefaultTreeNode(item, parent);
+		if (department.getChilds() != null) {
+			for (Department d : department.getChilds()) {
+				this.addNode(node, d);
+			}
+		}
+	}
+
 	public LocaleService getLocaleService() {
-		return this.securityService;
+		return this.localeService;
 	}
 
 }

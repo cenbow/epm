@@ -27,7 +27,7 @@ import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.Resolution;
 import org.hibernate.search.annotations.Store;
 
-import br.net.woodstock.rockframework.persistence.AbstractIntegerEntity;
+import br.net.woodstock.rockframework.domain.persistence.AbstractIntegerEntity;
 
 @Entity
 @Table(name = "epm_certificate")

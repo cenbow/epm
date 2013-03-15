@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import br.net.woodstock.epm.office.OfficeLog;
-import br.net.woodstock.rockframework.utils.IOUtils;
+import br.net.woodstock.rockframework.core.utils.IO;
 
 import com.sun.star.io.XInputStream;
 import com.sun.star.io.XSeekable;
@@ -14,7 +14,7 @@ import com.sun.star.lang.IllegalArgumentException;
 class XInputStreamImpl extends ByteArrayInputStream implements XInputStream, XSeekable {
 
 	public XInputStreamImpl(final InputStream inputStream) throws IOException {
-		super(IOUtils.toByteArray(inputStream));
+		super(IO.toByteArray(inputStream));
 	}
 
 	public XInputStreamImpl(final byte[] buf) {

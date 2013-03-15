@@ -9,13 +9,13 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import br.net.woodstock.epm.document.api.ContentRepository;
-import br.net.woodstock.rockframework.domain.service.ServiceException;
+import br.net.woodstock.rockframework.core.util.Assert;
+import br.net.woodstock.rockframework.core.utils.IO;
+import br.net.woodstock.rockframework.domain.ServiceException;
 import br.net.woodstock.rockframework.security.digest.DigestType;
 import br.net.woodstock.rockframework.security.digest.impl.AsStringDigester;
 import br.net.woodstock.rockframework.security.digest.impl.BasicDigester;
 import br.net.woodstock.rockframework.security.digest.impl.HexDigester;
-import br.net.woodstock.rockframework.util.Assert;
-import br.net.woodstock.rockframework.utils.IOUtils;
 
 public class FileSystemRepository implements ContentRepository {
 
@@ -53,7 +53,7 @@ public class FileSystemRepository implements ContentRepository {
 				InputStream inputStream = null;
 				try {
 					inputStream = new FileInputStream(file);
-					byte[] data = IOUtils.toByteArray(inputStream);
+					byte[] data = IO.toByteArray(inputStream);
 					return data;
 				} finally {
 					if (inputStream != null) {

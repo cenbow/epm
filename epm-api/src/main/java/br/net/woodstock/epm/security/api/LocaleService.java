@@ -4,9 +4,9 @@ import java.util.Collection;
 
 import br.net.woodstock.epm.orm.Department;
 import br.net.woodstock.epm.orm.DepartmentSkell;
-import br.net.woodstock.rockframework.domain.service.Service;
-import br.net.woodstock.rockframework.persistence.orm.Page;
-import br.net.woodstock.rockframework.persistence.orm.QueryResult;
+import br.net.woodstock.rockframework.domain.Service;
+import br.net.woodstock.rockframework.domain.persistence.Page;
+import br.net.woodstock.rockframework.domain.persistence.orm.ORMResult;
 
 public interface LocaleService extends Service {
 
@@ -17,7 +17,7 @@ public interface LocaleService extends Service {
 
 	void updateDepartment(Department department);
 
-	QueryResult listDepartmentsByName(String name, Page page);
+	ORMResult listDepartmentsByName(String name, Page page);
 
 	Collection<Department> listRootDepartments();
 
@@ -28,7 +28,7 @@ public interface LocaleService extends Service {
 
 	void updateDepartmentSkell(DepartmentSkell department);
 
-	QueryResult listDepartmentSkellsByName(String name, Page page);
+	ORMResult listDepartmentSkellsByName(String name, Page page);
 
 	Collection<DepartmentSkell> listRootDepartmentSkells();
 

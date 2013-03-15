@@ -20,7 +20,7 @@ import br.net.woodstock.epm.office.oo.callback.GetFieldNameCallback;
 import br.net.woodstock.epm.office.oo.callback.PopulateTemplateCallback;
 import br.net.woodstock.epm.office.oo.impl.ExecutableOpenOfficeManager;
 import br.net.woodstock.epm.office.oo.impl.SocketOpenOfficeConfig;
-import br.net.woodstock.rockframework.utils.IOUtils;
+import br.net.woodstock.rockframework.core.utils.IO;
 
 @RunWith(BlockJUnit4ClassRunner.class)
 public class OpenOfficeManagerTest {
@@ -39,7 +39,7 @@ public class OpenOfficeManagerTest {
 
 		File file = File.createTempFile("teste", ".pdf");
 		FileOutputStream outputStream = new FileOutputStream(file);
-		IOUtils.copy(output, outputStream);
+		IO.copy(output, outputStream);
 
 		input.close();
 		output.close();
@@ -54,7 +54,7 @@ public class OpenOfficeManagerTest {
 		manager.start();
 
 		InputStream input = this.getClass().getClassLoader().getResourceAsStream("teste.ott");
-		byte[] bytes = IOUtils.toByteArray(input);
+		byte[] bytes = IO.toByteArray(input);
 		input.close();
 		for (int i = 0; i < 10; i++) {
 			long l = System.currentTimeMillis();
@@ -63,7 +63,7 @@ public class OpenOfficeManagerTest {
 
 			File file = File.createTempFile("teste", ".pdf");
 			FileOutputStream outputStream = new FileOutputStream(file);
-			IOUtils.copy(output, outputStream);
+			IO.copy(output, outputStream);
 
 			input.close();
 			output.close();
@@ -104,7 +104,7 @@ public class OpenOfficeManagerTest {
 
 		File file = File.createTempFile("teste", ".odt");
 		FileOutputStream outputStream = new FileOutputStream(file);
-		IOUtils.copy(output, outputStream);
+		IO.copy(output, outputStream);
 
 		input.close();
 		output.close();

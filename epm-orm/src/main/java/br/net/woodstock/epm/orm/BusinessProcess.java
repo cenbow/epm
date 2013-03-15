@@ -14,7 +14,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import br.net.woodstock.rockframework.persistence.AbstractIntegerEntity;
+import br.net.woodstock.rockframework.domain.persistence.AbstractIntegerEntity;
 
 @Entity
 @Table(name = "epm_business_process")

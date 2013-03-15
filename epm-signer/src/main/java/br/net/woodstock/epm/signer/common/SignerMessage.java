@@ -1,18 +1,12 @@
 package br.net.woodstock.epm.signer.common;
 
-import br.net.woodstock.rockframework.config.AbstractMessage;
+import br.net.woodstock.rockframework.core.util.MessageBundle;
 
 public abstract class SignerMessage {
 
 	private static final String		BUNDLE_FILE	= "signer-messages";
 
-	private static AbstractMessage	message;
-
-	static {
-		message = new AbstractMessage(SignerMessage.BUNDLE_FILE) {
-			//
-		};
-	}
+	private static MessageBundle	message		= new MessageBundle(SignerMessage.BUNDLE_FILE);
 
 	public static String getMessage(final String key) {
 		return SignerMessage.message.getMessage(key);

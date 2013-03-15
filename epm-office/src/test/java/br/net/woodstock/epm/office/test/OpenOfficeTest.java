@@ -9,7 +9,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.BlockJUnit4ClassRunner;
 
 import br.net.woodstock.epm.office.oo.io.OpenOfficeIO;
-import br.net.woodstock.rockframework.utils.IOUtils;
+import br.net.woodstock.rockframework.core.utils.IO;
 
 import com.sun.star.beans.PropertyValue;
 import com.sun.star.beans.XPropertySet;
@@ -47,7 +47,7 @@ public class OpenOfficeTest {
 	// @Test
 	public void test1() throws Exception {
 		InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("teste.ott");
-		IOUtils.toByteArray(inputStream);
+		IO.toByteArray(inputStream);
 		inputStream.close();
 
 	}
@@ -78,7 +78,7 @@ public class OpenOfficeTest {
 	// @Test
 	public void test3() throws Exception {
 		InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("teste.ott");
-		byte[] inDoc = IOUtils.toByteArray(inputStream);
+		byte[] inDoc = IO.toByteArray(inputStream);
 		inputStream.close();
 
 		File file = File.createTempFile("openoffice-test", "ott");
@@ -121,7 +121,7 @@ public class OpenOfficeTest {
 		File file = File.createTempFile("xxx", ".ott");
 		FileOutputStream outputStream = new FileOutputStream(file);
 		
-		IOUtils.copy(inputStream, outputStream);
+		IO.copy(inputStream, outputStream);
 		outputStream.close();
 
 		XComponentContext componentContext = Bootstrap.createInitialComponentContext(null);

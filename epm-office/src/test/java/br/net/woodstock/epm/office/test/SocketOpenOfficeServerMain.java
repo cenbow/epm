@@ -10,9 +10,9 @@ import br.net.woodstock.epm.office.OfficeDocumentType;
 import br.net.woodstock.epm.office.oo.OpenOfficeConfig;
 import br.net.woodstock.epm.office.oo.OpenOfficeManager;
 import br.net.woodstock.epm.office.oo.callback.ConversionCallback;
-import br.net.woodstock.epm.office.oo.impl.SocketOpenOfficeConfig;
 import br.net.woodstock.epm.office.oo.impl.ExecutableOpenOfficeManager;
-import br.net.woodstock.rockframework.utils.IOUtils;
+import br.net.woodstock.epm.office.oo.impl.SocketOpenOfficeConfig;
+import br.net.woodstock.rockframework.core.utils.IO;
 
 public final class SocketOpenOfficeServerMain {
 
@@ -30,7 +30,7 @@ public final class SocketOpenOfficeServerMain {
 
 		File file = File.createTempFile("teste", ".docx");
 		FileOutputStream outputStream = new FileOutputStream(file);
-		IOUtils.copy(output, outputStream);
+		IO.copy(output, outputStream);
 
 		input.close();
 		output.close();

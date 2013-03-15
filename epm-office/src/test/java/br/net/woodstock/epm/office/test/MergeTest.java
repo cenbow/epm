@@ -14,7 +14,7 @@ import br.net.woodstock.epm.office.oo.OpenOfficeManager;
 import br.net.woodstock.epm.office.oo.callback.MergeCallback;
 import br.net.woodstock.epm.office.oo.impl.SimpleOpenOfficeManager;
 import br.net.woodstock.epm.office.oo.impl.SocketOpenOfficeConnection;
-import br.net.woodstock.rockframework.utils.IOUtils;
+import br.net.woodstock.rockframework.core.utils.IO;
 
 @RunWith(BlockJUnit4ClassRunner.class)
 public class MergeTest {
@@ -23,7 +23,7 @@ public class MergeTest {
 		super();
 	}
 
-	//@Test
+	// @Test
 	public void testMerge() throws Exception {
 		InputStream inputStream1 = this.getClass().getClassLoader().getResourceAsStream("teste1.odt");
 		InputStream inputStream2 = this.getClass().getClassLoader().getResourceAsStream("teste2.odt");
@@ -42,7 +42,7 @@ public class MergeTest {
 
 		File file = File.createTempFile("teste", ".odt");
 		FileOutputStream outputStream = new FileOutputStream(file);
-		IOUtils.copy(output, outputStream);
+		IO.copy(output, outputStream);
 
 		inputStream1.close();
 		inputStream2.close();
@@ -67,7 +67,7 @@ public class MergeTest {
 
 		File file = File.createTempFile("teste", ".odt");
 		FileOutputStream outputStream = new FileOutputStream(file);
-		IOUtils.copy(output, outputStream);
+		IO.copy(output, outputStream);
 
 		inputStream1.close();
 		output.close();
