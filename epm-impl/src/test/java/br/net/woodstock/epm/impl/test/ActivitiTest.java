@@ -4,13 +4,18 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.zip.ZipInputStream;
 
 import org.activiti.engine.ProcessEngine;
+import org.activiti.engine.delegate.Expression;
 import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.form.TaskFormData;
 import org.activiti.engine.history.HistoricActivityInstance;
 import org.activiti.engine.history.HistoricActivityInstanceQuery;
+import org.activiti.engine.impl.RepositoryServiceImpl;
+import org.activiti.engine.impl.persistence.entity.ProcessDefinitionEntity;
+import org.activiti.engine.impl.task.TaskDefinition;
 import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.DeploymentBuilder;
 import org.activiti.engine.repository.DeploymentQuery;
@@ -45,7 +50,7 @@ public class ActivitiTest {
 		}
 	}
 
-	@Test
+	// @Test
 	public void testDeploy() throws Exception {
 		InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("test.bar");
 		ZipInputStream zipInputStream = new ZipInputStream(inputStream);
@@ -56,16 +61,28 @@ public class ActivitiTest {
 		builder.deploy();
 	}
 
-	// @Test
+	@Test
 	public void testListProccess() throws Exception {
 		ProcessDefinitionQuery query = this.engine.getRepositoryService().createProcessDefinitionQuery();
 		List<ProcessDefinition> list = query.list();
 		for (ProcessDefinition process : list) {
+			RepositoryServiceImpl repositoryServiceImpl = (RepositoryServiceImpl) this.engine.getRepositoryService();
+			ProcessDefinitionEntity processDefinition = (ProcessDefinitionEntity) repositoryServiceImpl.getDeployedProcessDefinition(process.getId());
+
 			System.out.println("DI     : " + process.getDeploymentId());
 			System.out.println("ID     : " + process.getId());
 			System.out.println("Key    : " + process.getKey());
 			System.out.println("Name   : " + process.getName());
 			System.out.println("Version: " + process.getVersion());
+
+			Map<String, TaskDefinition> taskMap = processDefinition.getTaskDefinitions();
+			for (Entry<String, TaskDefinition> entry : taskMap.entrySet()) {
+				TaskDefinition taskDefinition = entry.getValue();
+				System.out.println("Task: " + entry.getKey());
+				for (Expression e : taskDefinition.getCandidateGroupIdExpressions()) {
+					System.out.println("Group: " + e.getExpressionText());
+				}
+			}
 		}
 	}
 

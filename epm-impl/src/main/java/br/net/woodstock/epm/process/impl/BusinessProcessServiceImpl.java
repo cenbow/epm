@@ -3,14 +3,19 @@ package br.net.woodstock.epm.process.impl;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 import java.util.zip.ZipInputStream;
 
 import org.activiti.engine.ProcessEngine;
+import org.activiti.engine.delegate.Expression;
 import org.activiti.engine.impl.RepositoryServiceImpl;
 import org.activiti.engine.impl.bpmn.diagram.ProcessDiagramGenerator;
 import org.activiti.engine.impl.persistence.entity.ProcessDefinitionEntity;
+import org.activiti.engine.impl.task.TaskDefinition;
 import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.DeploymentBuilder;
 import org.activiti.engine.repository.ProcessDefinition;
@@ -22,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.net.woodstock.epm.orm.BusinessProcess;
 import br.net.woodstock.epm.orm.BusinessProcessBinType;
+import br.net.woodstock.epm.orm.Swimlane;
 import br.net.woodstock.epm.process.api.BusinessProcessService;
 import br.net.woodstock.epm.repository.util.ORMRepositoryHelper;
 import br.net.woodstock.rockframework.core.utils.Collections;
@@ -95,10 +101,32 @@ public class BusinessProcessServiceImpl implements BusinessProcessService {
 
 			ProcessDefinitionQuery query = this.engine.getRepositoryService().createProcessDefinitionQuery().deploymentId(deployment.getId());
 			ProcessDefinition processDefinition = query.singleResult();
+			ProcessDefinitionEntity processDefinitionEntity = (ProcessDefinitionEntity) ((RepositoryServiceImpl) this.engine.getRepositoryService()).getDeployedProcessDefinition(processDefinition.getId());
+			Map<String, TaskDefinition> taskMap = processDefinitionEntity.getTaskDefinitions();
 
 			businessProcess.setProcessDefinition(processDefinition.getId());
 			businessProcess.setActive(Boolean.TRUE);
+
 			this.repository.save(businessProcess);
+
+			Set<String> swimLanes = new HashSet<String>();
+			for (Entry<String, TaskDefinition> entry : taskMap.entrySet()) {
+				TaskDefinition taskDefinition = entry.getValue();
+				for (Expression e : taskDefinition.getCandidateGroupIdExpressions()) {
+					String swimLane = e.getExpressionText();
+					swimLanes.add(swimLane);
+				}
+			}
+
+			if (swimLanes.size() > 0) {
+				for (String swimLane : swimLanes) {
+					Swimlane sl = new Swimlane();
+					sl.setBusinessProcess(businessProcess);
+					sl.setName(swimLane);
+					
+					this.repository.save(sl);
+				}
+			}
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		}

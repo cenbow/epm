@@ -1,5 +1,6 @@
 package br.net.woodstock.epm.impl.test;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 
@@ -55,6 +56,22 @@ public class BusinessProcessServiceTest {
 	}
 
 	@Test
+	public void testAddFile() throws Exception {
+		File file = new File("/home/lourival/workspaces/workspace-activiti/activiti/src/main/resources/diagrams/MyProcess.bpmn");
+		byte[] bytes = IO.toByteArray(file);
+
+		BusinessProcess businessProcess = new BusinessProcess();
+		businessProcess.setActive(Boolean.TRUE);
+		businessProcess.setBin(bytes);
+		businessProcess.setDescription("My Process");
+		businessProcess.setName("MyProcess");
+		businessProcess.setType(BusinessProcessBinType.XML);
+
+		this.service.save(businessProcess);
+		System.out.println(businessProcess);
+	}
+
+	// @Test
 	public void testImage() throws Exception {
 		byte[] bytes = this.service.getBusinessProcessImage(Integer.valueOf(2));
 		FileOutputStream outputStream = new FileOutputStream("/tmp/epm-process.png");
