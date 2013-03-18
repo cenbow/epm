@@ -8,14 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import br.net.woodstock.epm.process.api.ProcessService;
+import br.net.woodstock.epm.process.api.BusinessProcessService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:applicationContext-test.xml" })
 public class ProcessBuilderTest {
 
 	@Autowired(required = true)
-	private ProcessService	service;
+	private BusinessProcessService	service;
 
 	public ProcessBuilderTest() {
 		super();

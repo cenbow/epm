@@ -26,6 +26,6 @@
 		<property name="dataSource" ref="epmDataSource" />
 	</bean>
 
-	<tx:annotation-driven transaction-manager="epmTransactionManager" mode="aspectj" />
+	<tx:annotation-driven transaction-manager="epmTransactionManager" />
 
 </beans>
