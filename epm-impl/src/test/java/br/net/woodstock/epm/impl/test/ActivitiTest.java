@@ -61,9 +61,11 @@ public class ActivitiTest {
 		builder.deploy();
 	}
 
-	@Test
+	// @Test
 	public void testListProccess() throws Exception {
 		ProcessDefinitionQuery query = this.engine.getRepositoryService().createProcessDefinitionQuery();
+		query.active();
+		query.latestVersion();
 		List<ProcessDefinition> list = query.list();
 		for (ProcessDefinition process : list) {
 			RepositoryServiceImpl repositoryServiceImpl = (RepositoryServiceImpl) this.engine.getRepositoryService();
@@ -82,6 +84,8 @@ public class ActivitiTest {
 				for (Expression e : taskDefinition.getCandidateGroupIdExpressions()) {
 					System.out.println("Group: " + e.getExpressionText());
 				}
+
+				// taskDefinition.addCandidateGroupIdExpression(groupId)
 			}
 		}
 	}
@@ -89,12 +93,17 @@ public class ActivitiTest {
 	// @Test
 	public void testStart() throws Exception {
 		Map<String, Object> parameters = new HashMap<String, Object>();
-		String id = "Test2:1:1616";
-		String key = "test2-1";
+		String id = "process_pool1:4:1204";
+		String key = "pool-2";
 		parameters.put("key1", "value1");
 		parameters.put("key2", "value2");
 		parameters.put("key3", "value3");
 		parameters.put("key4", new int[] { 1, 2, 3, 4, 5 });
+		parameters.put("key5", Integer.valueOf(10));
+		parameters.put("key6", Long.valueOf(20));
+		parameters.put("key7", Float.valueOf(1.2f));
+		parameters.put("key8", Double.valueOf(2.2));
+		parameters.put("key9", Boolean.TRUE);
 		ProcessInstance instance = this.engine.getRuntimeService().startProcessInstanceById(id, key, parameters);
 		System.out.println("ID : " + instance.getId());
 		System.out.println("PDI: " + instance.getProcessDefinitionId());
@@ -104,7 +113,7 @@ public class ActivitiTest {
 
 	// @Test
 	public void testView() throws Exception {
-		String id = "310";
+		String id = "1301";
 		HistoricActivityInstanceQuery query = this.engine.getHistoryService().createHistoricActivityInstanceQuery();
 		query.processInstanceId(id);
 		List<HistoricActivityInstance> list = query.list();
@@ -127,9 +136,9 @@ public class ActivitiTest {
 		}
 	}
 
-	// @Test
+	@Test
 	public void testListTask() throws Exception {
-		String id = "1710";
+		String id = "1301";
 		TaskQuery query = this.engine.getTaskService().createTaskQuery();
 		query.processInstanceId(id);
 		List<Task> list = query.list();

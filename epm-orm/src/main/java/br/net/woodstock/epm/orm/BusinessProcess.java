@@ -61,7 +61,7 @@ public class BusinessProcess extends AbstractIntegerEntity {
 	private byte[]					bin;
 
 	@ManyToMany(mappedBy = "businessProcess", fetch = FetchType.LAZY, cascade = { CascadeType.REFRESH })
-	private Set<Swimlane>			swimlanes;
+	private Set<BusinessGroup>		groups;
 
 	public BusinessProcess() {
 		super();
@@ -130,12 +130,12 @@ public class BusinessProcess extends AbstractIntegerEntity {
 		this.bin = bin;
 	}
 
-	public Set<Swimlane> getSwimlanes() {
-		return this.swimlanes;
+	public Set<BusinessGroup> getGroups() {
+		return this.groups;
 	}
 
-	public void setSwimlanes(final Set<Swimlane> swimlanes) {
-		this.swimlanes = swimlanes;
+	public void setGroups(final Set<BusinessGroup> groups) {
+		this.groups = groups;
 	}
 
 }

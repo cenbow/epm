@@ -27,7 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.net.woodstock.epm.orm.BusinessProcess;
 import br.net.woodstock.epm.orm.BusinessProcessBinType;
-import br.net.woodstock.epm.orm.Swimlane;
+import br.net.woodstock.epm.orm.BusinessGroup;
 import br.net.woodstock.epm.process.api.BusinessProcessService;
 import br.net.woodstock.epm.repository.util.ORMRepositoryHelper;
 import br.net.woodstock.rockframework.core.utils.Collections;
@@ -120,10 +120,10 @@ public class BusinessProcessServiceImpl implements BusinessProcessService {
 
 			if (swimLanes.size() > 0) {
 				for (String swimLane : swimLanes) {
-					Swimlane sl = new Swimlane();
+					BusinessGroup sl = new BusinessGroup();
 					sl.setBusinessProcess(businessProcess);
 					sl.setName(swimLane);
-					
+
 					this.repository.save(sl);
 				}
 			}
