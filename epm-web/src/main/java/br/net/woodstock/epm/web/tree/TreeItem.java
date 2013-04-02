@@ -2,7 +2,8 @@ package br.net.woodstock.epm.web.tree;
 
 import java.io.Serializable;
 
-import br.net.woodstock.rockframework.core.utils.Objects;
+import br.net.woodstock.rockframework.core.util.EqualsBuilder;
+import br.net.woodstock.rockframework.core.util.HashCodeBuilder;
 
 public class TreeItem implements Serializable {
 
@@ -51,48 +52,16 @@ public class TreeItem implements Serializable {
 
 	@Override
 	public int hashCode() {
-		int prime = Objects.HASH_PRIME;
-		int result = 1;
-		result = (prime * result) + ((this.description == null) ? 0 : this.description.hashCode());
-		result = (prime * result) + ((this.id == null) ? 0 : this.id.hashCode());
-		result = (prime * result) + ((this.name == null) ? 0 : this.name.hashCode());
-		return result;
+		return new HashCodeBuilder().add(this.getId()).add(this.getName()).add(this.getDescription()).build().intValue();
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (this == obj) {
-			return true;
+		if (obj instanceof TreeItem) {
+			TreeItem other = (TreeItem) obj;
+			return new EqualsBuilder().add(this.getId(), other.getId()).add(this.getName(), other.getName()).add(this.getDescription(), other.getDescription()).build().booleanValue();
 		}
-		if (obj == null) {
-			return false;
-		}
-		if (this.getClass() != obj.getClass()) {
-			return false;
-		}
-		TreeItem other = (TreeItem) obj;
-		if (this.description == null) {
-			if (other.description != null) {
-				return false;
-			}
-		} else if (!this.description.equals(other.description)) {
-			return false;
-		}
-		if (this.id == null) {
-			if (other.id != null) {
-				return false;
-			}
-		} else if (!this.id.equals(other.id)) {
-			return false;
-		}
-		if (this.name == null) {
-			if (other.name != null) {
-				return false;
-			}
-		} else if (!this.name.equals(other.name)) {
-			return false;
-		}
-		return true;
+		return false;
 	}
 
 }

@@ -14,38 +14,39 @@
 		<!-- Test -->
 		<test />
 		<!-- Libs -->
-		<activiti.version>5.11</activiti.version>
-		<antlr.version>3.4</antlr.version>
-		<bouncycastle.version>1.47</bouncycastle.version>
-		<ehcache.version>2.6.0</ehcache.version>
-		<el.version>2.2</el.version>
-		<groovy.version>1.8.6</groovy.version>
-		<hibernate.cache.version>4.1.8.Final</hibernate.cache.version>
-		<hibernate.core.version>4.1.8.Final</hibernate.core.version>
-		<hibernate.entityManager.version>4.1.8.Final</hibernate.entityManager.version>
+		<activiti.version>5.12</activiti.version>
+		<antlr.version>3.5</antlr.version>
+		<bouncycastle.version>1.48</bouncycastle.version>
+		<ehcache.version>2.6.5</ehcache.version>
+		<el.version>2.2.1-b04</el.version>
+		<groovy.version>2.1.2</groovy.version>
+		<hibernate.cache.version>4.2.0.Final</hibernate.cache.version>
+		<hibernate.core.version>4.2.0.Final</hibernate.core.version>
+		<hibernate.entityManager.version>4.2.0.Final</hibernate.entityManager.version>
 		<hibernate.jpa.version>1.0.1.Final</hibernate.jpa.version>
 		<hibernate.search.version>4.1.1.Final</hibernate.search.version>
-		<hibernate.validator.version>4.2.0.Final</hibernate.validator.version>
-		<itext.version>5.3.2</itext.version>
-		<jackrabbit.version>2.5.2</jackrabbit.version>
+		<hibernate.validator.version>4.3.1.Final</hibernate.validator.version>
+		<itext.version>5.4.0</itext.version>
+		<jackrabbit.version>2.6.0</jackrabbit.version>
 		<jcr.version>2.0</jcr.version>
-		<jdbc.mysql.version>5.1.21</jdbc.mysql.version>
-		<jsf.version>2.1.14</jsf.version>
+		<jdbc.mysql.version>5.1.24</jdbc.mysql.version>
+		<jdbc.pgsql.version>9.1-901-1.jdbc4</jdbc.pgsql.version>
+		<jsf.version>2.1.16</jsf.version>
 		<jsp.version>2.1</jsp.version>
 		<jstl.version>1.2</jstl.version>
-		<junit.version>4.10</junit.version>
-		<lucene.version>3.6.1</lucene.version>
+		<junit.version>4.11</junit.version>
+		<lucene.version>4.2.0</lucene.version>
 		<openoffice.version>3.2.1</openoffice.version>
-		<poi.version>3.8</poi.version>
-		<primefaces.version>3.4</primefaces.version>
-		<primefaces.theme.version>1.0.8</primefaces.theme.version>
+		<poi.version>3.9</poi.version>
+		<primefaces.version>3.5</primefaces.version>
+		<primefaces.theme.version>1.0.9</primefaces.theme.version>
 		<rockframework.version>3.0.0-SNAPSHOT</rockframework.version>
 		<servlet.version>2.5</servlet.version>
-		<slf4j.version>1.7.1</slf4j.version>
-		<spring.version>3.1.3.RELEASE</spring.version>
+		<slf4j.version>1.7.5</slf4j.version>
+		<spring.version>3.2.2.RELEASE</spring.version>
 		<spring.security.version>3.1.3.RELEASE</spring.security.version>
-		<spring.webflow.version>2.3.1.RELEASE</spring.webflow.version>
-		<tika.version>1.2</tika.version>
+		<spring.webflow.version>2.3.2.RELEASE</spring.webflow.version>
+		<tika.version>1.3</tika.version>
 		<validation.version>1.0.0.GA</validation.version>
 		<!-- Plugins -->
 		<plugin.assembly.version>2.4</plugin.assembly.version>
@@ -106,6 +107,7 @@
 				<version>${plugin.surefire.version}</version>
 				<configuration>
 					<failIfNoTests>false</failIfNoTests>
+					<skipTests>true</skipTests>
 				</configuration>
 			</plugin>
 		</plugins>

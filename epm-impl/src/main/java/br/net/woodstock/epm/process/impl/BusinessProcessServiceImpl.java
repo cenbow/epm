@@ -10,6 +10,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.zip.ZipInputStream;
 
+import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.delegate.Expression;
 import org.activiti.engine.impl.RepositoryServiceImpl;
@@ -25,9 +26,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.net.woodstock.epm.orm.BusinessGroup;
 import br.net.woodstock.epm.orm.BusinessProcess;
 import br.net.woodstock.epm.orm.BusinessProcessBinType;
-import br.net.woodstock.epm.orm.BusinessGroup;
 import br.net.woodstock.epm.process.api.BusinessProcessService;
 import br.net.woodstock.epm.repository.util.ORMRepositoryHelper;
 import br.net.woodstock.rockframework.core.utils.Collections;
@@ -101,6 +102,7 @@ public class BusinessProcessServiceImpl implements BusinessProcessService {
 
 			ProcessDefinitionQuery query = this.engine.getRepositoryService().createProcessDefinitionQuery().deploymentId(deployment.getId());
 			ProcessDefinition processDefinition = query.singleResult();
+			
 			ProcessDefinitionEntity processDefinitionEntity = (ProcessDefinitionEntity) ((RepositoryServiceImpl) this.engine.getRepositoryService()).getDeployedProcessDefinition(processDefinition.getId());
 			Map<String, TaskDefinition> taskMap = processDefinitionEntity.getTaskDefinitions();
 
@@ -138,14 +140,13 @@ public class BusinessProcessServiceImpl implements BusinessProcessService {
 		try {
 			BusinessProcess businessProcess = this.repository.get(BusinessProcess.class, id);
 			if (businessProcess != null) {
-				RepositoryServiceImpl repositoryServiceImpl = (RepositoryServiceImpl) this.engine.getRepositoryService();
-				ProcessDefinitionEntity processDefinition = (ProcessDefinitionEntity) repositoryServiceImpl.getDeployedProcessDefinition(businessProcess.getProcessDefinition());
-
-				List<String> activeActivities = Collections.emptyList();
-
-				InputStream inputStream = ProcessDiagramGenerator.generateDiagram(processDefinition, BusinessProcessServiceImpl.IMAGE_EXTENSION, activeActivities);
-				byte[] image = IO.toByteArray(inputStream);
-				return image;
+				BpmnModel model = this.engine.getRepositoryService().getBpmnModel(businessProcess.getProcessDefinition());
+				if (model != null) {
+					List<String> activeActivities = Collections.emptyList();
+					InputStream inputStream = ProcessDiagramGenerator.generateDiagram(model, BusinessProcessServiceImpl.IMAGE_EXTENSION, activeActivities);
+					byte[] image = IO.toByteArray(inputStream);
+					return image;
+				}
 			}
 			return null;
 		} catch (Exception e) {

@@ -8,7 +8,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.BlockJUnit4ClassRunner;
 
-import br.net.woodstock.rockframework.core.util.DateBuilder;
 import br.net.woodstock.rockframework.security.Identity;
 import br.net.woodstock.rockframework.security.cert.CertificateRequest;
 import br.net.woodstock.rockframework.security.cert.CertificateResponse;
@@ -59,10 +58,6 @@ public class CertificateTest {
 		request.getKeyUsage().add(KeyUsageType.KEY_ENCIPHERMENT);
 		request.getExtendedKeyUsage().add(ExtendedKeyUsageType.CLIENT_AUTH);
 		request.getExtendedKeyUsage().add(ExtendedKeyUsageType.EMAIL_PROTECTION);
-
-		DateBuilder builder = new DateBuilder();
-		request.setNotBefore(builder.removeDays(1).getDate());
-		request.setNotAfter(builder.addYears(1).getDate());
 
 		// ICP Brasil
 		DadoPessoa dadoPessoa = new DadoPessoa();
