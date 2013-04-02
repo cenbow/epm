@@ -26,7 +26,7 @@ public class BusinessProcessInstance extends AbstractIntegerEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer				id;
 
-	@Column(name = "business_process_instance_key", length = 30, nullable = false, unique = true)
+	@Column(name = "business_process_instance_name", length = 30, nullable = false, unique = true)
 	@NotNull
 	@Size(min = 1, max = 30)
 	private String				name;

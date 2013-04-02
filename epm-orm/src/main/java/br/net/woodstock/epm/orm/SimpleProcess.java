@@ -27,7 +27,7 @@ public class SimpleProcess extends AbstractIntegerEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer							id;
 
-	@Column(name = "simple_process_number", length = 100, nullable = false)
+	@Column(name = "simple_process_number", length = 100, nullable = false, unique = true)
 	@NotNull
 	@Size(min = 1, max = 100)
 	private String							number;
