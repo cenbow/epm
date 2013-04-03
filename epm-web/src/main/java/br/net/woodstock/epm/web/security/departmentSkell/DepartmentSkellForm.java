@@ -30,6 +30,7 @@ public class DepartmentSkellForm extends AbstractForm {
 		this.setName(null);
 		this.setParentId(null);
 		this.setParentName(null);
+		this.setSelectedNode(null);
 	}
 
 	public Integer getId() {

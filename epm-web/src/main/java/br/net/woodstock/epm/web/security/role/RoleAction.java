@@ -1,5 +1,9 @@
 package br.net.woodstock.epm.web.security.role;
 
+import java.util.Collection;
+
+import org.primefaces.model.DefaultTreeNode;
+import org.primefaces.model.TreeNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
@@ -10,6 +14,7 @@ import br.net.woodstock.epm.orm.User;
 import br.net.woodstock.epm.security.api.SecurityService;
 import br.net.woodstock.epm.web.AbstractAction;
 import br.net.woodstock.epm.web.WebConstants;
+import br.net.woodstock.epm.web.tree.TreeItem;
 import br.net.woodstock.rockframework.domain.persistence.Page;
 import br.net.woodstock.rockframework.domain.persistence.orm.ORMResult;
 import br.net.woodstock.rockframework.web.faces.EntityRepository;
@@ -33,6 +38,10 @@ public class RoleAction extends AbstractAction {
 			form.setActive(role.getActive());
 			form.setId(role.getId());
 			form.setName(role.getName());
+			if (role.getParent() != null) {
+				form.setParentId(role.getParent().getId());
+				form.setParentName(role.getParent().getName());
+			}
 			return true;
 		}
 		return false;
@@ -43,6 +52,10 @@ public class RoleAction extends AbstractAction {
 		role.setActive(form.getActive());
 		role.setId(form.getId());
 		role.setName(form.getName());
+
+		if (form.getParentId() != null) {
+			role.setParent(new Role(form.getParentId()));
+		}
 
 		if (role.getId() != null) {
 			this.securityService.updateRole(role);
@@ -73,6 +86,25 @@ public class RoleAction extends AbstractAction {
 		EntityDataModel<User> users = new EntityDataModel<User>(WebConstants.PAGE_SIZE, repository);
 
 		return users;
+	}
+
+	public TreeNode getTree() {
+		TreeNode root = new DefaultTreeNode("root", null);
+		Collection<Role> collection = this.securityService.listRootRoles();
+		for (Role r : collection) {
+			this.addNode(root, r);
+		}
+		return root;
+	}
+
+	private void addNode(final TreeNode parent, final Role role) {
+		TreeItem item = new TreeItem(role.getId(), role.getName(), role.getFullName());
+		TreeNode node = new DefaultTreeNode(item, parent);
+		if (role.getChilds() != null) {
+			for (Role r : role.getChilds()) {
+				this.addNode(node, r);
+			}
+		}
 	}
 
 	public SecurityService getSecurityService() {

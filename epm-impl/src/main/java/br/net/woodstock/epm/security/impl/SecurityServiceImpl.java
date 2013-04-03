@@ -1,5 +1,6 @@
 package br.net.woodstock.epm.security.impl;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -43,6 +44,8 @@ public class SecurityServiceImpl implements SecurityService {
 	private static final String	JPQL_LIST_ROLE_BY_NAME			= "SELECT r FROM Role AS r WHERE r.name LIKE :name ORDER BY r.name";
 
 	private static final String	JPQL_COUNT_ROLE_BY_NAME			= "SELECT COUNT(*) FROM Role AS r WHERE r.name LIKE :name";
+
+	private static final String	JPQL_LIST_ROOT_ROLE				= "SELECT r FROM Role AS r WHERE r.parent IS NULL ORDER BY r.name";
 
 	// USERROLE
 	private static final String	JPQL_LIST_USERROLE_BY_USER		= "SELECT ur FROM UserRole AS ur JOIN ur.user AS u JOIN ur.role AS r WHERE u.id = :id ORDER BY r.name";
@@ -204,6 +207,16 @@ public class SecurityServiceImpl implements SecurityService {
 				}
 				this.repository.update(r);
 			}
+		} catch (Exception e) {
+			throw new ServiceException(e);
+		}
+	}
+
+	@Override
+	public Collection<Role> listRootRoles() {
+		try {
+			ORMFilter filter = ORMRepositoryHelper.toORMFilter(SecurityServiceImpl.JPQL_LIST_ROOT_ROLE);
+			return this.repository.getCollection(filter).getItems();
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		}

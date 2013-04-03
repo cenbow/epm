@@ -38,7 +38,7 @@
 		<lucene.version>3.6.2</lucene.version><!-- Hibernate search require 3.x -->
 		<openoffice.version>3.2.1</openoffice.version>
 		<poi.version>3.9</poi.version>
-		<primefaces.version>3.5</primefaces.version>
+		<primefaces.version>3.4.2</primefaces.version><!-- 3.5 with errors -->
 		<primefaces.theme.version>1.0.9</primefaces.theme.version>
 		<rockframework.version>3.0.0-SNAPSHOT</rockframework.version>
 		<servlet.version>2.5</servlet.version>

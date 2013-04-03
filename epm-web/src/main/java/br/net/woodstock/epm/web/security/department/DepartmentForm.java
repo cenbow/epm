@@ -44,6 +44,8 @@ public class DepartmentForm extends AbstractForm {
 		this.setParentName(null);
 		this.setSkellId(null);
 		this.setSkellName(null);
+		this.setSelectedParent(null);
+		this.setSelectedSkell(null);
 	}
 
 	public Integer getId() {

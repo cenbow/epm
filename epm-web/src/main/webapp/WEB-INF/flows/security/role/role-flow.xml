@@ -20,6 +20,9 @@
 	</view-state>
 	
 	<view-state id="save" view="role-save.xhtml">
+		<on-render>
+			<evaluate expression="roleAction.getTree()" result="flowScope.roleTree" />
+		</on-render>
 		<transition on="save">
 			<evaluate expression="roleAction.save(roleForm)" />
 		</transition>

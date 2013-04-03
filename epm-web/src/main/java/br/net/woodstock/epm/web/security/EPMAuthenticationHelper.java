@@ -33,16 +33,25 @@ public abstract class EPMAuthenticationHelper {
 
 		for (UserRole userRole : user.getRoles()) {
 			Role role = userRole.getRole();
-			Collection<String> permissions = new ArrayList<String>();
-			for (Resource resource : role.getResources()) {
-				permissions.add(resource.getName());
-			}
-
-			EPMGrantedAuthority grant = new EPMGrantedAuthority(EPMAuthenticationHelper.ROLE_PREFIX + role.getName(), permissions);
-			grants.add(grant);
+			EPMAuthenticationHelper.addRole(grants, role);
 		}
 
 		EPMAuthentication authentication = new EPMAuthentication(id, name, description, grants);
 		return authentication;
+	}
+
+	private static void addRole(final Collection<EPMGrantedAuthority> grants, final Role role) {
+		Collection<String> permissions = new ArrayList<String>();
+		for (Resource resource : role.getResources()) {
+			permissions.add(resource.getName());
+		}
+
+		EPMGrantedAuthority grant = new EPMGrantedAuthority(EPMAuthenticationHelper.ROLE_PREFIX + role.getName(), permissions);
+		grants.add(grant);
+
+		Role parent = role.getParent();
+		if (parent != null) {
+			EPMAuthenticationHelper.addRole(grants, parent);
+		}
 	}
 }

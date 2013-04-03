@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -30,29 +31,38 @@ import br.net.woodstock.rockframework.domain.persistence.AbstractIntegerEntity;
 @Indexed
 public class Role extends AbstractIntegerEntity {
 
-	private static final long	serialVersionUID	= -1932408409262519409L;
+	private static final long		serialVersionUID	= -1932408409262519409L;
+
+	private static final String		SEPARATOR			= "/";
 
 	@Id
 	@Column(name = "role_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer				id;
+	private Integer					id;
 
 	@Column(name = "role_name", length = 100, nullable = false, unique = true)
 	@NotNull
 	@Size(min = 1, max = 100)
 	@Field(index = Index.YES, analyze = Analyze.YES, store = Store.NO)
-	private String				name;
+	private String					name;
 
 	@Column(name = "role_status", nullable = false, columnDefinition = "BIT")
 	@NotNull
-	private Boolean				active;
+	private Boolean					active;
+
+	@ManyToOne(optional = true, fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
+	@JoinColumn(name = "parent_id", referencedColumnName = "role_id", nullable = true)
+	private Role					parent;
+
+	@OneToMany(mappedBy = "parent", fetch = FetchType.LAZY, cascade = { CascadeType.REFRESH })
+	private Set<Role>				childs;
 
 	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
 	@JoinTable(name = "epm_resource_role", joinColumns = @JoinColumn(name = "role_id", referencedColumnName = "role_id"), inverseJoinColumns = @JoinColumn(name = "resource_id", referencedColumnName = "resource_id"))
-	private Set<Resource>		resources;
+	private Set<Resource>			resources;
 
 	@OneToMany(mappedBy = "role", fetch = FetchType.LAZY, cascade = { CascadeType.REFRESH })
-	private Set<UserRole>		users;
+	private Set<UserRole>			users;
 
 	@OneToMany(mappedBy = "role", fetch = FetchType.LAZY, cascade = { CascadeType.REFRESH })
 	private Set<BusinessGroupItem>	swimlaneItems;
@@ -92,6 +102,22 @@ public class Role extends AbstractIntegerEntity {
 		this.active = active;
 	}
 
+	public Role getParent() {
+		return this.parent;
+	}
+
+	public void setParent(final Role parent) {
+		this.parent = parent;
+	}
+
+	public Set<Role> getChilds() {
+		return this.childs;
+	}
+
+	public void setChilds(final Set<Role> childs) {
+		this.childs = childs;
+	}
+
 	public Set<Resource> getResources() {
 		return this.resources;
 	}
@@ -114,6 +140,28 @@ public class Role extends AbstractIntegerEntity {
 
 	public void setSwimlaneItems(final Set<BusinessGroupItem> swimlaneItems) {
 		this.swimlaneItems = swimlaneItems;
+	}
+
+	// Aux
+	public String getParentName() {
+		Role parent = this.getParent();
+		StringBuilder builder = new StringBuilder();
+		if (parent != null) {
+			if (parent.getParent() != null) {
+				builder.append(parent.getParentName());
+				builder.append(Role.SEPARATOR);
+			}
+			builder.append(parent.getName());
+		}
+		return builder.toString();
+	}
+
+	public String getFullName() {
+		StringBuilder builder = new StringBuilder();
+		builder.append(this.getParentName());
+		builder.append(Role.SEPARATOR);
+		builder.append(this.getName());
+		return builder.toString();
 	}
 
 }
