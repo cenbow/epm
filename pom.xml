@@ -17,6 +17,7 @@
 		<activiti.version>5.12</activiti.version>
 		<antlr.version>3.5</antlr.version>
 		<bouncycastle.version>1.48</bouncycastle.version>
+		<commons.codec.version>1.7</commons.codec.version>
 		<ehcache.version>2.6.5</ehcache.version>
 		<el.version>2.2.1-b04</el.version>
 		<groovy.version>2.1.2</groovy.version>
@@ -206,6 +207,12 @@
 				<scope>compile</scope>
 			</dependency>
 			<dependency>
+				<groupId>commons-codec</groupId>
+				<artifactId>commons-codec</artifactId>
+				<version>${commons.codec.version}</version>
+				<scope>compile</scope>
+			</dependency>
+			<dependency>
 				<groupId>javax.el</groupId>
 				<artifactId>el-api</artifactId>
 				<version>${el.version}</version>
@@ -390,6 +397,16 @@
 				<artifactId>tika-parsers</artifactId>
 				<version>${tika.version}</version>
 				<scope>compile</scope>
+				<exclusions>
+					<exclusion>
+						<artifactId>bcmail-jdk15</artifactId>
+						<groupId>org.bouncycastle</groupId>
+					</exclusion>
+					<exclusion>
+						<artifactId>bcprov-jdk15</artifactId>
+						<groupId>org.bouncycastle</groupId>
+					</exclusion>
+				</exclusions>
 			</dependency>
 			<dependency>
 				<groupId>org.antlr</groupId>
