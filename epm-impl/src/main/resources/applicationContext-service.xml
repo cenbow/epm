@@ -3,8 +3,16 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
 	
+	<!--
 	<bean id="ContentRepository" class="br.net.woodstock.epm.document.impl.FileSystemRepository">
 		<constructor-arg name="path" value="/home/lourival/tmp/fsrepo" />
+	</bean>
+	-->
+	
+	<bean id="ContentRepository" class="br.net.woodstock.epm.document.impl.JackRabbitRepository">
+		<constructor-arg value="/home/lourival/tmp/jcrrepo" /><!-- Path -->
+		<constructor-arg value="username" /><!-- User -->
+		<constructor-arg value="password" /><!-- Password -->
 	</bean>
 	
 	<bean id="messageBundle" class="br.net.woodstock.rockframework.core.util.MessageBundle">

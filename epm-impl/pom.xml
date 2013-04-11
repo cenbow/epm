@@ -29,6 +29,10 @@
 		</dependency>
 		<dependency>
 			<groupId>br.net.woodstock.epm</groupId>
+			<artifactId>epm-bpmn2</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>br.net.woodstock.epm</groupId>
 			<artifactId>epm-orm</artifactId>
 		</dependency>
 		<dependency>

@@ -64,6 +64,7 @@
 	</organization>
 	<modules>
 		<module>epm-api</module>
+		<module>epm-bpmn2</module>
 		<module>epm-client</module>
 		<module>epm-impl</module>
 		<module>epm-office</module>
@@ -148,6 +149,12 @@
 			<dependency>
 				<groupId>br.net.woodstock.epm</groupId>
 				<artifactId>epm-api</artifactId>
+				<version>${project.version}</version>
+				<scope>compile</scope>
+			</dependency>
+			<dependency>
+				<groupId>br.net.woodstock.epm</groupId>
+				<artifactId>epm-bpmn2</artifactId>
 				<version>${project.version}</version>
 				<scope>compile</scope>
 			</dependency>
