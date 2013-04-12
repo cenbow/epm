@@ -16,6 +16,9 @@
 						<p:submenu label="#{messages['label.mainMenu']}">
 							<p:menuitem value="#{messages['label.home']}" action="index" ajax="false" icon="ui-icon-home" />
 							<p:separator />
+							<p:submenu label="#{messages['label.configuration']}" icon="ui-icon-gear">
+								<p:menuitem value="#{messages['label.process']}" action="configuration_process" ajax="false" />
+							</p:submenu>
 							<p:submenu label="#{messages['label.security']}" icon="ui-icon-locked">
 								<p:menuitem value="#{messages['label.department']}" action="security_department" ajax="false" />
 								<p:menuitem value="#{messages['label.departmentSkell']}" action="security_department_skell" ajax="false" />

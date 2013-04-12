@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/webflow http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd"
+	parent="main">
+	
+	<var name="businessProcessForm" class="br.net.woodstock.epm.web.configuration.process.BusinessProcessForm"/>
+	<var name="businessProcessSearch" class="br.net.woodstock.epm.web.configuration.process.BusinessProcessSearch"/>
+
+	<view-state id="list" view="process-list.xhtml">
+		<transition on="search">
+			<evaluate expression="businessProcessAction.search(businessProcessSearch)" result="flowScope.businessProcessList" />
+		</transition>
+		<transition on="new" to="new">
+			<evaluate expression="businessProcessForm.reset()" />
+		</transition> 
+		<transition on="edit" to="edit"> 
+			<evaluate expression="businessProcessAction.edit(selectedBusinessProcess, businessProcessForm)" />
+		</transition>
+	</view-state>
+	
+	<view-state id="save" view="process-save.xhtml">
+		<transition on="save">
+			<evaluate expression="businessProcessAction.save(businessProcessForm)" />
+		</transition>
+		<transition on="cancel" to="search">
+		</transition>
+	</view-state>
+	
+	<view-state id="search" parent="#list" />
+	
+	<view-state id="new" parent="#save" />
+	
+	<view-state id="edit" parent="#save" />
+
+	<end-state id="end">
+	</end-state>
+
+</flow>

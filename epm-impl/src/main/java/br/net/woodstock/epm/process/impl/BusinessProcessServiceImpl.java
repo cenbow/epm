@@ -34,28 +34,34 @@ import br.net.woodstock.epm.repository.util.ORMRepositoryHelper;
 import br.net.woodstock.rockframework.core.utils.Collections;
 import br.net.woodstock.rockframework.core.utils.IO;
 import br.net.woodstock.rockframework.domain.ServiceException;
+import br.net.woodstock.rockframework.domain.persistence.Page;
 import br.net.woodstock.rockframework.domain.persistence.orm.ORMFilter;
 import br.net.woodstock.rockframework.domain.persistence.orm.ORMRepository;
+import br.net.woodstock.rockframework.domain.persistence.orm.ORMResult;
 
 @Service
 @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 public class BusinessProcessServiceImpl implements BusinessProcessService {
 
-	private static final long	serialVersionUID			= -5930737454047853423L;
+	private static final long		serialVersionUID			= -5930737454047853423L;
 
-	private static final String	JPQL_GET_PROCESS_BY_NAME	= "SELECT b FROM BusinessProcess AS b WHERE b.name = :name";
+	private static final String		JPQL_GET_PROCESS_BY_NAME	= "SELECT b FROM BusinessProcess AS b WHERE b.name = :name";
 
-	private static final String	ALL_PATTERN					= "%";
+	private static final String		JPQL_LIST_PROCESS_BY_NAME	= "SELECT b FROM BusinessProcess AS b WHERE b.name LIKE :name ORDER BY b.name";
 
-	private static final String	IMAGE_EXTENSION				= "png";
+	private static final String		JPQL_COUNT_PROCESS_BY_NAME	= "SELECT COUNT(*) FROM BusinessProcess AS b WHERE b.name LIKE :name";
 
-	private static final String	XML_SUFFIX					= ".bpmn20.xml";
+	private static final String		ALL_PATTERN					= "%";
+
+	private static final String		IMAGE_EXTENSION				= "png";
+
+	private static final String		XML_SUFFIX					= ".bpmn20.xml";
 
 	@Autowired(required = true)
-	private ProcessEngine		engine;
+	private transient ProcessEngine	engine;
 
 	@Autowired(required = true)
-	private ORMRepository		repository;
+	private ORMRepository			repository;
 
 	public BusinessProcessServiceImpl() {
 		super();
@@ -102,7 +108,7 @@ public class BusinessProcessServiceImpl implements BusinessProcessService {
 
 			ProcessDefinitionQuery query = this.engine.getRepositoryService().createProcessDefinitionQuery().deploymentId(deployment.getId());
 			ProcessDefinition processDefinition = query.singleResult();
-			
+
 			ProcessDefinitionEntity processDefinitionEntity = (ProcessDefinitionEntity) ((RepositoryServiceImpl) this.engine.getRepositoryService()).getDeployedProcessDefinition(processDefinition.getId());
 			Map<String, TaskDefinition> taskMap = processDefinitionEntity.getTaskDefinitions();
 
@@ -149,6 +155,19 @@ public class BusinessProcessServiceImpl implements BusinessProcessService {
 				}
 			}
 			return null;
+		} catch (Exception e) {
+			throw new ServiceException(e);
+		}
+	}
+
+	@Override
+	public ORMResult listBusinessProcessByName(final String name, final Page page) {
+		try {
+			Map<String, Object> parameters = new HashMap<String, Object>();
+			parameters.put("name", ORMRepositoryHelper.getLikeValue(name, false));
+
+			ORMFilter filter = ORMRepositoryHelper.toORMFilter(BusinessProcessServiceImpl.JPQL_LIST_PROCESS_BY_NAME, BusinessProcessServiceImpl.JPQL_COUNT_PROCESS_BY_NAME, page, parameters);
+			return this.repository.getCollection(filter);
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		}

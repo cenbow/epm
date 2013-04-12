@@ -17,16 +17,16 @@
 							</td>
 						</tr>
 						<tr>
-							<td style="width: 25%;"><h:outputText value="#{messages['label.abbreviation']}" /> : </td>
-							<td style="width: 75%;">
+							<td><h:outputText value="#{messages['label.abbreviation']}" /> : </td>
+							<td>
 								<p:inputText id="abbreviation" value="#{departmentForm.abbreviation}" size="10" maxlength="50" required="true">
 									<f:validateLength minimum="2" maximum="50" />
 								</p:inputText>
 							</td>
 						</tr>
 						<tr>
-							<td style="width: 25%;"><h:outputText value="#{messages['label.parent']}" /> : </td>
-							<td style="width: 75%;">
+							<td><h:outputText value="#{messages['label.parent']}" /> : </td>
+							<td>
 								<p:commandButton id="modalDialogButton" onclick="wvParent.show();" type="button" icon="ui-icon-search" rendered="#{departmentTree.childCount > 0}"/> 
 								<p:spacer width="10" />
 								<h:outputText id="parentName" value="#{departmentForm.parentName}" />
@@ -41,8 +41,8 @@
 							</td>
 						</tr>
 						<tr>
-							<td style="width: 25%;"><h:outputText value="#{messages['label.departmentSkell']}" /> : </td>
-							<td style="width: 75%;">
+							<td><h:outputText value="#{messages['label.departmentSkell']}" /> : </td>
+							<td>
 								<p:commandButton id="modalDialogButtonSkell" onclick="wvSkell.show();" type="button" icon="ui-icon-search" rendered="#{departmentSkellTree.childCount > 0}"/> 
 								<p:spacer width="10" />
 								<h:outputText id="skellName" value="#{departmentForm.skellName}" />

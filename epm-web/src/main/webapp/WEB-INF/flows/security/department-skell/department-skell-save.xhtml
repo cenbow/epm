@@ -18,8 +18,8 @@
 						</tr>
 						<h:panelGroup rendered="#{departmentSkellTree.childCount > 0}">
 							<tr>
-								<td style="width: 25%;"><h:outputText value="#{messages['label.parent']}" /> : </td>
-								<td style="width: 75%;">
+								<td><h:outputText value="#{messages['label.parent']}" /> : </td>
+								<td>
 									<p:commandButton id="modalDialogButton" onclick="wvParent.show();" type="button" icon="ui-icon-search"/> 
 									<p:spacer width="10" />
 									<h:outputText id="parentName" value="#{departmentSkellForm.parentName}" />
