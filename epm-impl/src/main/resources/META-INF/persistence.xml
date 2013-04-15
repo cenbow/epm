@@ -1,4 +1,5 @@
-<persistence xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
 	version="2.0">
 	<persistence-unit name="epmPU">
@@ -18,20 +19,26 @@
 
 		<exclude-unlisted-classes>true</exclude-unlisted-classes>
 		<properties>
-			<property name="hibernate.bytecode.use_reflection_optimizer" value="true" />
-			<property name="hibernate.cache.region.factory_class" value="org.hibernate.cache.ehcache.EhCacheRegionFactory" />
+			<property name="hibernate.bytecode.use_reflection_optimizer"
+				value="true" />
+			<property name="hibernate.cache.region.factory_class"
+				value="org.hibernate.cache.ehcache.EhCacheRegionFactory" />
 			<property name="hibernate.cache.use_query_cache" value="true" />
-			<property name="hibernate.cache.use_second_level_cache" value="true" />
-			<property name="hibernate.cache.use_structured_entries" value="true" />
+			<property name="hibernate.cache.use_second_level_cache"
+				value="true" />
+			<property name="hibernate.cache.use_structured_entries"
+				value="true" />
 			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5InnoDBDialect" />
-			<!--<property name="hibernate.ejb.use_class_enhancer" value="true" />-->
+			<!--<property name="hibernate.ejb.use_class_enhancer" value="true" /> -->
 			<property name="hibernate.hbm2ddl.auto" value="validate" />
-			<property name="hibernate.listeners.envers.autoRegister" value="false" />
+			<property name="hibernate.listeners.envers.autoRegister"
+				value="false" />
 			<property name="hibernate.format_sql" value="true" />
 			<property name="hibernate.show_sql" value="false" />
 			<!-- Search -->
-			<property name="hibernate.search.default.directory_provider" value="filesystem"/>
-			<property name="hibernate.search.default.indexBase" value="/home/lourival/tmp/hibernate-search"/>
+			<property name="hibernate.search.default.directory_provider"
+				value="filesystem" />
+			<property name="hibernate.search.default.indexBase" value="/home/lourival/tmp/hibernate-search" />
 		</properties>
 	</persistence-unit>
 	<persistence-unit name="activitiPU">
@@ -63,15 +70,62 @@
 
 		<exclude-unlisted-classes>true</exclude-unlisted-classes>
 		<properties>
-			<property name="hibernate.bytecode.use_reflection_optimizer" value="true" />
-			<property name="hibernate.cache.region.factory_class" value="org.hibernate.cache.ehcache.EhCacheRegionFactory" />
-			<property name="hibernate.cache.use_query_cache" value="true" />
-			<property name="hibernate.cache.use_second_level_cache" value="true" />
-			<property name="hibernate.cache.use_structured_entries" value="true" />
-			<property name="hibernate.default_schema" value="webdoc" />
+			<property name="hibernate.bytecode.use_reflection_optimizer"
+				value="true" />
 			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5InnoDBDialect" />
 			<property name="hibernate.hbm2ddl.auto" value="validate" />
-			<property name="hibernate.listeners.envers.autoRegister" value="false" />
+			<property name="hibernate.listeners.envers.autoRegister"
+				value="false" />
+			<property name="hibernate.format_sql" value="true" />
+			<property name="hibernate.show_sql" value="false" />
+		</properties>
+	</persistence-unit>
+	<persistence-unit name="jbpmPU">
+		<!-- jbpm -->
+		<mapping-file>META-INF/JBPMorm-JPA2.xml</mapping-file>
+		<mapping-file>META-INF/ProcessInstanceInfoMapping-JPA2.xml</mapping-file>
+		<!-- task -->
+		<mapping-file>META-INF/Taskorm-JPA2.xml</mapping-file>
+
+		<!-- jbpm -->
+		<class>org.drools.persistence.info.SessionInfo</class>
+		<class>org.drools.persistence.info.WorkItemInfo</class>
+		<class>org.jbpm.process.audit.ProcessInstanceLog</class>
+		<class>org.jbpm.process.audit.NodeInstanceLog</class>
+		<class>org.jbpm.process.audit.VariableInstanceLog</class>
+
+		<!-- task -->
+		<class>org.jbpm.task.Attachment</class>
+		<class>org.jbpm.task.BooleanExpression</class>
+		<class>org.jbpm.task.Comment</class>
+		<class>org.jbpm.task.Content</class>
+		<class>org.jbpm.task.Deadline</class>
+		<class>org.jbpm.task.Delegation</class>
+		<class>org.jbpm.task.EmailNotification</class>
+		<class>org.jbpm.task.EmailNotificationHeader</class>
+		<class>org.jbpm.task.Escalation</class>
+		<class>org.jbpm.task.Group</class>
+		<class>org.jbpm.task.I18NText</class>
+		<class>org.jbpm.task.Notification</class>
+		<class>org.jbpm.task.OnAllSubTasksEndParentEndStrategy</class>
+		<class>org.jbpm.task.OnParentAbortAllSubTasksEndStrategy</class>
+		<class>org.jbpm.task.PeopleAssignments</class>
+		<class>org.jbpm.task.Reassignment</class>
+		<class>org.jbpm.task.Status</class>
+		<class>org.jbpm.task.SubTasksStrategy</class>
+		<class>org.jbpm.task.Task</class>
+		<class>org.jbpm.task.TaskData</class>
+		<class>org.jbpm.task.User</class>
+
+
+		<properties>
+			<property name="hibernate.bytecode.use_reflection_optimizer"
+				value="true" />
+			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5InnoDBDialect" />
+			<property name="hibernate.hbm2ddl.auto" value="update" />
+			<property name="hibernate.id.new_generator_mappings" value="false" />
+			<property name="hibernate.listeners.envers.autoRegister"
+				value="false" />
 			<property name="hibernate.format_sql" value="true" />
 			<property name="hibernate.show_sql" value="false" />
 		</properties>

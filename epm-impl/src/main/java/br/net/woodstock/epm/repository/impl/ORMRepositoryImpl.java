@@ -21,7 +21,7 @@ public class ORMRepositoryImpl extends AbstractJPARepository {
 
 	public static final String	PERSISTENCE_UNIT	= "epmPU";
 
-	@PersistenceContext(name = ORMRepositoryImpl.PERSISTENCE_UNIT)
+	@PersistenceContext(name = ORMRepositoryImpl.PERSISTENCE_UNIT, unitName = ORMRepositoryImpl.PERSISTENCE_UNIT)
 	private EntityManager		entityManager;
 
 	public ORMRepositoryImpl() {
