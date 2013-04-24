@@ -65,7 +65,7 @@ public class Role extends AbstractIntegerEntity {
 	private Set<UserRole>			users;
 
 	@OneToMany(mappedBy = "role", fetch = FetchType.LAZY, cascade = { CascadeType.REFRESH })
-	private Set<BusinessGroupItem>	swimlaneItems;
+	private Set<CandidateGroupItem>	swimlaneItems;
 
 	public Role() {
 		super();
@@ -134,11 +134,11 @@ public class Role extends AbstractIntegerEntity {
 		this.users = users;
 	}
 
-	public Set<BusinessGroupItem> getSwimlaneItems() {
+	public Set<CandidateGroupItem> getSwimlaneItems() {
 		return this.swimlaneItems;
 	}
 
-	public void setSwimlaneItems(final Set<BusinessGroupItem> swimlaneItems) {
+	public void setSwimlaneItems(final Set<CandidateGroupItem> swimlaneItems) {
 		this.swimlaneItems = swimlaneItems;
 	}
 

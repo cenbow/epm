@@ -10,9 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import br.net.woodstock.epm.orm.BusinessProcess;
-import br.net.woodstock.epm.orm.BusinessProcessBinType;
-import br.net.woodstock.epm.process.api.BusinessProcessService;
+import br.net.woodstock.epm.orm.Process;
+import br.net.woodstock.epm.orm.DeploymentType;
+import br.net.woodstock.epm.process.api.ProcessService;
 import br.net.woodstock.rockframework.core.utils.IO;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -20,7 +20,7 @@ import br.net.woodstock.rockframework.core.utils.IO;
 public class BusinessProcessServiceTest {
 
 	@Autowired(required = true)
-	private BusinessProcessService	service;
+	private ProcessService	service;
 
 	public BusinessProcessServiceTest() {
 		super();
@@ -44,12 +44,12 @@ public class BusinessProcessServiceTest {
 		InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("epm-process.bpmn");
 		byte[] bytes = IO.toByteArray(inputStream);
 
-		BusinessProcess businessProcess = new BusinessProcess();
+		Process businessProcess = new Process();
 		businessProcess.setActive(Boolean.TRUE);
 		businessProcess.setBin(bytes);
 		businessProcess.setDescription("EPM Process");
 		businessProcess.setName("epm-process");
-		businessProcess.setType(BusinessProcessBinType.XML);
+		businessProcess.setType(DeploymentType.XML);
 
 		this.service.save(businessProcess);
 		System.out.println(businessProcess);
@@ -60,12 +60,12 @@ public class BusinessProcessServiceTest {
 		File file = new File("/home/lourival/workspaces/workspace-activiti/activiti/src/main/resources/diagrams/MyProcess.bpmn");
 		byte[] bytes = IO.toByteArray(file);
 
-		BusinessProcess businessProcess = new BusinessProcess();
+		Process businessProcess = new Process();
 		businessProcess.setActive(Boolean.TRUE);
 		businessProcess.setBin(bytes);
 		businessProcess.setDescription("My Process");
 		businessProcess.setName("MyProcess");
-		businessProcess.setType(BusinessProcessBinType.XML);
+		businessProcess.setType(DeploymentType.XML);
 
 		this.service.save(businessProcess);
 		System.out.println(businessProcess);

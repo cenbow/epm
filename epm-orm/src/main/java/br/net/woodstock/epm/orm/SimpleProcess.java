@@ -37,7 +37,7 @@ public class SimpleProcess extends AbstractIntegerEntity {
 	private Boolean							active;
 
 	@ManyToMany(mappedBy = "simpleProcess", fetch = FetchType.LAZY, cascade = { CascadeType.REFRESH })
-	private Set<BusinessProcessInstance>	processInstances;
+	private Set<ProcessInstance>	processInstances;
 
 	public SimpleProcess() {
 		super();
@@ -74,11 +74,11 @@ public class SimpleProcess extends AbstractIntegerEntity {
 		this.active = active;
 	}
 
-	public Set<BusinessProcessInstance> getProcessInstances() {
+	public Set<ProcessInstance> getProcessInstances() {
 		return this.processInstances;
 	}
 
-	public void setProcessInstances(final Set<BusinessProcessInstance> processInstances) {
+	public void setProcessInstances(final Set<ProcessInstance> processInstances) {
 		this.processInstances = processInstances;
 	}
 

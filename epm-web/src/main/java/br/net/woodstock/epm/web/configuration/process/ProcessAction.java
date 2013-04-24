@@ -7,9 +7,9 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
-import br.net.woodstock.epm.orm.BusinessProcess;
+import br.net.woodstock.epm.orm.Process;
 import br.net.woodstock.epm.orm.User;
-import br.net.woodstock.epm.process.api.BusinessProcessService;
+import br.net.woodstock.epm.process.api.ProcessService;
 import br.net.woodstock.epm.web.AbstractAction;
 import br.net.woodstock.epm.web.WebConstants;
 import br.net.woodstock.rockframework.core.utils.IO;
@@ -20,18 +20,18 @@ import br.net.woodstock.rockframework.web.faces.primefaces.EntityDataModel;
 
 @Controller
 @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
-public class BusinessProcessAction extends AbstractAction {
+public class ProcessAction extends AbstractAction {
 
-	private static final long		serialVersionUID	= -3462021569529103583L;
+	private static final long	serialVersionUID	= -3462021569529103583L;
 
 	@Autowired(required = true)
-	private BusinessProcessService	businessProcessService;
+	private ProcessService		processService;
 
-	public BusinessProcessAction() {
+	public ProcessAction() {
 		super();
 	}
 
-	public boolean edit(final BusinessProcess businessProcess, final BusinessProcessForm form) {
+	public boolean edit(final Process businessProcess, final ProcessForm form) {
 		if (businessProcess != null) {
 			form.setActive(businessProcess.getActive());
 			form.setDescription(businessProcess.getDescription());
@@ -43,8 +43,8 @@ public class BusinessProcessAction extends AbstractAction {
 		return false;
 	}
 
-	public void save(final BusinessProcessForm form) throws IOException {
-		BusinessProcess businessProcess = new BusinessProcess();
+	public void save(final ProcessForm form) throws IOException {
+		Process businessProcess = new Process();
 		businessProcess.setActive(form.getActive());
 		businessProcess.setDescription(form.getDescription());
 		businessProcess.setId(form.getId());
@@ -52,30 +52,30 @@ public class BusinessProcessAction extends AbstractAction {
 		businessProcess.setType(form.getType());
 
 		businessProcess.setBin(IO.toByteArray(form.getFile()));
-		
+
 		if (businessProcess.getId() != null) {
 			// this.businessProcessService.update(businessProcess);
 		} else {
-			this.businessProcessService.save(businessProcess);
+			this.processService.save(businessProcess);
 			form.reset();
 		}
 
 		this.addFacesMessage(this.getMessageOK());
 	}
 
-	public EntityDataModel<User> search(final BusinessProcessSearch search) {
+	public EntityDataModel<User> search(final ProcessSearch search) {
 		EntityRepository repository = new EntityRepository() {
 
 			private static final long	serialVersionUID	= -7098011024917168622L;
 
 			@Override
 			public ORMResult getResult(final Page page) {
-				return BusinessProcessAction.this.getBusinessProcessService().listBusinessProcessByName(search.getName(), page);
+				return ProcessAction.this.getBusinessProcessService().listBusinessProcessByName(search.getName(), page);
 			}
 
 			@Override
 			public Object getEntity(final Object id) {
-				return BusinessProcessAction.this.getBusinessProcessService().getBusinessProcessById((Integer) id);
+				return ProcessAction.this.getBusinessProcessService().getBusinessProcessById((Integer) id);
 			}
 
 		};
@@ -84,8 +84,8 @@ public class BusinessProcessAction extends AbstractAction {
 		return users;
 	}
 
-	protected BusinessProcessService getBusinessProcessService() {
-		return this.businessProcessService;
+	protected ProcessService getBusinessProcessService() {
+		return this.processService;
 	}
 
 }

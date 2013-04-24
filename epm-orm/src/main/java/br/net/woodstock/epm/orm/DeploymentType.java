@@ -1,6 +1,6 @@
 package br.net.woodstock.epm.orm;
 
-public enum BusinessProcessBinType {
+public enum DeploymentType {
 
 	XML, ZIP;
 

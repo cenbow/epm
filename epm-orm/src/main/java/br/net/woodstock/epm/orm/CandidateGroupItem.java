@@ -17,21 +17,21 @@ import org.hibernate.search.annotations.Indexed;
 import br.net.woodstock.rockframework.domain.persistence.AbstractIntegerEntity;
 
 @Entity
-@Table(name = "epm_business_group_item")
+@Table(name = "epm_candidate_group_item")
 @Indexed
-public class BusinessGroupItem extends AbstractIntegerEntity {
+public class CandidateGroupItem extends AbstractIntegerEntity {
 
 	private static final long	serialVersionUID	= -4698111874290305730L;
 
 	@Id
-	@Column(name = "business_group_item_id")
+	@Column(name = "candidate_group_item_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer				id;
 
 	@ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
-	@JoinColumn(name = "business_group_id", referencedColumnName = "business_group_id", nullable = false)
+	@JoinColumn(name = "candidate_group_id", referencedColumnName = "candidate_group_id", nullable = false)
 	@NotNull
-	private BusinessGroup		group;
+	private CandidateGroup		candidateGroup;
 
 	@ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
 	@JoinColumn(name = "role_id", referencedColumnName = "role_id", nullable = false)
@@ -43,11 +43,11 @@ public class BusinessGroupItem extends AbstractIntegerEntity {
 	@NotNull
 	private DepartmentSkell		departmentSkell;
 
-	public BusinessGroupItem() {
+	public CandidateGroupItem() {
 		super();
 	}
 
-	public BusinessGroupItem(final Integer id) {
+	public CandidateGroupItem(final Integer id) {
 		super();
 		this.id = id;
 	}
@@ -62,12 +62,12 @@ public class BusinessGroupItem extends AbstractIntegerEntity {
 		this.id = id;
 	}
 
-	public BusinessGroup getSwimlane() {
-		return this.group;
+	public CandidateGroup getCandidateGroup() {
+		return this.candidateGroup;
 	}
 
-	public void setSwimlane(final BusinessGroup group) {
-		this.group = group;
+	public void setCandidateGroup(final CandidateGroup candidateGroup) {
+		this.candidateGroup = candidateGroup;
 	}
 
 	public Role getRole() {

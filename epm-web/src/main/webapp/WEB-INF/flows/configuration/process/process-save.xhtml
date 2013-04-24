@@ -6,11 +6,11 @@
 	<ui:define name="content">
 		<h:form id="formEdit" prependId="false" enctype="multipart/form-data">
 			<div>
-				<p:panel header="#{messages['label.process']}" style="width: 500px; margin: auto;">
+				<p:panel header="#{messages['label.process']}" style="width: 600px; margin: auto;">
 					<table style="width: 100%;">
 						<tr>
-							<td style="width: 25%;"><h:outputText value="#{messages['label.name']}" /> : </td>
-							<td style="width: 75%;">
+							<td style="width: 20%;"><h:outputText value="#{messages['label.name']}" /> : </td>
+							<td style="width: 80%;">
 								<p:inputText id="name" value="#{businessProcessForm.name}" size="30" maxlength="100" required="true">
 									<f:validateLength minimum="3" maximum="100" />
 								</p:inputText>
@@ -27,7 +27,7 @@
 						<tr>
 							<td><h:outputText value="#{messages['label.file']}" /> : </td>
 							<td>
-								<p:fileUpload id="file" fileUploadListener="#{businessProcessForm.onFileUpload}" allowTypes="/(\.|\/)(xml|bpmn)$/" auto="true" update=":formEdit:fileName :formEdit:btnSave" />
+								<p:fileUpload id="file" fileUploadListener="#{businessProcessForm.onFileUpload}" allowTypes="/(\.|\/)(xml|bpmn)$/" update=":formEdit:fileName :formEdit:btnSave" />
 								<br />
 								<h:outputText id="fileName" value="#{businessProcessForm.fileName}" />
 							</td>

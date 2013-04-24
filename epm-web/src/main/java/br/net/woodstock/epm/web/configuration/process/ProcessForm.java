@@ -5,30 +5,30 @@ import java.io.IOException;
 
 import org.primefaces.event.FileUploadEvent;
 
-import br.net.woodstock.epm.orm.BusinessProcessBinType;
+import br.net.woodstock.epm.orm.DeploymentType;
 import br.net.woodstock.epm.web.AbstractForm;
 import br.net.woodstock.rockframework.core.utils.Files;
 import br.net.woodstock.rockframework.core.utils.IO;
 
-public class BusinessProcessForm extends AbstractForm {
+public class ProcessForm extends AbstractForm {
 
-	private static final long		serialVersionUID	= 6243763629739870386L;
+	private static final long	serialVersionUID	= 6243763629739870386L;
 
-	private Integer					id;
+	private Integer				id;
 
-	private String					name;
+	private String				name;
 
-	private String					description;
+	private String				description;
 
-	private Boolean					active;
+	private Boolean				active;
 
-	private BusinessProcessBinType	type;
+	private DeploymentType		type;
 
-	private File					file;
+	private File				file;
 
-	private String					fileName;
+	private String				fileName;
 
-	public BusinessProcessForm() {
+	public ProcessForm() {
 		super();
 	}
 
@@ -75,11 +75,11 @@ public class BusinessProcessForm extends AbstractForm {
 		this.active = active;
 	}
 
-	public BusinessProcessBinType getType() {
+	public DeploymentType getType() {
 		return this.type;
 	}
 
-	public void setType(final BusinessProcessBinType type) {
+	public void setType(final DeploymentType type) {
 		this.type = type;
 	}
 

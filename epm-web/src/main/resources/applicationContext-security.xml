@@ -22,14 +22,16 @@
 			always-use-default-target="true" authentication-failure-url="/spring/error" />
 		<security:logout logout-success-url="/spring/logon" />
 		<security:intercept-url pattern="/spring/logon" access="IS_AUTHENTICATED_ANONYMOUSLY" />
-		<security:intercept-url pattern="/spring/no-access" access="IS_AUTHENTICATED_ANONYMOUSLY" />
 		<!-- Resources -->
 		<security:intercept-url pattern="/javax.faces.resource/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
 		<security:intercept-url pattern="/resources/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
 		<security:intercept-url pattern="/spring/javax.faces.resource/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
 		<security:intercept-url pattern="/spring/resource/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
 		<!-- Test -->
-		<security:intercept-url pattern="/test/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />			
+		<security:intercept-url pattern="/test/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+		<!-- Error -->
+		<security:intercept-url pattern="/spring/error" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+		<security:intercept-url pattern="/spring/no-access" access="IS_AUTHENTICATED_ANONYMOUSLY" />			
 		<!-- App -->
 		<security:intercept-url pattern="/**" access="ROLE_ANY" />
 	</security:http>

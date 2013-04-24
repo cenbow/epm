@@ -21,53 +21,53 @@ import javax.validation.constraints.Size;
 import br.net.woodstock.rockframework.domain.persistence.AbstractIntegerEntity;
 
 @Entity
-@Table(name = "epm_business_process")
-public class BusinessProcess extends AbstractIntegerEntity {
+@Table(name = "epm_process")
+public class Process extends AbstractIntegerEntity {
 
-	private static final long		serialVersionUID	= 6261267274337111940L;
+	private static final long	serialVersionUID	= 6261267274337111940L;
 
 	@Id
-	@Column(name = "business_process_id")
+	@Column(name = "process_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer					id;
+	private Integer				id;
 
 	@Column(name = "process_definition_id", length = 100, nullable = false)
 	@NotNull
 	@Size(min = 1, max = 100)
-	private String					processDefinition;
+	private String				processDefinition;
 
-	@Column(name = "business_process_name", length = 30, nullable = false, unique = true)
+	@Column(name = "process_name", length = 30, nullable = false, unique = true)
 	@NotNull
 	@Size(min = 1, max = 30)
-	private String					name;
+	private String				name;
 
-	@Column(name = "business_process_description", length = 100, nullable = true)
+	@Column(name = "process_description", length = 100, nullable = true)
 	@Size(min = 1, max = 100)
-	private String					description;
+	private String				description;
 
-	@Column(name = "business_process_status", nullable = false, columnDefinition = "BIT")
+	@Column(name = "process_status", nullable = false, columnDefinition = "BIT")
 	@NotNull
-	private Boolean					active;
+	private Boolean				active;
 
-	@Column(name = "business_process_bin_type", nullable = false)
+	@Column(name = "deployment_type", nullable = false)
 	@NotNull
 	@Enumerated(EnumType.ORDINAL)
-	private BusinessProcessBinType	type;
+	private DeploymentType		type;
 
-	@Column(name = "business_process_bin", nullable = false)
+	@Column(name = "process_bin", nullable = false)
 	@NotNull
 	@Lob
 	@Basic(optional = false, fetch = FetchType.LAZY)
-	private byte[]					bin;
+	private byte[]				bin;
 
-	@ManyToMany(mappedBy = "businessProcess", fetch = FetchType.LAZY, cascade = { CascadeType.REFRESH })
-	private Set<BusinessGroup>		groups;
+	@ManyToMany(mappedBy = "process", fetch = FetchType.LAZY, cascade = { CascadeType.REFRESH })
+	private Set<Task>			tasks;
 
-	public BusinessProcess() {
+	public Process() {
 		super();
 	}
 
-	public BusinessProcess(final Integer id) {
+	public Process(final Integer id) {
 		super();
 		this.id = id;
 	}
@@ -114,11 +114,11 @@ public class BusinessProcess extends AbstractIntegerEntity {
 		this.active = active;
 	}
 
-	public BusinessProcessBinType getType() {
+	public DeploymentType getType() {
 		return this.type;
 	}
 
-	public void setType(final BusinessProcessBinType type) {
+	public void setType(final DeploymentType type) {
 		this.type = type;
 	}
 
@@ -130,12 +130,12 @@ public class BusinessProcess extends AbstractIntegerEntity {
 		this.bin = bin;
 	}
 
-	public Set<BusinessGroup> getGroups() {
-		return this.groups;
+	public Set<Task> getTasks() {
+		return this.tasks;
 	}
 
-	public void setGroups(final Set<BusinessGroup> groups) {
-		this.groups = groups;
+	public void setTasks(final Set<Task> tasks) {
+		this.tasks = tasks;
 	}
 
 }

@@ -13,14 +13,14 @@ import br.net.woodstock.epm.bpmn2.beans.Process;
 import br.net.woodstock.epm.bpmn2.beans.StartEvent;
 import br.net.woodstock.epm.bpmn2.beans.Task;
 import br.net.woodstock.epm.bpmn2.beans.Transition;
-import br.net.woodstock.epm.process.api.BusinessProcessService;
+import br.net.woodstock.epm.process.api.ProcessService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:applicationContext-test.xml" })
 public class ProcessBuilderTest {
 
 	@Autowired(required = true)
-	private BusinessProcessService	service;
+	private ProcessService	service;
 
 	public ProcessBuilderTest() {
 		super();

@@ -19,34 +19,34 @@ import javax.validation.constraints.Size;
 import br.net.woodstock.rockframework.domain.persistence.AbstractIntegerEntity;
 
 @Entity
-@Table(name = "epm_business_group")
-public class BusinessGroup extends AbstractIntegerEntity {
+@Table(name = "epm_candidate_group")
+public class CandidateGroup extends AbstractIntegerEntity {
 
 	private static final long		serialVersionUID	= 2080523447660931952L;
 
 	@Id
-	@Column(name = "business_group_id")
+	@Column(name = "candidate_group_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer					id;
 
-	@Column(name = "business_group_name", length = 50, nullable = false, unique = true)
+	@Column(name = "candidate_group_name", length = 50, nullable = false, unique = true)
 	@NotNull
 	@Size(min = 1, max = 50)
 	private String					name;
 
 	@ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
-	@JoinColumn(name = "business_process_id", referencedColumnName = "business_process_id", nullable = false)
+	@JoinColumn(name = "task_id", referencedColumnName = "task_id", nullable = false)
 	@NotNull
-	private BusinessProcess			businessProcess;
+	private Task					task;
 
-	@OneToMany(mappedBy = "group", fetch = FetchType.LAZY, cascade = { CascadeType.REFRESH })
-	private Set<BusinessGroupItem>	items;
+	@OneToMany(mappedBy = "candidateGroup", fetch = FetchType.LAZY, cascade = { CascadeType.REFRESH })
+	private Set<CandidateGroupItem>	items;
 
-	public BusinessGroup() {
+	public CandidateGroup() {
 		super();
 	}
 
-	public BusinessGroup(final Integer id) {
+	public CandidateGroup(final Integer id) {
 		super();
 		this.id = id;
 	}
@@ -69,19 +69,19 @@ public class BusinessGroup extends AbstractIntegerEntity {
 		this.name = name;
 	}
 
-	public BusinessProcess getBusinessProcess() {
-		return this.businessProcess;
+	public Task getTask() {
+		return this.task;
 	}
 
-	public void setBusinessProcess(final BusinessProcess businessProcess) {
-		this.businessProcess = businessProcess;
+	public void setTask(final Task task) {
+		this.task = task;
 	}
 
-	public Set<BusinessGroupItem> getItems() {
+	public Set<CandidateGroupItem> getItems() {
 		return this.items;
 	}
 
-	public void setItems(final Set<BusinessGroupItem> items) {
+	public void setItems(final Set<CandidateGroupItem> items) {
 		this.items = items;
 	}
 

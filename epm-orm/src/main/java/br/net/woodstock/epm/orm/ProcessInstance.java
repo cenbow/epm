@@ -1,5 +1,7 @@
 package br.net.woodstock.epm.orm;
 
+import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -16,44 +19,43 @@ import javax.validation.constraints.Size;
 import br.net.woodstock.rockframework.domain.persistence.AbstractIntegerEntity;
 
 @Entity
-@Table(name = "epm_business_process_instance")
-public class BusinessProcessInstance extends AbstractIntegerEntity {
+@Table(name = "epm_process_instance")
+public class ProcessInstance extends AbstractIntegerEntity {
 
 	private static final long	serialVersionUID	= -6971991870020680931L;
 
 	@Id
-	@Column(name = "business_process_instance_id")
+	@Column(name = "process_instance_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer				id;
 
-	@Column(name = "business_process_instance_name", length = 30, nullable = false, unique = true)
+	@Column(name = "process_instance_ref", length = 100, nullable = false, unique = true)
 	@NotNull
-	@Size(min = 1, max = 30)
-	private String				name;
-
-	@Column(name = "business_process_instance_description", length = 100, nullable = true)
 	@Size(min = 1, max = 100)
-	private String				description;
+	private String				processInstanceId;
 
-	@Column(name = "business_process_instance_status", nullable = false, columnDefinition = "BIT")
+	@Column(name = "process_instance_status", nullable = false, columnDefinition = "BIT")
 	@NotNull
 	private Boolean				active;
 
 	@ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
-	@JoinColumn(name = "business_process_id", referencedColumnName = "business_process_id", nullable = false)
+	@JoinColumn(name = "process_id", referencedColumnName = "process_id", nullable = false)
 	@NotNull
-	private BusinessProcess		businessProcess;
+	private Process				process;
 
 	@ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
 	@JoinColumn(name = "simple_process_id", referencedColumnName = "simple_process_id", nullable = false)
 	@NotNull
 	private SimpleProcess		simpleProcess;
 
-	public BusinessProcessInstance() {
+	@ManyToMany(mappedBy = "processInstance", fetch = FetchType.LAZY, cascade = { CascadeType.REFRESH })
+	private Set<TaskInstance>	taskInstances;
+
+	public ProcessInstance() {
 		super();
 	}
 
-	public BusinessProcessInstance(final Integer id) {
+	public ProcessInstance(final Integer id) {
 		super();
 		this.id = id;
 	}
@@ -68,20 +70,12 @@ public class BusinessProcessInstance extends AbstractIntegerEntity {
 		this.id = id;
 	}
 
-	public String getName() {
-		return this.name;
+	public String getProcessInstanceId() {
+		return this.processInstanceId;
 	}
 
-	public void setName(final String name) {
-		this.name = name;
-	}
-
-	public String getDescription() {
-		return this.description;
-	}
-
-	public void setDescription(final String description) {
-		this.description = description;
+	public void setProcessInstanceId(final String processInstanceId) {
+		this.processInstanceId = processInstanceId;
 	}
 
 	public Boolean getActive() {
@@ -92,12 +86,12 @@ public class BusinessProcessInstance extends AbstractIntegerEntity {
 		this.active = active;
 	}
 
-	public BusinessProcess getBusinessProcess() {
-		return this.businessProcess;
+	public Process getProcess() {
+		return this.process;
 	}
 
-	public void setBusinessProcess(final BusinessProcess businessProcess) {
-		this.businessProcess = businessProcess;
+	public void setProcess(final Process process) {
+		this.process = process;
 	}
 
 	public SimpleProcess getSimpleProcess() {
@@ -106,6 +100,14 @@ public class BusinessProcessInstance extends AbstractIntegerEntity {
 
 	public void setSimpleProcess(final SimpleProcess simpleProcess) {
 		this.simpleProcess = simpleProcess;
+	}
+
+	public Set<TaskInstance> getTaskInstances() {
+		return this.taskInstances;
+	}
+
+	public void setTaskInstances(final Set<TaskInstance> taskInstances) {
+		this.taskInstances = taskInstances;
 	}
 
 }
