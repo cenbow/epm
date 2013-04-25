@@ -9,8 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import br.net.woodstock.epm.orm.Process;
 import br.net.woodstock.epm.orm.DeploymentType;
+import br.net.woodstock.epm.orm.Process;
 import br.net.woodstock.epm.process.api.ProcessService;
 import br.net.woodstock.rockframework.core.utils.IO;
 
@@ -25,7 +25,7 @@ public class LoopProcessServiceTest {
 		super();
 	}
 
-	// @Test
+	@Test
 	public void testAdd() throws Exception {
 		InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("loop-process.bpmn");
 		byte[] bytes = IO.toByteArray(inputStream);

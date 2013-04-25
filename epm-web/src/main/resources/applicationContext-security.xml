@@ -7,7 +7,7 @@
 
 	<bean id="AuthenticationProvider" class="br.net.woodstock.epm.web.security.EPMAuthenticationProvider" />
 	
-	<bean id="AccessDecisionManager" class="org.springframework.security.access.vote.UnanimousBased">
+	<bean id="AccessDecisionManager" class="br.net.woodstock.epm.web.security.EPMAccessDecisionManager">
 		<constructor-arg>
 			<list>
 				<bean class="br.net.woodstock.epm.web.security.EPMAccessDecisionVoter" />
@@ -31,7 +31,9 @@
 		<security:intercept-url pattern="/test/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
 		<!-- Error -->
 		<security:intercept-url pattern="/spring/error" access="IS_AUTHENTICATED_ANONYMOUSLY" />
-		<security:intercept-url pattern="/spring/no-access" access="IS_AUTHENTICATED_ANONYMOUSLY" />			
+		<security:intercept-url pattern="/spring/no-access" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+		<!-- Index -->
+		<security:intercept-url pattern="/spring/index" access="IS_AUTHENTICATED_FULLY" />
 		<!-- App -->
 		<security:intercept-url pattern="/**" access="ROLE_ANY" />
 	</security:http>

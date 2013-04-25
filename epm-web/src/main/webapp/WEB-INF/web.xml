@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee"
-	xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
 	id="WebApp_ID" version="3.0">
 
 	<display-name>epm</display-name>
@@ -36,6 +37,17 @@
 		<param-value>server</param-value>
 	</context-param>
 
+	<!-- Primefaces -->
+	<filter>
+		<filter-name>PrimeFaces FileUpload Filter</filter-name>
+		<filter-class>org.primefaces.webapp.filter.FileUploadFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>PrimeFaces FileUpload Filter</filter-name>
+		<!-- <servlet-name>Faces Servlet</servlet-name> -->
+		<servlet-name>Spring MVC Dispatcher Servlet</servlet-name>
+	</filter-mapping>
+
 	<!-- Spring -->
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
@@ -44,7 +56,7 @@
 		<param-name>contextConfigLocation</param-name>
 		<param-value>classpath:applicationContext-web.xml</param-value>
 	</context-param>
-	
+
 	<filter>
 		<filter-name>spring</filter-name>
 		<filter-class>org.springframework.web.filter.RequestContextFilter</filter-class>
@@ -57,7 +69,7 @@
 		<filter-name>spring</filter-name>
 		<servlet-name>Spring MVC Dispatcher Servlet</servlet-name>
 	</filter-mapping>
-	
+
 	<filter>
 		<filter-name>entityManagerFilter</filter-name>
 		<filter-class>org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter</filter-class>
@@ -70,7 +82,7 @@
 		<filter-name>entityManagerFilter</filter-name>
 		<servlet-name>Spring MVC Dispatcher Servlet</servlet-name>
 	</filter-mapping>
-	
+
 	<filter>
 		<filter-name>springSecurityFilterChain</filter-name>
 		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
@@ -79,7 +91,7 @@
 		<filter-name>springSecurityFilterChain</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
-	
+
 	<servlet>
 		<servlet-name>Spring MVC Dispatcher Servlet</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>

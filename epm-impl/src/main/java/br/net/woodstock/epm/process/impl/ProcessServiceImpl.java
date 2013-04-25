@@ -47,11 +47,11 @@ public class ProcessServiceImpl implements ProcessService {
 
 	private static final long			serialVersionUID			= -5930737454047853423L;
 
-	private static final String			JPQL_GET_PROCESS_BY_NAME	= "SELECT b FROM BusinessProcess AS b WHERE b.name = :name";
+	private static final String			JPQL_GET_PROCESS_BY_NAME	= "SELECT p FROM Process AS p WHERE p.name = :name";
 
-	private static final String			JPQL_LIST_PROCESS_BY_NAME	= "SELECT b FROM BusinessProcess AS b WHERE b.name LIKE :name ORDER BY b.name";
+	private static final String			JPQL_LIST_PROCESS_BY_NAME	= "SELECT p FROM Process AS p WHERE p.name LIKE :name ORDER BY p.name";
 
-	private static final String			JPQL_COUNT_PROCESS_BY_NAME	= "SELECT COUNT(*) FROM BusinessProcess AS b WHERE b.name LIKE :name";
+	private static final String			JPQL_COUNT_PROCESS_BY_NAME	= "SELECT COUNT(*) FROM Process AS p WHERE p.name LIKE :name";
 
 	private static final String			ALL_PATTERN					= "%";
 
@@ -134,7 +134,6 @@ public class ProcessServiceImpl implements ProcessService {
 
 			this.repository.save(process);
 
-			Map<String, CandidateGroup> groups = new HashMap<String, CandidateGroup>();
 			for (Entry<String, TaskDefinition> entry : taskMap.entrySet()) {
 				TaskDefinition taskDefinition = entry.getValue();
 
@@ -142,7 +141,8 @@ public class ProcessServiceImpl implements ProcessService {
 				task.setProcess(process);
 				task.setName(taskDefinition.getNameExpression().getExpressionText());
 				this.repository.save(task);
-
+				
+				Map<String, CandidateGroup> groups = new HashMap<String, CandidateGroup>();
 				for (Expression e : taskDefinition.getCandidateGroupIdExpressions()) {
 					String group = e.getExpressionText();
 					if (!groups.containsKey(group)) {

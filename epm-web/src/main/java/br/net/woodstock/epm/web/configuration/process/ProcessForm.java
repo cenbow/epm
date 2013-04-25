@@ -30,6 +30,7 @@ public class ProcessForm extends AbstractForm {
 
 	public ProcessForm() {
 		super();
+		this.type = DeploymentType.XML;
 	}
 
 	@Override
@@ -40,7 +41,7 @@ public class ProcessForm extends AbstractForm {
 		this.setFileName(null);
 		this.setId(null);
 		this.setName(null);
-		this.setType(null);
+		//this.setType(null);
 	}
 
 	public Integer getId() {

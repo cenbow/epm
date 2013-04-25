@@ -11,7 +11,7 @@
 						<tr>
 							<td style="width: 25%;"><h:outputText value="#{messages['label.name']}" /> : </td>
 							<td style="width: 75%;">
-								<p:inputText value="#{businessProcessSearch.name}" size="30" maxlength="100" />
+								<p:inputText value="#{processSearch.name}" size="30" maxlength="100" />
 							</td>
 						</tr>
 						<tr>
@@ -23,7 +23,7 @@
 					</table>					
 				</p:panel>
 				<br />
-				<p:dataTable value="#{businessProcessList}" var="r" rows="#{webConstants.pageSize}" paginator="true" style="width: 500px; margin: auto;" rendered="#{not empty businessProcessList}" first="#{businessProcessSearch.firstRow}" emptyMessage="Na Data Found" lazy="true" selectionMode="single" selection="#{flowScope.selectedBusinessProcess}">
+				<p:dataTable value="#{processList}" var="r" rows="#{webConstants.pageSize}" paginator="true" style="width: 500px; margin: auto;" rendered="#{not empty processList}" first="#{processSearch.firstRow}" emptyMessage="Na Data Found" lazy="true" selectionMode="single" selection="#{flowScope.selectedBusinessProcess}">
 					<p:column>
 						<f:facet name="header">
 							<h:outputText value="#{messages['label.name']}" />
@@ -41,7 +41,7 @@
 							<h:outputText value="#{messages['label.action']}" />
 						</f:facet>
 						<p:commandButton alt="Edit" title="#{messages['label.edit']}" action="edit" ajax="false" icon="ui-icon-pencil">
-							<f:setPropertyActionListener target="#{businessProcessSearch.selectedIndex}" value="#{businessProcessList.rowIndex}" />
+							<f:setPropertyActionListener target="#{processSearch.selectedIndex}" value="#{processList.rowIndex}" />
 						</p:commandButton>
 					</p:column>
 				</p:dataTable>

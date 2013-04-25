@@ -11,7 +11,7 @@
 						<tr>
 							<td style="width: 20%;"><h:outputText value="#{messages['label.name']}" /> : </td>
 							<td style="width: 80%;">
-								<p:inputText id="name" value="#{businessProcessForm.name}" size="30" maxlength="100" required="true">
+								<p:inputText id="name" value="#{processForm.name}" size="30" maxlength="100" required="true">
 									<f:validateLength minimum="3" maximum="100" />
 								</p:inputText>
 							</td>
@@ -19,30 +19,30 @@
 						<tr>
 							<td><h:outputText value="#{messages['label.description']}" /> : </td>
 							<td>
-								<p:inputText id="abbreviation" value="#{businessProcessForm.description}" size="50" maxlength="100" required="true">
+								<p:inputText id="abbreviation" value="#{processForm.description}" size="50" maxlength="100" required="true">
 									<f:validateLength minimum="3" maximum="100" />
 								</p:inputText>
 							</td>
 						</tr>
 						<tr>
-							<td><h:outputText value="#{messages['label.file']}" /> : </td>
+							<td style="vertical-align: top;"><h:outputText value="#{messages['label.file']}" /> : </td>
 							<td>
-								<p:fileUpload id="file" fileUploadListener="#{businessProcessForm.onFileUpload}" allowTypes="/(\.|\/)(xml|bpmn)$/" update=":formEdit:fileName :formEdit:btnSave" />
+								<p:fileUpload id="file" fileUploadListener="#{processForm.onFileUpload}" allowTypes="/(\.|\/)(xml|bpmn)$/" update=":formEdit:fileName :formEdit:btnSave" />
 								<br />
-								<h:outputText id="fileName" value="#{businessProcessForm.fileName}" />
+								<h:outputText id="fileName" value="#{processForm.fileName}" styleClass="msg" />
 							</td>
 						</tr>
-						<h:panelGroup rendered="#{businessProcessForm.id != null}">
+						<h:panelGroup rendered="#{processForm.id != null}">
 							<tr>
 								<td><h:outputText value="#{messages['label.active']}" /> : </td>
 								<td>
-									<p:selectBooleanCheckbox id="active" value="#{businessProcessForm.active}" />
+									<p:selectBooleanCheckbox id="active" value="#{processForm.active}" />
 								</td>
 							</tr>
 						</h:panelGroup>
 						<tr>
 							<td colspan="2" style="text-align: center;">
-								<p:commandButton id="btnSave" value="#{messages['label.save']}" action="save" ajax="false" disabled="#{businessProcessForm.file == null}" />
+								<p:commandButton id="btnSave" value="#{messages['label.save']}" action="save" ajax="false" disabled="#{processForm.file == null}" />
 								<p:commandButton value="#{messages['label.back']}" action="cancel" immediate="true" ajax="false"/>			
 							</td>
 						</tr>
