@@ -26,7 +26,7 @@ public class InsertAdminTest {
 		super();
 	}
 
-	// @Test
+	//@Test
 	public void testRole() throws Exception {
 		Role role = new Role();
 		role.setActive(Boolean.TRUE);
@@ -35,7 +35,7 @@ public class InsertAdminTest {
 		this.securityService.saveRole(role);
 	}
 
-	// @Test
+	//@Test
 	public void testUser() throws Exception {
 		User user = new User();
 		user.setActive(Boolean.TRUE);
@@ -47,7 +47,7 @@ public class InsertAdminTest {
 		this.securityService.saveUser(user);
 	}
 
-	// @Test
+	//@Test
 	public void testUserRole() throws Exception {
 		User user = new User(Integer.valueOf(1));
 		Role role = new Role(Integer.valueOf(1));
@@ -78,8 +78,12 @@ public class InsertAdminTest {
 		Resource resource5 = new Resource();
 		resource5.setName("/spring/security/resource");
 		this.securityService.saveResource(resource5);
+		
+		Resource resource6 = new Resource();
+		resource5.setName("/spring/configuration/process");
+		this.securityService.saveResource(resource6);
 
-		this.securityService.setRoleResources(new Role(Integer.valueOf(1)), new Resource[] { resource1, resource2, resource3, resource4, resource5 });
+		this.securityService.setRoleResources(new Role(Integer.valueOf(1)), new Resource[] { resource1, resource2, resource3, resource4, resource5, resource6 });
 	}
 
 	// @Test
@@ -88,7 +92,7 @@ public class InsertAdminTest {
 		System.out.println(user.getName());
 	}
 
-	@Test
+	// @Test
 	public void testListUser() throws Exception {
 		ORMResult result = this.securityService.listUsersByName("admin", null);
 		Collection<User> users = result.getItems();

@@ -119,38 +119,39 @@ public class ProcessServiceImpl implements ProcessService {
 			Deployment deployment = builder.deploy();
 
 			ProcessDefinitionQuery query = this.engine.getRepositoryService().createProcessDefinitionQuery().deploymentId(deployment.getId());
-			ProcessDefinition processDefinition = query.singleResult();
+			List<ProcessDefinition> list = query.list();
+			for (ProcessDefinition processDefinition : list) {
+				ProcessDefinitionEntity processDefinitionEntity = (ProcessDefinitionEntity) ((RepositoryServiceImpl) this.engine.getRepositoryService()).getDeployedProcessDefinition(processDefinition.getId());
 
-			ProcessDefinitionEntity processDefinitionEntity = (ProcessDefinitionEntity) ((RepositoryServiceImpl) this.engine.getRepositoryService()).getDeployedProcessDefinition(processDefinition.getId());
+				processDefinitionEntity.addExecutionListener(ExecutionListener.EVENTNAME_START, this.startEventExecutionListener);
+				processDefinitionEntity.addExecutionListener(ExecutionListener.EVENTNAME_END, this.endEventExecutionListener);
+				processDefinitionEntity.addExecutionListener(ExecutionListener.EVENTNAME_TAKE, this.takeEventExecutionListener);
 
-			processDefinitionEntity.addExecutionListener(ExecutionListener.EVENTNAME_START, this.startEventExecutionListener);
-			processDefinitionEntity.addExecutionListener(ExecutionListener.EVENTNAME_END, this.endEventExecutionListener);
-			processDefinitionEntity.addExecutionListener(ExecutionListener.EVENTNAME_TAKE, this.takeEventExecutionListener);
+				Map<String, TaskDefinition> taskMap = processDefinitionEntity.getTaskDefinitions();
 
-			Map<String, TaskDefinition> taskMap = processDefinitionEntity.getTaskDefinitions();
+				process.setProcessDefinition(processDefinition.getId());
+				process.setActive(Boolean.TRUE);
 
-			process.setProcessDefinition(processDefinition.getId());
-			process.setActive(Boolean.TRUE);
+				this.repository.save(process);
 
-			this.repository.save(process);
+				for (Entry<String, TaskDefinition> entry : taskMap.entrySet()) {
+					TaskDefinition taskDefinition = entry.getValue();
 
-			for (Entry<String, TaskDefinition> entry : taskMap.entrySet()) {
-				TaskDefinition taskDefinition = entry.getValue();
+					Task task = new Task();
+					task.setProcess(process);
+					task.setName(taskDefinition.getNameExpression().getExpressionText());
+					this.repository.save(task);
 
-				Task task = new Task();
-				task.setProcess(process);
-				task.setName(taskDefinition.getNameExpression().getExpressionText());
-				this.repository.save(task);
-				
-				Map<String, CandidateGroup> groups = new HashMap<String, CandidateGroup>();
-				for (Expression e : taskDefinition.getCandidateGroupIdExpressions()) {
-					String group = e.getExpressionText();
-					if (!groups.containsKey(group)) {
-						CandidateGroup cg = new CandidateGroup();
-						cg.setTask(task);
-						cg.setName(group);
-						this.repository.save(cg);
-						groups.put(group, cg);
+					Map<String, CandidateGroup> groups = new HashMap<String, CandidateGroup>();
+					for (Expression e : taskDefinition.getCandidateGroupIdExpressions()) {
+						String group = e.getExpressionText();
+						if (!groups.containsKey(group)) {
+							CandidateGroup cg = new CandidateGroup();
+							cg.setTask(task);
+							cg.setName(group);
+							this.repository.save(cg);
+							groups.put(group, cg);
+						}
 					}
 				}
 			}
