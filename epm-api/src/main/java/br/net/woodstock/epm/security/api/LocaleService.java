@@ -1,7 +1,5 @@
 package br.net.woodstock.epm.security.api;
 
-import java.util.Collection;
-
 import br.net.woodstock.epm.orm.Department;
 import br.net.woodstock.epm.orm.DepartmentSkell;
 import br.net.woodstock.rockframework.domain.Service;
@@ -19,7 +17,7 @@ public interface LocaleService extends Service {
 
 	ORMResult listDepartmentsByName(String name, Page page);
 
-	Collection<Department> listRootDepartments();
+	ORMResult listRootDepartments(Page page);
 
 	// Department
 	DepartmentSkell getDepartmentSkellById(Integer id);
@@ -30,6 +28,6 @@ public interface LocaleService extends Service {
 
 	ORMResult listDepartmentSkellsByName(String name, Page page);
 
-	Collection<DepartmentSkell> listRootDepartmentSkells();
+	ORMResult listRootDepartmentSkells(Page page);
 
 }

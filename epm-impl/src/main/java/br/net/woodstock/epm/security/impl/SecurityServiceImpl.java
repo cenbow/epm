@@ -1,6 +1,5 @@
 package br.net.woodstock.epm.security.impl;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -47,6 +46,8 @@ public class SecurityServiceImpl implements SecurityService {
 
 	private static final String	JPQL_LIST_ROOT_ROLE				= "SELECT r FROM Role AS r WHERE r.parent IS NULL ORDER BY r.name";
 
+	private static final String	JPQL_COUNT_ROOT_ROLE			= "SELECT COUNT(*) FROM Role AS r WHERE r.parent IS NULL";
+
 	// USERROLE
 	private static final String	JPQL_LIST_USERROLE_BY_USER		= "SELECT ur FROM UserRole AS ur JOIN ur.user AS u JOIN ur.role AS r WHERE u.id = :id ORDER BY r.name";
 
@@ -56,6 +57,10 @@ public class SecurityServiceImpl implements SecurityService {
 	private static final String	JPQL_LIST_RESOURCE_BY_NAME		= "SELECT r FROM Resource AS r WHERE r.name LIKE :name ORDER BY r.name";
 
 	private static final String	JPQL_COUNT_RESOURCE_BY_NAME		= "SELECT COUNT(*) FROM Resource AS r WHERE r.name LIKE :name";
+
+	private static final String	JPQL_LIST_RESOURCE_BY_ROLE		= "SELECT r FROM Resource AS r JOIN r.roles AS rr WHERE rr.id = :roleId ORDER BY r.name";
+
+	private static final String	JPQL_COUNT_RESOURCE_BY_ROLE		= "SELECT COUNT(*) FROM Resource AS r JOIN r.roles AS rr WHERE rr.id = :roleId";
 
 	@Autowired(required = true)
 	private ORMRepository		repository;
@@ -213,10 +218,10 @@ public class SecurityServiceImpl implements SecurityService {
 	}
 
 	@Override
-	public Collection<Role> listRootRoles() {
+	public ORMResult listRootRoles(final Page page) {
 		try {
-			ORMFilter filter = ORMRepositoryHelper.toORMFilter(SecurityServiceImpl.JPQL_LIST_ROOT_ROLE);
-			return this.repository.getCollection(filter).getItems();
+			ORMFilter filter = ORMRepositoryHelper.toORMFilter(SecurityServiceImpl.JPQL_LIST_ROOT_ROLE, SecurityServiceImpl.JPQL_COUNT_ROOT_ROLE, page, null);
+			return this.repository.getCollection(filter);
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		}
@@ -312,6 +317,19 @@ public class SecurityServiceImpl implements SecurityService {
 			parameters.put("name", ORMRepositoryHelper.getLikeValue(name, false));
 
 			ORMFilter filter = ORMRepositoryHelper.toORMFilter(SecurityServiceImpl.JPQL_LIST_RESOURCE_BY_NAME, SecurityServiceImpl.JPQL_COUNT_RESOURCE_BY_NAME, page, parameters);
+			return this.repository.getCollection(filter);
+		} catch (Exception e) {
+			throw new ServiceException(e);
+		}
+	}
+
+	@Override
+	public ORMResult listResourcesByRole(final Integer id, final Page page) {
+		try {
+			Map<String, Object> parameters = new HashMap<String, Object>();
+			parameters.put("roleId", id);
+
+			ORMFilter filter = ORMRepositoryHelper.toORMFilter(SecurityServiceImpl.JPQL_LIST_RESOURCE_BY_ROLE, SecurityServiceImpl.JPQL_COUNT_RESOURCE_BY_ROLE, page, parameters);
 			return this.repository.getCollection(filter);
 		} catch (Exception e) {
 			throw new ServiceException(e);

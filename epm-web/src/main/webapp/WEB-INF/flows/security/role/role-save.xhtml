@@ -43,6 +43,7 @@
 						<tr>
 							<td colspan="2" style="text-align: center;">
 								<p:commandButton value="#{messages['label.save']}" action="save" ajax="false" />
+								<p:commandButton value="#{messages['label.resource']}" action="resource" ajax="false" immediate="true" rendered="#{roleForm.id != null}" />
 								<p:commandButton value="#{messages['label.back']}" action="cancel" immediate="true" ajax="false"/>			
 							</td>
 						</tr>

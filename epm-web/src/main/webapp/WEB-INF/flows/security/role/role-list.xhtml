@@ -23,7 +23,7 @@
 					</table>					
 				</p:panel>
 				<br />
-				<p:dataTable value="#{roleList}" var="role" rows="#{webConstants.pageSize}" paginator="true" style="width: 300px; margin: auto;" rendered="#{not empty roleList}" first="#{roleSearch.firstRow}" emptyMessage="Na Data Found" lazy="true" selectionMode="single" selection="#{flowScope.selectedRole}">
+				<p:dataTable value="#{roleList}" var="role" rows="#{webConstants.pageSize}" paginator="true" style="width: 300px; margin: auto;" rendered="#{not empty roleList}" first="#{roleSearch.firstRow}" emptyMessage="#{messages['msg.noData']}" lazy="true" selectionMode="single" selection="#{flowScope.selectedRole}">
 					<p:column>
 						<f:facet name="header">
 							<h:outputText value="#{messages['label.name']}" />

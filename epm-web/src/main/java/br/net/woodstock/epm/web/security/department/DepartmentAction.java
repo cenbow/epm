@@ -101,7 +101,7 @@ public class DepartmentAction extends AbstractAction {
 
 	public TreeNode getTree() {
 		TreeNode root = new DefaultTreeNode("root", null);
-		Collection<Department> collection = this.localeService.listRootDepartments();
+		Collection<Department> collection = this.localeService.listRootDepartments(null).getItems();
 		for (Department d : collection) {
 			this.addNode(root, d);
 		}

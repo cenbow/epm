@@ -1,6 +1,5 @@
 package br.net.woodstock.epm.security.impl;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,12 +31,16 @@ public class LocaleServiceImpl implements LocaleService {
 
 	private static final String	JPQL_LIST_ROOT_DEPARTMENT			= "SELECT d FROM Department AS d WHERE d.parent IS NULL ORDER BY d.name";
 
+	private static final String	JPQL_COUNT_ROOT_DEPARTMENT			= "SELECT COUNT(*) FROM Department AS d WHERE d.parent IS NULL";
+
 	// DEPARTMENT
 	private static final String	JPQL_LIST_DEPARTMENT_SKELL_BY_NAME	= "SELECT d FROM DepartmentSkell AS d WHERE d.name LIKE :name ORDER BY d.name";
 
 	private static final String	JPQL_COUNT_DEPARTMENT_SKELL_BY_NAME	= "SELECT COUNT(*) FROM DepartmentSkell AS d WHERE d.name LIKE :name";
 
 	private static final String	JPQL_LIST_ROOT_DEPARTMENT_SKELL		= "SELECT d FROM DepartmentSkell AS d WHERE d.parent IS NULL ORDER BY d.name";
+
+	private static final String	JPQL_COUNT_ROOT_DEPARTMENT_SKELL	= "SELECT COUNT(*) FROM DepartmentSkell AS d WHERE d.parent IS NULL";
 
 	@Autowired(required = true)
 	private ORMRepository		repository;
@@ -108,10 +111,10 @@ public class LocaleServiceImpl implements LocaleService {
 	}
 
 	@Override
-	public Collection<Department> listRootDepartments() {
+	public ORMResult listRootDepartments(final Page page) {
 		try {
-			ORMFilter filter = ORMRepositoryHelper.toORMFilter(LocaleServiceImpl.JPQL_LIST_ROOT_DEPARTMENT);
-			return this.repository.getCollection(filter).getItems();
+			ORMFilter filter = ORMRepositoryHelper.toORMFilter(LocaleServiceImpl.JPQL_LIST_ROOT_DEPARTMENT, LocaleServiceImpl.JPQL_COUNT_ROOT_DEPARTMENT, page, null);
+			return this.repository.getCollection(filter);
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		}
@@ -169,10 +172,10 @@ public class LocaleServiceImpl implements LocaleService {
 	}
 
 	@Override
-	public Collection<DepartmentSkell> listRootDepartmentSkells() {
+	public ORMResult listRootDepartmentSkells(final Page page) {
 		try {
-			ORMFilter filter = ORMRepositoryHelper.toORMFilter(LocaleServiceImpl.JPQL_LIST_ROOT_DEPARTMENT_SKELL);
-			return this.repository.getCollection(filter).getItems();
+			ORMFilter filter = ORMRepositoryHelper.toORMFilter(LocaleServiceImpl.JPQL_LIST_ROOT_DEPARTMENT_SKELL, LocaleServiceImpl.JPQL_COUNT_ROOT_DEPARTMENT_SKELL, page, null);
+			return this.repository.getCollection(filter);
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		}

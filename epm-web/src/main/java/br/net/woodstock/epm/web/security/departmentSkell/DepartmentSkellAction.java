@@ -88,7 +88,7 @@ public class DepartmentSkellAction extends AbstractAction {
 
 	public TreeNode getTree() {
 		TreeNode root = new DefaultTreeNode("root", null);
-		Collection<DepartmentSkell> collection = this.localeService.listRootDepartmentSkells();
+		Collection<DepartmentSkell> collection = this.localeService.listRootDepartmentSkells(null).getItems();
 		for (DepartmentSkell ds : collection) {
 			this.addNode(root, ds);
 		}

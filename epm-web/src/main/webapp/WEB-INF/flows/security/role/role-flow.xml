@@ -6,7 +6,10 @@
 	
 	<var name="roleForm" class="br.net.woodstock.epm.web.security.role.RoleForm"/>
 	<var name="roleSearch" class="br.net.woodstock.epm.web.security.role.RoleSearch"/>
+	
+	<var name="roleResourceForm" class="br.net.woodstock.epm.web.security.role.RoleResourceForm"/>
 
+	<!-- Role -->
 	<view-state id="list" view="role-list.xhtml">
 		<transition on="search">
 			<evaluate expression="roleAction.search(roleSearch)" result="flowScope.roleList" />
@@ -26,6 +29,9 @@
 		<transition on="save">
 			<evaluate expression="roleAction.save(roleForm)" />
 		</transition>
+		<transition on="resource" to="editResource">
+			<evaluate expression="roleResourceForm.setRole(selectedRole)" />
+		</transition>
 		<transition on="cancel" to="search">
 		</transition>
 	</view-state>
@@ -35,6 +41,19 @@
 	<view-state id="new" parent="#save" />
 	
 	<view-state id="edit" parent="#save" />
+	
+	<!-- Resource -->
+	<view-state id="editResource" view="role-resource-edit.xhtml">
+		<on-render>
+			<evaluate expression="roleResourceAction.edit(selectedRole, roleResourceForm)" />
+		</on-render>
+		<transition on="save"> 
+			<evaluate expression="roleResourceAction.save(roleResourceForm)" />
+		</transition>
+		<transition on="cancel" to="edit">
+			<evaluate expression="roleAction.edit(selectedRole, roleForm)" />
+		</transition>
+	</view-state>
 
 	<end-state id="end">
 	</end-state>

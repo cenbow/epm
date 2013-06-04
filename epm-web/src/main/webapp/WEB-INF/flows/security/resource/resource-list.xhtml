@@ -23,7 +23,7 @@
 					</table>					
 				</p:panel>
 				<br />
-				<p:dataTable value="#{resourceList}" var="r" rows="#{webConstants.pageSize}" paginator="true" style="width: 300px; margin: auto;" rendered="#{not empty resourceList}" first="#{resourceSearch.firstRow}" emptyMessage="Na Data Found" lazy="true" selectionMode="single" selection="#{flowScope.selectedResource}">
+				<p:dataTable value="#{resourceList}" var="r" rows="#{webConstants.pageSize}" paginator="true" style="width: 300px; margin: auto;" rendered="#{not empty resourceList}" first="#{resourceSearch.firstRow}" emptyMessage="#{messages['msg.noData']}" lazy="true" selectionMode="single" selection="#{flowScope.selectedResource}">
 					<p:column>
 						<f:facet name="header">
 							<h:outputText value="#{messages['label.name']}" />

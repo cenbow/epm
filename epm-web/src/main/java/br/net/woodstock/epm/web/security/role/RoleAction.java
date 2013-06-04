@@ -90,7 +90,7 @@ public class RoleAction extends AbstractAction {
 
 	public TreeNode getTree() {
 		TreeNode root = new DefaultTreeNode("root", null);
-		Collection<Role> collection = this.securityService.listRootRoles();
+		Collection<Role> collection = this.securityService.listRootRoles(null).getItems();
 		for (Role r : collection) {
 			this.addNode(root, r);
 		}

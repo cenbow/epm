@@ -1,7 +1,5 @@
 package br.net.woodstock.epm.security.api;
 
-import java.util.Collection;
-
 import br.net.woodstock.epm.orm.Certificate;
 import br.net.woodstock.epm.orm.Resource;
 import br.net.woodstock.epm.orm.Role;
@@ -35,7 +33,7 @@ public interface SecurityService extends Service {
 
 	void setRoleResources(Role role, Resource[] resources);
 
-	Collection<Role> listRootRoles();
+	ORMResult listRootRoles(Page page);
 
 	// UserRole
 	ORMResult listUserRolesByUser(Integer id, Page page);
@@ -52,6 +50,8 @@ public interface SecurityService extends Service {
 	void updateResource(Resource resource);
 
 	ORMResult listResourcesByName(String name, Page page);
+
+	ORMResult listResourcesByRole(Integer id, Page page);
 
 	// Certificate
 	Certificate getCertificateById(Integer id);
