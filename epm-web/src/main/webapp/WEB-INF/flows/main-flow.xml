@@ -28,5 +28,7 @@
 		<transition on="security_role" to="security_role" />
 		<transition on="security_user" to="security_user" />
 	</global-transitions>
+	
+	<exception-handler bean="flowExceptionHandler"/>
 
 </flow>

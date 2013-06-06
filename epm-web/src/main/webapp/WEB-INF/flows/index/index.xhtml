@@ -5,7 +5,11 @@
 	</ui:define>
 	<ui:define name="content">
 		<h:form>
-			
+			<ui:repeat var="f" value="#{flowRegistryAction.flowNames}">
+				<div>
+					<h:outputText value="#{f}" />
+				</div>
+			</ui:repeat>
 		</h:form>
 	</ui:define>
 </ui:composition>
