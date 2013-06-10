@@ -15,7 +15,7 @@ import br.net.woodstock.rockframework.security.cert.ExtendedKeyUsageType;
 import br.net.woodstock.rockframework.security.cert.KeySizeType;
 import br.net.woodstock.rockframework.security.cert.KeyUsageType;
 import br.net.woodstock.rockframework.security.cert.ext.icpbrasil.DadoPessoa;
-import br.net.woodstock.rockframework.security.cert.ext.icpbrasil.PessoaFisicaCertificateExtension;
+import br.net.woodstock.rockframework.security.cert.ext.icpbrasil.PessoaFisicaCertificateExtensionHandler;
 import br.net.woodstock.rockframework.security.cert.ext.icpbrasil.TipoFormato;
 import br.net.woodstock.rockframework.security.cert.impl.BouncyCastleCertificateGenerator;
 import br.net.woodstock.rockframework.security.store.KeyStoreType;
@@ -67,7 +67,7 @@ public class CertificateTest {
 		dadoPessoa.setPis("33333333333");
 		dadoPessoa.setRg("2222222");
 
-		PessoaFisicaCertificateExtension extension = new PessoaFisicaCertificateExtension();
+		PessoaFisicaCertificateExtensionHandler extension = new PessoaFisicaCertificateExtensionHandler();
 
 		extension.setTipoFormato(TipoFormato.A3);
 		extension.setCei("111111111111");
@@ -78,7 +78,7 @@ public class CertificateTest {
 		extension.setTituloEleitor("7777777777777");
 
 		// extensions.process(request);
-		request.addExtension(extension);
+		request.getExtensionHandlers().add(extension);
 
 		// CA
 		FileInputStream inputStream = new FileInputStream("/home/lourival/tmp/cert/woodstock.pfx");
