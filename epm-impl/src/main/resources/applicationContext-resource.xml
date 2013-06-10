@@ -26,13 +26,6 @@
 		<property name="password" value="jackrabbit" />
 	</bean>
 	
-	<bean id="jbpmDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
-		<property name="url" value="jdbc:mysql://localhost/jbpm" />
-		<property name="username" value="jbpm" />
-		<property name="password" value="jbpm" />
-	</bean>
-	
 	<!--
 	<bean id="jackrabbitDataSourceJndi" class="org.springframework.jndi.JndiObjectFactoryBean">
 		<property name="jndiName" value="${jndi.connectionFactory}" />		

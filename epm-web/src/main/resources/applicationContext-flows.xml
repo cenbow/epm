@@ -13,6 +13,7 @@
 		<webflow:flow-execution-listeners>
 			<webflow:listener ref="facesContextListener" />
 			<webflow:listener ref="securityFlowExecutionListener" />
+			<webflow:listener ref="epmFlowExecutionListener" />
 		</webflow:flow-execution-listeners>
 		<webflow:flow-execution-attributes>
 			<webflow:redirect-in-same-state value="false" />
@@ -35,5 +36,8 @@
 
 	<bean id="securityFlowExecutionListener"
 		class="org.springframework.webflow.security.SecurityFlowExecutionListener" />
+		
+	<bean id="epmFlowExecutionListener"
+		class="br.net.woodstock.epm.web.util.EPMFlowExecutionListener" />
 
 </beans>

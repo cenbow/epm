@@ -2,6 +2,7 @@ package br.net.woodstock.epm.impl.test;
 
 import java.util.Collection;
 
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -25,7 +26,7 @@ public class InsertAdminTest {
 		super();
 	}
 
-	// @Test
+	@Test
 	public void testRole() throws Exception {
 		Role role = new Role();
 		role.setActive(Boolean.TRUE);
@@ -34,7 +35,7 @@ public class InsertAdminTest {
 		this.securityService.saveRole(role);
 	}
 
-	// @Test
+	@Test
 	public void testUser() throws Exception {
 		User user = new User();
 		user.setActive(Boolean.TRUE);
@@ -46,7 +47,7 @@ public class InsertAdminTest {
 		this.securityService.saveUser(user);
 	}
 
-	// @Test
+	@Test
 	public void testUserRole() throws Exception {
 		User user = new User(Integer.valueOf(1));
 		Role role = new Role(Integer.valueOf(1));
@@ -56,7 +57,7 @@ public class InsertAdminTest {
 		this.securityService.saveUserRole(userRole);
 	}
 
-	// @Test
+	@Test
 	public void testInsertResources() throws Exception {
 		Resource resource1 = new Resource();
 		resource1.setName("/spring/index");

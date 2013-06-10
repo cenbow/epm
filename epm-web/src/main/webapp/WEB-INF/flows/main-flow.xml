@@ -9,6 +9,7 @@
 	
 	<!-- Menu -->
 	<end-state id="index" view="externalRedirect:contextRelative:/spring/index" />
+	<end-state id="error" view="externalRedirect:contextRelative:/spring/error" />
 	<end-state id="configuration_process" view="externalRedirect:contextRelative:/spring/configuration/process" />
 	<end-state id="security_department" view="externalRedirect:contextRelative:/spring/security/department" />
 	<end-state id="security_department_skell" view="externalRedirect:contextRelative:/spring/security/department-skell" />
@@ -18,6 +19,7 @@
 	
 	<global-transitions>
 		<transition on="index" to="index" />
+		<transition on="error" to="error" />
 		<transition on="logoff" to="logoff">
 			<evaluate expression="logonAction.logoff()" />
 		</transition>
@@ -29,6 +31,6 @@
 		<transition on="security_user" to="security_user" />
 	</global-transitions>
 	
-	<exception-handler bean="flowExceptionHandler"/>
+	<exception-handler bean="epmFlowExecutionExceptionHandler"/>
 
 </flow>
