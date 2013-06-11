@@ -41,7 +41,7 @@
 		<poi.version>3.9</poi.version>
 		<primefaces.version>3.4.2</primefaces.version><!-- 3.5 with errors -->
 		<primefaces.theme.version>1.0.9</primefaces.theme.version>
-		<rockframework.version>3.0.0-SNAPSHOT</rockframework.version>
+		<rockframework.version>3.0.1-SNAPSHOT</rockframework.version>
 		<servlet.version>2.5</servlet.version>
 		<slf4j.version>1.7.5</slf4j.version>
 		<spring.version>3.2.2.RELEASE</spring.version>
@@ -85,8 +85,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>${plugin.compiler.version}</version>
 				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
+					<source>1.7</source>
+					<target>1.7</target>
 					<encoding>ISO-8859-1</encoding>
 				</configuration>
 			</plugin>
