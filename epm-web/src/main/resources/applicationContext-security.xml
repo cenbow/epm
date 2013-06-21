@@ -34,6 +34,8 @@
 		<security:intercept-url pattern="/spring/no-access" access="IS_AUTHENTICATED_ANONYMOUSLY" />
 		<!-- Index -->
 		<security:intercept-url pattern="/spring/index" access="IS_AUTHENTICATED_FULLY" />
+		<!-- Download -->
+		<security:intercept-url pattern="/spring/download/**" access="IS_AUTHENTICATED_FULLY" />
 		<!-- App -->
 		<security:intercept-url pattern="/**" access="ROLE_ANY" />
 	</security:http>

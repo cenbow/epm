@@ -1,4 +1,4 @@
-package br.net.woodstock.epm.signer.common;
+package br.net.woodstock.epm.signer.core;
 
 import br.net.woodstock.rockframework.core.util.MessageBundle;
 

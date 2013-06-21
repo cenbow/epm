@@ -1,4 +1,4 @@
-package br.net.woodstock.epm.signer.common;
+package br.net.woodstock.epm.signer.core;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;

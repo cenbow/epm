@@ -1,6 +1,7 @@
 package br.net.woodstock.epm.web.configuration.process;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -8,10 +9,12 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 import br.net.woodstock.epm.orm.Process;
+import br.net.woodstock.epm.orm.Task;
 import br.net.woodstock.epm.orm.User;
 import br.net.woodstock.epm.process.api.ProcessService;
 import br.net.woodstock.epm.web.AbstractAction;
 import br.net.woodstock.epm.web.WebConstants;
+import br.net.woodstock.rockframework.core.utils.Collections;
 import br.net.woodstock.rockframework.core.utils.IO;
 import br.net.woodstock.rockframework.domain.persistence.Page;
 import br.net.woodstock.rockframework.domain.persistence.orm.ORMResult;
@@ -75,13 +78,19 @@ public class ProcessAction extends AbstractAction {
 
 			@Override
 			public Object getEntity(final Object id) {
-				return ProcessAction.this.getBusinessProcessService().getBusinessProcessById((Integer) id);
+				return ProcessAction.this.getBusinessProcessService().getProcessById((Integer) id);
 			}
 
 		};
 		EntityDataModel<User> users = new EntityDataModel<User>(WebConstants.PAGE_SIZE, repository);
 
 		return users;
+	}
+
+	public List<Task> searchTask(final Integer id) {
+		Process process = this.processService.getProcessById(id);
+		List<Task> tasks = Collections.toList(process.getTasks());
+		return tasks;
 	}
 
 	protected ProcessService getBusinessProcessService() {

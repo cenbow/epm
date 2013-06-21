@@ -3,8 +3,8 @@ package br.net.woodstock.epm.signer.desktop;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
-import br.net.woodstock.epm.signer.common.ApplicationPanel;
-import br.net.woodstock.epm.signer.common.Constants;
+import br.net.woodstock.epm.signer.core.ApplicationPanel;
+import br.net.woodstock.epm.signer.core.Constants;
 
 public abstract class MainApplication {
 

@@ -8,17 +8,17 @@ import br.net.woodstock.rockframework.domain.persistence.orm.ORMResult;
 public interface ProcessService extends Service {
 
 	// Crud
-	Process getBusinessProcessById(Integer id);
+	Process getProcessById(Integer id);
 
-	Process getBusinessProcessByName(String name);
+	Process getProcessByName(String name);
 
-	byte[] getBusinessProcessImage(Integer id);
+	byte[] getProcessImageById(Integer id);
 
-	void save(Process businessProcess);
+	void save(Process process);
 
 	ORMResult listBusinessProcessByName(String name, Page page);
 
 	// BPM
-	Integer createSimpleProcess(String number, Integer businessProcessId);
+	Integer createSimpleProcess(String number, Integer processId);
 
 }

@@ -1,4 +1,4 @@
-package br.net.woodstock.epm.signer.common;
+package br.net.woodstock.epm.signer.core;
 
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;

@@ -80,7 +80,7 @@ public class ProcessServiceImpl implements ProcessService {
 
 	// Crud
 	@Override
-	public Process getBusinessProcessById(final Integer id) {
+	public Process getProcessById(final Integer id) {
 		try {
 			return this.repository.get(Process.class, id);
 		} catch (Exception e) {
@@ -89,7 +89,7 @@ public class ProcessServiceImpl implements ProcessService {
 	}
 
 	@Override
-	public Process getBusinessProcessByName(final String name) {
+	public Process getProcessByName(final String name) {
 		try {
 			Map<String, Object> parameters = new HashMap<String, Object>();
 			parameters.put("name", name);
@@ -162,7 +162,7 @@ public class ProcessServiceImpl implements ProcessService {
 	}
 
 	@Override
-	public byte[] getBusinessProcessImage(final Integer id) {
+	public byte[] getProcessImageById(final Integer id) {
 		try {
 			Process businessProcess = this.repository.get(Process.class, id);
 			if (businessProcess != null) {

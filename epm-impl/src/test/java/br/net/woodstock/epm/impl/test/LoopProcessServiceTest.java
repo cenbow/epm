@@ -43,7 +43,7 @@ public class LoopProcessServiceTest {
 
 	// @Test
 	public void testImage() throws Exception {
-		byte[] bytes = this.service.getBusinessProcessImage(Integer.valueOf(9));
+		byte[] bytes = this.service.getProcessImageById(Integer.valueOf(9));
 		FileOutputStream outputStream = new FileOutputStream("/tmp/loop-process.png");
 		outputStream.write(bytes);
 		outputStream.close();

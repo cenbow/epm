@@ -40,7 +40,7 @@
 						<f:facet name="header">
 							<h:outputText value="#{messages['label.action']}" />
 						</f:facet>
-						<p:commandButton alt="Edit" title="#{messages['label.edit']}" action="#{messages['label.edit']}" ajax="false" icon="ui-icon-pencil">
+						<p:commandButton alt="#{messages['label.edit']}" title="#{messages['label.edit']}" action="#{messages['label.edit']}" ajax="false" icon="ui-icon-pencil">
 							<f:setPropertyActionListener target="#{departmentSearch.selectedIndex}" value="#{departmentList.rowIndex}" />
 						</p:commandButton>
 					</p:column>

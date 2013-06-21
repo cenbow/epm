@@ -55,7 +55,7 @@ public class BusinessProcessServiceTest {
 		System.out.println(businessProcess);
 	}
 
-	@Test
+	//@Test
 	public void testAddFile() throws Exception {
 		File file = new File("/home/lourival/workspaces/workspace-activiti/activiti/src/main/resources/diagrams/MyProcess.bpmn");
 		byte[] bytes = IO.toByteArray(file);
@@ -71,9 +71,9 @@ public class BusinessProcessServiceTest {
 		System.out.println(businessProcess);
 	}
 
-	// @Test
+	 @Test
 	public void testImage() throws Exception {
-		byte[] bytes = this.service.getBusinessProcessImage(Integer.valueOf(2));
+		byte[] bytes = this.service.getProcessImageById(Integer.valueOf(2));
 		FileOutputStream outputStream = new FileOutputStream("/tmp/epm-process.png");
 		outputStream.write(bytes);
 		outputStream.close();

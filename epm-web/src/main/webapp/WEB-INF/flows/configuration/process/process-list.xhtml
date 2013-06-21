@@ -23,7 +23,7 @@
 					</table>					
 				</p:panel>
 				<br />
-				<p:dataTable value="#{processList}" var="r" rows="#{webConstants.pageSize}" paginator="true" style="width: 500px; margin: auto;" rendered="#{not empty processList}" first="#{processSearch.firstRow}" emptyMessage="#{messages['msg.noData']}" lazy="true" selectionMode="single" selection="#{flowScope.selectedBusinessProcess}">
+				<p:dataTable value="#{processList}" var="r" rows="#{webConstants.pageSize}" paginator="true" style="width: 500px; margin: auto;" rendered="#{not empty processList}" first="#{processSearch.firstRow}" emptyMessage="#{messages['msg.noData']}" lazy="true" selectionMode="single" selection="#{flowScope.selectedProcess}">
 					<p:column>
 						<f:facet name="header">
 							<h:outputText value="#{messages['label.name']}" />
@@ -40,7 +40,10 @@
 						<f:facet name="header">
 							<h:outputText value="#{messages['label.action']}" />
 						</f:facet>
-						<p:commandButton alt="Edit" title="#{messages['label.edit']}" action="edit" ajax="false" icon="ui-icon-pencil">
+						<p:commandButton alt="#{messages['label.view']}" title="#{messages['label.view']}" action="view" ajax="false" icon="ui-icon-search">
+							<f:setPropertyActionListener target="#{processSearch.selectedIndex}" value="#{processList.rowIndex}" />
+						</p:commandButton>
+						<p:commandButton alt="#{messages['label.edit']}" title="#{messages['label.edit']}" action="edit" ajax="false" icon="ui-icon-pencil">
 							<f:setPropertyActionListener target="#{processSearch.selectedIndex}" value="#{processList.rowIndex}" />
 						</p:commandButton>
 					</p:column>

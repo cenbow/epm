@@ -17,12 +17,21 @@
 		<transition on="edit" to="edit"> 
 			<evaluate expression="processAction.edit(selectedProcess, processForm)" />
 		</transition>
+		<transition on="view" to="view"> 
+			<evaluate expression="processAction.edit(selectedProcess, processForm)" />
+			<evaluate expression="processAction.searchTask(selectedProcess.id)" result="flowScope.taskList" />
+		</transition>
 	</view-state>
 	
 	<view-state id="save" view="process-save.xhtml">
 		<transition on="save">
 			<evaluate expression="processAction.save(processForm)" />
 		</transition>
+		<transition on="cancel" to="search">
+		</transition>
+	</view-state>
+	
+	<view-state id="view" view="process-view.xhtml">
 		<transition on="cancel" to="search">
 		</transition>
 	</view-state>
