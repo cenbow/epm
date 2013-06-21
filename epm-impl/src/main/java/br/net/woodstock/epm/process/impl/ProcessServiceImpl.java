@@ -45,19 +45,23 @@ import br.net.woodstock.rockframework.domain.persistence.orm.ORMResult;
 @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 public class ProcessServiceImpl implements ProcessService {
 
-	private static final long			serialVersionUID			= -5930737454047853423L;
+	private static final long			serialVersionUID				= -5930737454047853423L;
 
-	private static final String			JPQL_GET_PROCESS_BY_NAME	= "SELECT p FROM Process AS p WHERE p.name = :name";
+	private static final String			JPQL_GET_PROCESS_BY_NAME		= "SELECT p FROM Process AS p WHERE p.name = :name";
 
-	private static final String			JPQL_LIST_PROCESS_BY_NAME	= "SELECT p FROM Process AS p WHERE p.name LIKE :name ORDER BY p.name";
+	private static final String			JPQL_LIST_PROCESS_BY_NAME		= "SELECT p FROM Process AS p WHERE p.name LIKE :name ORDER BY p.name";
 
-	private static final String			JPQL_COUNT_PROCESS_BY_NAME	= "SELECT COUNT(*) FROM Process AS p WHERE p.name LIKE :name";
+	private static final String			JPQL_COUNT_PROCESS_BY_NAME		= "SELECT COUNT(*) FROM Process AS p WHERE p.name LIKE :name";
 
-	private static final String			ALL_PATTERN					= "%";
+	private static final String			JPQL_LIST_TASK_BY_PROCESS_ID	= "SELECT t FROM Task AS t JOIN t.process AS p WHERE p.id = :id ORDER BY t.name";
 
-	private static final String			IMAGE_EXTENSION				= "png";
+	private static final String			JPQL_COUNT_TASK_BY_PROCESS_ID	= "SELECT COUNT(*) FROM Task AS t JOIN t.process AS p WHERE p.id = :id";
 
-	private static final String			XML_SUFFIX					= ".bpmn20.xml";
+	private static final String			ALL_PATTERN						= "%";
+
+	private static final String			IMAGE_EXTENSION					= "png";
+
+	private static final String			XML_SUFFIX						= ".bpmn20.xml";
 
 	@Autowired(required = true)
 	private transient ProcessEngine		engine;
@@ -102,7 +106,6 @@ public class ProcessServiceImpl implements ProcessService {
 	}
 
 	@Override
-	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void save(final Process process) {
 		try {
 			InputStream inputStream = new ByteArrayInputStream(process.getBin());
@@ -247,6 +250,20 @@ public class ProcessServiceImpl implements ProcessService {
 	public void delegateTask(final String taskId, final String userId) {
 		try {
 			this.engine.getTaskService().delegateTask(taskId, userId);
+		} catch (Exception e) {
+			throw new ServiceException(e);
+		}
+	}
+
+	// Task
+	@Override
+	public ORMResult listTaskByProcessId(final Integer id, final Page page) {
+		try {
+			Map<String, Object> parameters = new HashMap<String, Object>();
+			parameters.put("id", id);
+
+			ORMFilter filter = ORMRepositoryHelper.toORMFilter(ProcessServiceImpl.JPQL_LIST_TASK_BY_PROCESS_ID, ProcessServiceImpl.JPQL_COUNT_TASK_BY_PROCESS_ID, page, parameters);
+			return this.repository.getCollection(filter);
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		}

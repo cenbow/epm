@@ -23,7 +23,7 @@
 					</table>					
 				</p:panel>
 				<br />
-				<p:dataTable value="#{departmentList}" var="r" rows="#{webConstants.pageSize}" paginator="true" style="width: 500px; margin: auto;" rendered="#{not empty departmentList}" first="#{departmentSearch.firstRow}" emptyMessage="#{messages['msg.noData']}" lazy="true" selectionMode="single" selection="#{flowScope.selectedDepartment}">
+				<p:dataTable value="#{departmentList}" var="r" rows="#{webConstants.pageSize}" paginator="true" paginatorPosition="bottom" style="width: 500px; margin: auto;" rendered="#{not empty departmentList}" first="#{departmentSearch.firstRow}" emptyMessage="#{messages['msg.noData']}" lazy="true" selectionMode="single" selection="#{flowScope.selectedDepartment}">
 					<p:column>
 						<f:facet name="header">
 							<h:outputText value="#{messages['label.name']}" />
@@ -40,7 +40,7 @@
 						<f:facet name="header">
 							<h:outputText value="#{messages['label.action']}" />
 						</f:facet>
-						<p:commandButton alt="#{messages['label.edit']}" title="#{messages['label.edit']}" action="#{messages['label.edit']}" ajax="false" icon="ui-icon-pencil">
+						<p:commandButton alt="#{messages['label.edit']}" title="#{messages['label.edit']}" action="edit" ajax="false" icon="ui-icon-pencil">
 							<f:setPropertyActionListener target="#{departmentSearch.selectedIndex}" value="#{departmentList.rowIndex}" />
 						</p:commandButton>
 					</p:column>

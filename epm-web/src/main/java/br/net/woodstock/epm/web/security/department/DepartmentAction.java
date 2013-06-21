@@ -36,17 +36,18 @@ public class DepartmentAction extends AbstractAction {
 
 	public boolean edit(final Department department, final DepartmentForm form) {
 		if (department != null) {
-			form.setAbbreviation(department.getAbbreviation());
-			form.setActive(department.getActive());
-			form.setId(department.getId());
-			form.setName(department.getName());
-			if (department.getParent() != null) {
-				form.setParentId(department.getParent().getId());
-				form.setParentName(department.getParent().getName());
+			Department d = this.localeService.getDepartmentById(department.getId());
+			form.setAbbreviation(d.getAbbreviation());
+			form.setActive(d.getActive());
+			form.setId(d.getId());
+			form.setName(d.getName());
+			if (d.getParent() != null) {
+				form.setParentId(d.getParent().getId());
+				form.setParentName(d.getParent().getName());
 			}
-			if (department.getSkell() != null) {
-				form.setSkellId(department.getSkell().getId());
-				form.setSkellName(department.getSkell().getName());
+			if (d.getSkell() != null) {
+				form.setSkellId(d.getSkell().getId());
+				form.setSkellName(d.getSkell().getName());
 			}
 			return true;
 		}

@@ -1,6 +1,7 @@
 package br.net.woodstock.epm.web.security.departmentSkell;
 
 import java.util.Collection;
+import java.util.Map;
 
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
+import org.springframework.webflow.execution.RequestContextHolder;
 
 import br.net.woodstock.epm.orm.DepartmentSkell;
 import br.net.woodstock.epm.orm.User;
@@ -35,11 +37,12 @@ public class DepartmentSkellAction extends AbstractAction {
 
 	public boolean edit(final DepartmentSkell department, final DepartmentSkellForm form) {
 		if (department != null) {
-			form.setId(department.getId());
-			form.setName(department.getName());
-			if (department.getParent() != null) {
-				form.setParentId(department.getParent().getId());
-				form.setParentName(department.getParent().getName());
+			DepartmentSkell ds = this.localeService.getDepartmentSkellById(department.getId());
+			form.setId(ds.getId());
+			form.setName(ds.getName());
+			if (ds.getParent() != null) {
+				form.setParentId(ds.getParent().getId());
+				form.setParentName(ds.getParent().getName());
 			}
 			return true;
 		}

@@ -28,6 +28,8 @@ public class ProcessForm extends AbstractForm {
 
 	private String				fileName;
 
+	private String				processDefinition;
+
 	public ProcessForm() {
 		super();
 		this.type = DeploymentType.XML;
@@ -41,7 +43,8 @@ public class ProcessForm extends AbstractForm {
 		this.setFileName(null);
 		this.setId(null);
 		this.setName(null);
-		//this.setType(null);
+		this.setProcessDefinition(null);
+		// this.setType(null);
 	}
 
 	public Integer getId() {
@@ -98,6 +101,14 @@ public class ProcessForm extends AbstractForm {
 
 	public void setFileName(final String fileName) {
 		this.fileName = fileName;
+	}
+
+	public String getProcessDefinition() {
+		return this.processDefinition;
+	}
+
+	public void setProcessDefinition(final String processDefinition) {
+		this.processDefinition = processDefinition;
 	}
 
 	// Aux

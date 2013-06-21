@@ -30,9 +30,10 @@ public class ResourceAction extends AbstractAction {
 
 	public boolean edit(final Resource resource, final ResourceForm form) {
 		if (resource != null) {
-			form.setActive(resource.getActive());
-			form.setId(resource.getId());
-			form.setName(resource.getName());
+			Resource r = this.securityService.getResourceById(resource.getId());
+			form.setActive(r.getActive());
+			form.setId(r.getId());
+			form.setName(r.getName());
 			return true;
 		}
 		return false;

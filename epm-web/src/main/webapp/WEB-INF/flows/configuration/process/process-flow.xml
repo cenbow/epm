@@ -18,8 +18,7 @@
 			<evaluate expression="processAction.edit(selectedProcess, processForm)" />
 		</transition>
 		<transition on="view" to="view"> 
-			<evaluate expression="processAction.edit(selectedProcess, processForm)" />
-			<evaluate expression="processAction.searchTask(selectedProcess.id)" result="flowScope.taskList" />
+			<evaluate expression="processAction.view(selectedProcess, processForm)" />
 		</transition>
 	</view-state>
 	
@@ -32,6 +31,9 @@
 	</view-state>
 	
 	<view-state id="view" view="process-view.xhtml">
+		<on-render>
+			<evaluate expression="processAction.getTasks(selectedProcess.id)" result="flowScope.taskList" />
+		</on-render>
 		<transition on="cancel" to="search">
 		</transition>
 	</view-state>

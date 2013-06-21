@@ -35,12 +35,13 @@ public class RoleAction extends AbstractAction {
 
 	public boolean edit(final Role role, final RoleForm form) {
 		if (role != null) {
-			form.setActive(role.getActive());
-			form.setId(role.getId());
-			form.setName(role.getName());
-			if (role.getParent() != null) {
-				form.setParentId(role.getParent().getId());
-				form.setParentName(role.getParent().getName());
+			Role r = this.securityService.getRoleById(role.getId());
+			form.setActive(r.getActive());
+			form.setId(r.getId());
+			form.setName(r.getName());
+			if (r.getParent() != null) {
+				form.setParentId(r.getParent().getId());
+				form.setParentName(r.getParent().getName());
 			}
 			return true;
 		}

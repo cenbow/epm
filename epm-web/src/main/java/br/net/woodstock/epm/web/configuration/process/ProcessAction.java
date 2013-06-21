@@ -1,7 +1,6 @@
 package br.net.woodstock.epm.web.configuration.process;
 
 import java.io.IOException;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -9,12 +8,9 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 import br.net.woodstock.epm.orm.Process;
-import br.net.woodstock.epm.orm.Task;
-import br.net.woodstock.epm.orm.User;
 import br.net.woodstock.epm.process.api.ProcessService;
 import br.net.woodstock.epm.web.AbstractAction;
 import br.net.woodstock.epm.web.WebConstants;
-import br.net.woodstock.rockframework.core.utils.Collections;
 import br.net.woodstock.rockframework.core.utils.IO;
 import br.net.woodstock.rockframework.domain.persistence.Page;
 import br.net.woodstock.rockframework.domain.persistence.orm.ORMResult;
@@ -34,39 +30,54 @@ public class ProcessAction extends AbstractAction {
 		super();
 	}
 
-	public boolean edit(final Process businessProcess, final ProcessForm form) {
-		if (businessProcess != null) {
-			form.setActive(businessProcess.getActive());
-			form.setDescription(businessProcess.getDescription());
-			form.setId(businessProcess.getId());
-			form.setName(businessProcess.getName());
-			form.setType(businessProcess.getType());
+	public boolean edit(final Process process, final ProcessForm form) {
+		if (process != null) {
+			Process p = this.processService.getProcessById(process.getId());
+			form.setActive(p.getActive());
+			form.setDescription(p.getDescription());
+			form.setId(p.getId());
+			form.setName(p.getName());
+			form.setType(p.getType());
+			return true;
+		}
+		return false;
+	}
+
+	public boolean view(final Process process, final ProcessForm form) {
+		if (process != null) {
+			Process p = this.processService.getProcessById(process.getId());
+			form.setActive(p.getActive());
+			form.setDescription(p.getDescription());
+			form.setId(p.getId());
+			form.setName(p.getName());
+			form.setProcessDefinition(p.getProcessDefinition());
+			form.setType(p.getType());
 			return true;
 		}
 		return false;
 	}
 
 	public void save(final ProcessForm form) throws IOException {
-		Process businessProcess = new Process();
-		businessProcess.setActive(form.getActive());
-		businessProcess.setDescription(form.getDescription());
-		businessProcess.setId(form.getId());
-		businessProcess.setName(form.getName());
-		businessProcess.setType(form.getType());
+		Process process = new Process();
+		process.setActive(form.getActive());
+		process.setDescription(form.getDescription());
+		process.setId(form.getId());
+		process.setName(form.getName());
+		process.setType(form.getType());
 
-		businessProcess.setBin(IO.toByteArray(form.getFile()));
+		process.setBin(IO.toByteArray(form.getFile()));
 
-		if (businessProcess.getId() != null) {
+		if (process.getId() != null) {
 			// this.businessProcessService.update(businessProcess);
 		} else {
-			this.processService.save(businessProcess);
+			this.processService.save(process);
 			form.reset();
 		}
 
 		this.addFacesMessage(this.getMessageOK());
 	}
 
-	public EntityDataModel<User> search(final ProcessSearch search) {
+	public EntityDataModel<Process> search(final ProcessSearch search) {
 		EntityRepository repository = new EntityRepository() {
 
 			private static final long	serialVersionUID	= -7098011024917168622L;
@@ -82,15 +93,30 @@ public class ProcessAction extends AbstractAction {
 			}
 
 		};
-		EntityDataModel<User> users = new EntityDataModel<User>(WebConstants.PAGE_SIZE, repository);
+		EntityDataModel<Process> dataModel = new EntityDataModel<Process>(WebConstants.PAGE_SIZE, repository);
 
-		return users;
+		return dataModel;
 	}
 
-	public List<Task> searchTask(final Integer id) {
-		Process process = this.processService.getProcessById(id);
-		List<Task> tasks = Collections.toList(process.getTasks());
-		return tasks;
+	public EntityDataModel<Process> getTasks(final Integer processId) {
+		EntityRepository repository = new EntityRepository() {
+
+			private static final long	serialVersionUID	= -7098011024917168622L;
+
+			@Override
+			public ORMResult getResult(final Page page) {
+				return ProcessAction.this.getBusinessProcessService().listTaskByProcessId(processId, page);
+			}
+
+			@Override
+			public Object getEntity(final Object id) {
+				return ProcessAction.this.getBusinessProcessService().getProcessById((Integer) id);
+			}
+
+		};
+		EntityDataModel<Process> dataModel = new EntityDataModel<Process>(WebConstants.PAGE_SIZE, repository);
+
+		return dataModel;
 	}
 
 	protected ProcessService getBusinessProcessService() {

@@ -15,6 +15,12 @@
 							</td>
 						</tr>
 						<tr>
+							<td><h:outputText value="#{messages['label.id']}" /> : </td>
+							<td>
+								<h:outputText value="#{processForm.processDefinition}" />
+							</td>
+						</tr>
+						<tr>
 							<td colspan="2" style="text-align: center;">
 								<p:commandButton value="#{messages['label.cancel']}" action="cancel" ajax="false" />
 							</td>
@@ -23,12 +29,20 @@
 				</p:panel>
 				<p:accordionPanel style="width: 600px; margin: auto;">
 					<p:tab title="#{messages['label.task']}">
-						<p:dataTable value="#{taskList}" var="t" rows="#{webConstants.pageSize}" style="width: 550px; margin: auto;" rendered="#{not empty taskList}" emptyMessage="#{messages['msg.noData']}">
-							<p:column>
+						<p:dataTable value="#{taskList}" var="t" rows="#{webConstants.pageSize}" paginator="true" paginatorPosition="bottom" style="width: 500px; margin: auto;" rendered="#{not empty taskList}" first="#{taskSearch.firstRow}" emptyMessage="#{messages['msg.noData']}" lazy="true">
+							<p:column style="vertical-align: top;">
 								<f:facet name="header">
 									<h:outputText value="#{messages['label.name']}" />
 								</f:facet>
 								<h:outputText value="#{t.name}" />
+							</p:column>
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="#{messages['label.group']}" />
+								</f:facet>
+								<ui:repeat var="g" value="#{t.groups.toArray()}">
+									<h:outputText value="#{g.name}" /><br />
+								</ui:repeat>								
 							</p:column>
 						</p:dataTable>
 					</p:tab>

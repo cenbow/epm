@@ -21,4 +21,7 @@ public interface ProcessService extends Service {
 	// BPM
 	Integer createSimpleProcess(String number, Integer processId);
 
+	// Task
+	ORMResult listTaskByProcessId(Integer id, Page page);
+
 }

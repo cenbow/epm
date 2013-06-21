@@ -29,12 +29,13 @@ public class UserAction extends AbstractAction {
 
 	public boolean edit(final User user, final UserForm form) {
 		if (user != null) {
-			form.setActive(user.getActive());
-			form.setEmail(user.getEmail());
-			form.setId(user.getId());
-			form.setLogin(user.getLogin());
-			form.setName(user.getName());
-			form.setPassword(user.getPassword());
+			User u = this.securityService.getUserById(user.getId());
+			form.setActive(u.getActive());
+			form.setEmail(u.getEmail());
+			form.setId(u.getId());
+			form.setLogin(u.getLogin());
+			form.setName(u.getName());
+			form.setPassword(u.getPassword());
 			return true;
 		}
 		return false;
