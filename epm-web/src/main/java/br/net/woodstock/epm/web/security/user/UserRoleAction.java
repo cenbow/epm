@@ -16,8 +16,8 @@ import br.net.woodstock.epm.web.WebConstants;
 import br.net.woodstock.rockframework.core.utils.Collections;
 import br.net.woodstock.rockframework.domain.persistence.Page;
 import br.net.woodstock.rockframework.domain.persistence.orm.ORMResult;
-import br.net.woodstock.rockframework.web.faces.EntityRepository;
-import br.net.woodstock.rockframework.web.faces.primefaces.EntityDataModel;
+import br.net.woodstock.rockframework.web.faces.DataRepository;
+import br.net.woodstock.rockframework.web.faces.primefaces.PrimeFacesDataModel;
 
 @Controller
 @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
@@ -62,8 +62,8 @@ public class UserRoleAction extends AbstractAction {
 		this.addFacesMessage(this.getMessageOK());
 	}
 
-	public EntityDataModel<UserRole> search(final UserRoleSearch search) {
-		EntityRepository repository = new EntityRepository() {
+	public PrimeFacesDataModel<UserRole> search(final UserRoleSearch search) {
+		DataRepository repository = new DataRepository() {
 
 			private static final long	serialVersionUID	= -336605554089769356L;
 
@@ -73,12 +73,12 @@ public class UserRoleAction extends AbstractAction {
 			}
 
 			@Override
-			public Object getEntity(final Object id) {
+			public Object getObject(final Object id) {
 				return UserRoleAction.this.getSecurityService().getUserById((Integer) id);
 			}
 
 		};
-		EntityDataModel<UserRole> users = new EntityDataModel<UserRole>(WebConstants.PAGE_SIZE, repository);
+		PrimeFacesDataModel<UserRole> users = new PrimeFacesDataModel<UserRole>(WebConstants.PAGE_SIZE, repository);
 
 		return users;
 	}

@@ -5,14 +5,14 @@
 <%@page import="br.net.woodstock.rockframework.security.sign.Signatory"%>
 <%@page import="br.net.woodstock.rockframework.security.sign.Signature"%>
 <%@page import="br.net.woodstock.rockframework.security.sign.Signer"%>
-<%@page import="br.net.woodstock.rockframework.security.sign.impl.BouncyCastlePKCS7Signer"%>
+<%@page import="br.net.woodstock.rockframework.security.sign.impl.CMSSigner"%>
 <%
 	String data = request.getParameter("data");
 	String output = request.getParameter("output");
 	String submit = request.getParameter("submit");
 	Signature[] signatures = null;
 	if("1".equals(submit)) {
-		Signer signer = new BouncyCastlePKCS7Signer(null);
+		Signer signer = new CMSSigner(null);
 
 		byte[] bytes = Codecs.fromBase64(output.getBytes());
 		

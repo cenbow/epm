@@ -1,7 +1,7 @@
 package br.net.woodstock.epm.security.util;
 
-import br.net.woodstock.rockframework.security.util.PasswordEncoder;
-import br.net.woodstock.rockframework.security.util.SHA1PasswordEncoder;
+import br.net.woodstock.rockframework.security.digest.PasswordEncoder;
+import br.net.woodstock.rockframework.security.digest.impl.SHA1PasswordEncoder;
 
 public abstract class PasswordHelper {
 

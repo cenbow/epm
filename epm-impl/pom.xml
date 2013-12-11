@@ -2,7 +2,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>epm-impl</artifactId>
-	<name>EPM Application - JEE 6 Implementation</name>
+	<name>EPM Application - Spring Implementation</name>
 	<packaging>jar</packaging>
 	<parent>
 		<groupId>br.net.woodstock.epm</groupId>

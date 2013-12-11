@@ -12,8 +12,8 @@ import br.net.woodstock.epm.web.AbstractAction;
 import br.net.woodstock.epm.web.WebConstants;
 import br.net.woodstock.rockframework.domain.persistence.Page;
 import br.net.woodstock.rockframework.domain.persistence.orm.ORMResult;
-import br.net.woodstock.rockframework.web.faces.EntityRepository;
-import br.net.woodstock.rockframework.web.faces.primefaces.EntityDataModel;
+import br.net.woodstock.rockframework.web.faces.DataRepository;
+import br.net.woodstock.rockframework.web.faces.primefaces.PrimeFacesDataModel;
 
 @Controller
 @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
@@ -55,8 +55,8 @@ public class ResourceAction extends AbstractAction {
 		this.addFacesMessage(this.getMessageOK());
 	}
 
-	public EntityDataModel<User> search(final ResourceSearch search) {
-		EntityRepository repository = new EntityRepository() {
+	public PrimeFacesDataModel<User> search(final ResourceSearch search) {
+		DataRepository repository = new DataRepository() {
 
 			private static final long	serialVersionUID	= -7098011024917168622L;
 
@@ -66,12 +66,12 @@ public class ResourceAction extends AbstractAction {
 			}
 
 			@Override
-			public Object getEntity(final Object id) {
+			public Object getObject(final Object id) {
 				return ResourceAction.this.getSecurityService().getResourceById((Integer) id);
 			}
 
 		};
-		EntityDataModel<User> users = new EntityDataModel<User>(WebConstants.PAGE_SIZE, repository);
+		PrimeFacesDataModel<User> users = new PrimeFacesDataModel<User>(WebConstants.PAGE_SIZE, repository);
 
 		return users;
 	}

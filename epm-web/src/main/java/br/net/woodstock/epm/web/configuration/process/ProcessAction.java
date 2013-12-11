@@ -14,8 +14,8 @@ import br.net.woodstock.epm.web.WebConstants;
 import br.net.woodstock.rockframework.core.utils.IO;
 import br.net.woodstock.rockframework.domain.persistence.Page;
 import br.net.woodstock.rockframework.domain.persistence.orm.ORMResult;
-import br.net.woodstock.rockframework.web.faces.EntityRepository;
-import br.net.woodstock.rockframework.web.faces.primefaces.EntityDataModel;
+import br.net.woodstock.rockframework.web.faces.DataRepository;
+import br.net.woodstock.rockframework.web.faces.primefaces.PrimeFacesDataModel;
 
 @Controller
 @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
@@ -77,8 +77,8 @@ public class ProcessAction extends AbstractAction {
 		this.addFacesMessage(this.getMessageOK());
 	}
 
-	public EntityDataModel<Process> search(final ProcessSearch search) {
-		EntityRepository repository = new EntityRepository() {
+	public PrimeFacesDataModel<Process> search(final ProcessSearch search) {
+		DataRepository repository = new DataRepository() {
 
 			private static final long	serialVersionUID	= -7098011024917168622L;
 
@@ -88,18 +88,18 @@ public class ProcessAction extends AbstractAction {
 			}
 
 			@Override
-			public Object getEntity(final Object id) {
+			public Object getObject(final Object id) {
 				return ProcessAction.this.getBusinessProcessService().getProcessById((Integer) id);
 			}
 
 		};
-		EntityDataModel<Process> dataModel = new EntityDataModel<Process>(WebConstants.PAGE_SIZE, repository);
+		PrimeFacesDataModel<Process> dataModel = new PrimeFacesDataModel<Process>(WebConstants.PAGE_SIZE, repository);
 
 		return dataModel;
 	}
 
-	public EntityDataModel<Process> getTasks(final Integer processId) {
-		EntityRepository repository = new EntityRepository() {
+	public PrimeFacesDataModel<Process> getTasks(final Integer processId) {
+		DataRepository repository = new DataRepository() {
 
 			private static final long	serialVersionUID	= -7098011024917168622L;
 
@@ -109,12 +109,12 @@ public class ProcessAction extends AbstractAction {
 			}
 
 			@Override
-			public Object getEntity(final Object id) {
+			public Object getObject(final Object id) {
 				return ProcessAction.this.getBusinessProcessService().getProcessById((Integer) id);
 			}
 
 		};
-		EntityDataModel<Process> dataModel = new EntityDataModel<Process>(WebConstants.PAGE_SIZE, repository);
+		PrimeFacesDataModel<Process> dataModel = new PrimeFacesDataModel<Process>(WebConstants.PAGE_SIZE, repository);
 
 		return dataModel;
 	}

@@ -1,7 +1,6 @@
 package br.net.woodstock.epm.web.security.departmentSkell;
 
 import java.util.Collection;
-import java.util.Map;
 
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
@@ -9,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
-import org.springframework.webflow.execution.RequestContextHolder;
 
 import br.net.woodstock.epm.orm.DepartmentSkell;
 import br.net.woodstock.epm.orm.User;
@@ -19,8 +17,8 @@ import br.net.woodstock.epm.web.WebConstants;
 import br.net.woodstock.epm.web.tree.TreeItem;
 import br.net.woodstock.rockframework.domain.persistence.Page;
 import br.net.woodstock.rockframework.domain.persistence.orm.ORMResult;
-import br.net.woodstock.rockframework.web.faces.EntityRepository;
-import br.net.woodstock.rockframework.web.faces.primefaces.EntityDataModel;
+import br.net.woodstock.rockframework.web.faces.DataRepository;
+import br.net.woodstock.rockframework.web.faces.primefaces.PrimeFacesDataModel;
 
 @Controller
 @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
@@ -68,8 +66,8 @@ public class DepartmentSkellAction extends AbstractAction {
 		this.addFacesMessage(this.getMessageOK());
 	}
 
-	public EntityDataModel<User> search(final DepartmentSkellSearch search) {
-		EntityRepository repository = new EntityRepository() {
+	public PrimeFacesDataModel<User> search(final DepartmentSkellSearch search) {
+		DataRepository repository = new DataRepository() {
 
 			private static final long	serialVersionUID	= -7098011024917168622L;
 
@@ -79,12 +77,12 @@ public class DepartmentSkellAction extends AbstractAction {
 			}
 
 			@Override
-			public Object getEntity(final Object id) {
+			public Object getObject(final Object id) {
 				return DepartmentSkellAction.this.getLocaleService().getDepartmentById((Integer) id);
 			}
 
 		};
-		EntityDataModel<User> users = new EntityDataModel<User>(WebConstants.PAGE_SIZE, repository);
+		PrimeFacesDataModel<User> users = new PrimeFacesDataModel<User>(WebConstants.PAGE_SIZE, repository);
 
 		return users;
 	}
