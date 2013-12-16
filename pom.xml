@@ -14,49 +14,49 @@
 		<!-- Test -->
 		<test />
 		<!-- Libs -->
-		<activiti.version>5.12.1</activiti.version>
-		<antlr.version>3.5</antlr.version>
-		<bouncycastle.version>1.48</bouncycastle.version>
-		<commons.codec.version>1.7</commons.codec.version>
-		<ehcache.version>2.6.5</ehcache.version>
+		<activiti.version>5.14</activiti.version>
+		<antlr.version>3.5.1</antlr.version>
+		<bouncycastle.version>1.50</bouncycastle.version>
+		<commons.codec.version>1.8</commons.codec.version>
+		<ehcache.version>2.6.6</ehcache.version>
 		<el.version>2.2.1-b04</el.version>
-		<groovy.version>2.1.2</groovy.version>
-		<hibernate.cache.version>4.2.0.Final</hibernate.cache.version>
-		<hibernate.core.version>4.2.0.Final</hibernate.core.version>
-		<hibernate.entityManager.version>4.2.0.Final</hibernate.entityManager.version>
+		<groovy.version>2.2.1</groovy.version>
+		<hibernate.cache.version>4.2.8.Final</hibernate.cache.version>
+		<hibernate.core.version>4.2.8.Final</hibernate.core.version>
+		<hibernate.entityManager.version>4.2.8.Final</hibernate.entityManager.version>
 		<hibernate.jpa.version>1.0.1.Final</hibernate.jpa.version>
-		<hibernate.search.version>4.2.0.Final</hibernate.search.version>
+		<hibernate.search.version>4.4.2.Final</hibernate.search.version>
 		<hibernate.validator.version>4.3.1.Final</hibernate.validator.version>
-		<itext.version>5.4.0</itext.version>
-		<jackrabbit.version>2.6.0</jackrabbit.version>
+		<itext.version>5.4.5</itext.version>
+		<jackrabbit.version>2.7.3</jackrabbit.version>
 		<jcr.version>2.0</jcr.version>
-		<jdbc.mysql.version>5.1.24</jdbc.mysql.version>
-		<jdbc.pgsql.version>9.1-901-1.jdbc4</jdbc.pgsql.version>
-		<jsf.version>2.1.16</jsf.version>
+		<jdbc.mysql.version>5.1.27</jdbc.mysql.version>
+		<jdbc.pgsql.version>9.2-1002.jdbc4</jdbc.pgsql.version>
+		<jsf.version>2.1.26</jsf.version>
 		<jsp.version>2.1.2</jsp.version>
 		<jstl.version>1.2</jstl.version>
 		<junit.version>4.11</junit.version>
 		<lucene.version>3.6.2</lucene.version><!-- Hibernate search require 3.x -->
 		<openoffice.version>3.2.1</openoffice.version>
 		<poi.version>3.9</poi.version>
-		<primefaces.version>3.4.2</primefaces.version><!-- 3.5 with errors -->
-		<primefaces.theme.version>1.0.9</primefaces.theme.version>
+		<primefaces.version>4.0</primefaces.version>
+		<primefaces.theme.version>1.0.10</primefaces.theme.version>
 		<rockframework.version>3.0.1-SNAPSHOT</rockframework.version>
 		<servlet.version>2.5</servlet.version>
 		<slf4j.version>1.7.5</slf4j.version>
-		<spring.version>3.2.2.RELEASE</spring.version>
-		<spring.security.version>3.1.3.RELEASE</spring.security.version>
+		<spring.version>3.2.6.RELEASE</spring.version>
+		<spring.security.version>3.1.4.RELEASE</spring.security.version>
 		<spring.webflow.version>2.3.2.RELEASE</spring.webflow.version>
-		<tika.version>1.3</tika.version>
+		<tika.version>1.4</tika.version>
 		<validation.version>1.0.0.GA</validation.version>
 		<!-- Plugins -->
 		<plugin.assembly.version>2.4</plugin.assembly.version>
-		<plugin.compiler.version>2.5.1</plugin.compiler.version>
-		<plugin.dependency.version>2.6</plugin.dependency.version>
+		<plugin.compiler.version>3.1</plugin.compiler.version>
+		<plugin.dependency.version>2.8</plugin.dependency.version>
 		<plugin.jar.version>2.4</plugin.jar.version>
 		<plugin.resources.version>2.6</plugin.resources.version>
 		<plugin.surefire.version>2.12.3</plugin.surefire.version>
-		<plugin.war.version>2.2</plugin.war.version>
+		<plugin.war.version>2.4</plugin.war.version>
 	</properties>
 	<organization>
 		<name>Woodstock</name>
